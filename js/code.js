@@ -34,7 +34,7 @@ function doLogin()
 		
 		if( userId < 1 )
 		{
-			document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
+			document.getElementById("loginStatus").innerHTML = "User/Password combination incorrect";
 			return;
 		}
 		
@@ -43,11 +43,11 @@ function doLogin()
 
 		saveCookie();
 	
-		window.location.href = "color.html";
+		window.location.href = "landing_page.html";
 	}
 	catch(err)
 	{
-		document.getElementById("loginResult").innerHTML = err.message;
+		document.getElementById("loginStatus").innerHTML = err.message;
 	}
 
 }
