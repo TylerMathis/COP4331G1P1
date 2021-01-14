@@ -1,4 +1,4 @@
-var urlBase = 'http://cop4331group1.xyz/LAMPAPI';
+var urlBase = 'http://contactical.xyz/LAMPAPI';
 var extension = 'php';
 
 var userId = 0;
