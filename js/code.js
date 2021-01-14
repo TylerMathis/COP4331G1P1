@@ -35,6 +35,7 @@ function doLogin()
 		if( userId < 1 )
 		{
 			document.getElementById("loginStatus").innerHTML = "User/Password combination incorrect";
+			document.getElementById("errorDump").innerHTML = jsonObject.error;
 			return;
 		}
 		
