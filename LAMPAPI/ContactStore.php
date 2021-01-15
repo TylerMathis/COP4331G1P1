@@ -4,9 +4,14 @@ include_once 'model/User.php';
 
 use Contactical\Error;
 
+/**
+ * Class ContactStore
+ */
 class ContactStore
 {
-    /** @var Database $db */
+    /**
+     * @var Database $db
+     */
     private $db;
 
     /**
@@ -20,12 +25,14 @@ class ContactStore
     }
 
     /**
+     * Gets a username from the DB given the username.
+     *
      * @param string $username The username to look up.
      * @return User|null
      */
     public function get_user_by_username($username)
     {
-        // Sanitize username
+        // Sanitize and prepare SQL
         $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE USERNAME=?");
         $sql->bind_param("s", $username);
         $sql->execute();
@@ -39,6 +46,14 @@ class ContactStore
     }
 
     /**
+     * Verifies the login given the parameters. Returns an associative
+     * array with two elements:
+     * - The User object, keyed by "user"
+     * - The Error object, keyed by "error"
+     *
+     * On a successful transaction the @link Error object will be null, and
+     * the @link User object will be non-null, vice versa if the transaction fails.
+     *
      * @param string $login The username of the user.
      * @param string $password The password of the user.
      * @return array Whether the login succeeded or not.

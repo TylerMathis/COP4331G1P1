@@ -3,6 +3,10 @@ namespace Contactical;
 
 use User;
 
+/**
+ * Class ErrorHandler
+ * @package Contactical
+ */
 class ErrorHandler
 {
 
@@ -16,6 +20,8 @@ class ErrorHandler
     }
 
     /**
+     * Presents an error that gives a user object in addition to the error itself.
+     *
      * @param User $user
      * @param Error $error
      */
@@ -31,6 +37,8 @@ class ErrorHandler
     }
 
     /**
+     * Presents a normal error.
+     *
      * @param Error $error
      */
     public static function generic_error($error)

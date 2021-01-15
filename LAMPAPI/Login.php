@@ -22,11 +22,13 @@ $store = new ContactStore($db);
 // Set headers to JSON
 header('Content-type: application/json');
 
+// Make sure that the request body has all the required components.
 if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists("password", $inData)) {
     ErrorHandler::generic_error(new Error("Invalid Login or Password"));
     return;
 }
 
+// Make sure login is valid.
 $result = $store->verify_login($inData["login"], $inData["password"]);
 
 if ($result["error"] != null) {
@@ -35,6 +37,6 @@ if ($result["error"] != null) {
     return;
 }
 
-// Otherwise print response info
+// Print response info
 $user = $result["user"];
 echo json_encode($user->toArray(), JSON_PRETTY_PRINT);

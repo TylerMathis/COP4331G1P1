@@ -7,6 +7,8 @@ use Contactical\Error;
 use Contactical\ErrorHandler;
 
 /**
+ * Gets the body from the request and parses it as a JSON file.
+ *
  * @return mixed
  */
 function getRequestInfo() {

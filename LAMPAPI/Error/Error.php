@@ -3,7 +3,10 @@
 
 namespace Contactical;
 
-
+/**
+ * Class Error
+ * @package Contactical
+ */
 class Error
 {
     /** @var string $title */

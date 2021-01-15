@@ -1,15 +1,12 @@
 <?php
 
-
+/**
+ * Class User
+ */
 class User
 {
-    /** @var string $first_name */
     private $first_name;
-
-    /** @var string $last_name */
     private $last_name;
-
-    /** @var int $ID */
     private $ID;
 
     /**
@@ -29,8 +26,8 @@ class User
     /**
      * Gives a new User object from the given SQL row.
      *
-     * @param array $row
-     * @return User
+     * @param array $row The SQL row to serialize
+     * @return User The user object created from the row.
      */
     public static function fromRow($row)
     {

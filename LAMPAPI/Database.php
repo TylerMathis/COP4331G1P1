@@ -5,6 +5,9 @@ include_once 'Error/ErrorHandler.php';
 use Contactical\ErrorHandler;
 use Contactical\Error;
 
+/**
+ * Class Database
+ */
 class Database
 {
     private $username;
@@ -18,7 +21,7 @@ class Database
      *
      * @param $username String username.
      * @param $password String password.
-     * @param $host String hostname of the database/
+     * @param $host String hostname of the database.
      * @param $database String name of the selected database.
      */
     function __construct($username, $password, $host, $database)
@@ -49,6 +52,8 @@ class Database
     }
 
     /**
+     * Performs a query with the current connection.
+     *
      * @param $sql string The sql to execute
      * @return bool|mysqli_result
      */
