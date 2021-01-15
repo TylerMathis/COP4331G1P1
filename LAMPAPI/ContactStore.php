@@ -2,6 +2,8 @@
 
 include_once 'model/User.php';
 
+use Contactical\Error;
+
 class ContactStore
 {
     /** @var Database $db */
@@ -55,12 +57,14 @@ class ContactStore
         // Make sure we got a result, if not the login is not valid.
         if (!$sql || $result->num_rows < 1) {
             echo mysqli_error($this->db->getConnection());
-            return array("user" => null, "message" => "Invalid Username/Password");
+            $error = new Error("Invalid Login or Password.",
+                "Credentials could not be found in database.");
+            return array("user" => null, "error" => $error);
         }
 
         // Get the user data
         $user = User::fromRow($result->fetch_assoc());
 
-        return array("user" => $user, "message" => "Successful");
+        return array("user" => $user, "error" => null);
     }
 }

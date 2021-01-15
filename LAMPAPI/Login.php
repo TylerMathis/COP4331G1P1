@@ -1,58 +1,41 @@
 <?php
 /**
+ * Variable Includes:
  * @var Database $db
  */
 include_once 'connection.php';
 include_once 'ContactStore.php';
-include_once 'Error.php';
+include_once 'Error/ErrorHandler.php';
+include_once 'Error/Error.php';
+include_once 'util.php';
 
+use Contactical\ErrorHandler;
 use Contactical\Error;
+
+// Ensure it's a GET Request
+ensureGET();
 
 // Class Variables
 $inData = getRequestInfo();
 $store = new ContactStore($db);
 
-// Set headers
+// Set headers to JSON
 header('Content-type: application/json');
 
 if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists("password", $inData)) {
-    Error::generic_error("No credentials provided.");
+    ErrorHandler::generic_error(new Error("Invalid Login or Password"));
     return;
 }
 
 $result = $store->verify_login($inData["login"], $inData["password"]);
 
-if ($result["user"] == null)
+if ($result["error"] != null)
 {
     // Error out.
-    Error::generic_error($result["message"]);
+    ErrorHandler::generic_error($result["error"]);
     return;
 }
 
 // Otherwise print response info
 $user = $result["user"];
 echo json_encode($user->toArray(), JSON_PRETTY_PRINT);
-	
-function getRequestInfo()
-{
-    return json_decode(file_get_contents('php://input'), true);
-}
-
-function sendResultInfoAsJson( $obj )
-{
-    header('Content-type: application/json');
-    echo $obj;
-}
-	
-function returnWithError( $err )
-{
-    $retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
-    sendResultInfoAsJson( $retValue );
-}
-	
-function returnWithInfo( $firstName, $lastName, $id )
-{
-    $retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
-    sendResultInfoAsJson( $retValue );
-}
-	

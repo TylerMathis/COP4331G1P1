@@ -1,5 +1,10 @@
 <?php
 
+include_once 'Error/ErrorHandler.php';
+
+use Contactical\ErrorHandler;
+use Contactical\Error;
+
 class Database
 {
     private $username;
@@ -29,9 +34,8 @@ class Database
 
         if (!$this->connection)
         {
-            // TODO: Error Handling
-            $err = mysqli_error($this->connection);
-            return;
+            $error = mysqli_error($this->connection);
+            ErrorHandler::generic_error(new Error("Coult not connect to database.", $error));
         }
     }
 
