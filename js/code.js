@@ -7,12 +7,12 @@ var lastName = "";
 
 function doLogin()
 {
-	userId = 0;
-	firstName = "";
-	lastName = "";
+	var userId = 0;
+	var firstName = "";
+	var lastName = "";
 	
-	var login = document.getElementById("username").value;
-	var password = document.getElementById("password").value;
+	var login = document.getElementById("user").value;
+	var password = document.getElementById("pass").value;
 //	var hash = md5( password );
 	
 	document.getElementById("loginStatus").innerHTML = "";
@@ -54,7 +54,58 @@ function doLogin()
 }
 
 function doAccountCreate() {
+	var newFirst = document.getElementById("first-name").value;
+	var newLast = document.getElementById("last-name").value;
+	var login = document.getElementById("user").value;
+	var password = document.getElementById("pass").value;
+	var xhr = new XMLHttpRequest();
+
+	// First check if the user already exists
+	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
+	var url = urlBase + '/Login.' + extension;
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.send(jsonPayload);
+		var jsonObject = JSON.parse( xhr.responseText );
+		userId = jsonObject.id;
+		if( userId >= 1 ) {
+			document.getElementById("loginStatus").innerHTML = "User already exists!";
+			return;
+		}
+	}
+	catch(err) {
+		document.getElementById("loginStatus").innerHTML = err.message;
+	}
+		
+	jsonPayload = '{"firstName" : "' + newFirst + '", "lastName" : "' + newLast + '", "login" : "' + login + '", "password" : "' + password + '"}';
+	url = urlBase + '/CreateAccount.' + extension;
+
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.send(jsonPayload);
+		
+		var jsonObject = JSON.parse( xhr.responseText );
+
+		if (jsonObject.error != "") {
+			document.getElementById("loginStatus").innerHTML = err.message;
+			return;
+		}
+				
+		firstName = jsonObject.firstName;
+		lastName = jsonObject.lastName;
+
+		saveCookie();
 	
+		window.location.href = "index.html";
+	}
+	catch(err)
+	{
+		document.getElementById("loginStatus").innerHTML = err.message;
+	}
 }
 
 function saveCookie()
