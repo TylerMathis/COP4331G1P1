@@ -1,54 +1,58 @@
 <?php
 /**
- * @var string $name
  * @var Database $db
  */
-    include_once 'connection.php';
-	$inData = getRequestInfo();
-	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
+include_once 'connection.php';
+include_once 'ContactStore.php';
+include_once 'Error.php';
 
-	$conn = $db->getConnection();
+use Contactical\Error;
 
-    $sql = "SELECT ID,firstName,lastName FROM Users where Login='" . $inData["login"] . "' and Password='" . $inData["password"] . "'";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0)
-    {
-        $row = $result->fetch_assoc();
-        $firstName = $row["firstName"];
-        $lastName = $row["lastName"];
-        $id = $row["ID"];
+// Class Variables
+$inData = getRequestInfo();
+$store = new ContactStore($db);
 
-        returnWithInfo($firstName, $lastName, $id );
-    }
-    else
-    {
-        returnWithError( "No Records Found" );
-    }
-	
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
+// Set headers
+header('Content-type: application/json');
 
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
+if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists("password", $inData)) {
+    Error::generic_error("No credentials provided.");
+    return;
+}
+
+$result = $store->verify_login($inData["login"], $inData["password"]);
+
+if ($result["user"] == null)
+{
+    // Error out.
+    Error::generic_error($result["message"]);
+    return;
+}
+
+// Otherwise print response info
+$user = $result["user"];
+echo json_encode($user->toArray(), JSON_PRETTY_PRINT);
 	
-	function returnWithError( $err )
-	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
+function getRequestInfo()
+{
+    return json_decode(file_get_contents('php://input'), true);
+}
+
+function sendResultInfoAsJson( $obj )
+{
+    header('Content-type: application/json');
+    echo $obj;
+}
 	
-	function returnWithInfo( $firstName, $lastName, $id )
-	{
-		$retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
-		sendResultInfoAsJson( $retValue );
-	}
+function returnWithError( $err )
+{
+    $retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+    sendResultInfoAsJson( $retValue );
+}
 	
-?>
+function returnWithInfo( $firstName, $lastName, $id )
+{
+    $retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+    sendResultInfoAsJson( $retValue );
+}
+	

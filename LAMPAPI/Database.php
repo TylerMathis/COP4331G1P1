@@ -44,4 +44,12 @@ class Database
     {
         return $this->connection;
     }
+
+    /**
+     * @param $sql string The sql to execute
+     * @return bool|mysqli_result
+     */
+    public function query($sql) {
+        return $this->connection->query($sql);
+    }
 }
