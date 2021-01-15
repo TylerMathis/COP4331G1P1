@@ -50,7 +50,7 @@ body {
   grid-row: 1;
   font-size: 2vw;
   text-align: center;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #2f4f4f;
 }
 
@@ -58,14 +58,14 @@ body {
   grid-row: 2;
   font-size: 1.5vw;
   text-align: center;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
   color: #2f4f4f4f;
 }
 
 .login-title {
   grid-row: 3;
   font-size: 1vw;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
   color: #2f4f4f;
 }
@@ -74,7 +74,7 @@ body {
   display: inline-block;
   grid-row: 4;
   display: grid;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
   font-size: 1vw;
   color: #696969;
@@ -86,12 +86,13 @@ body {
 }
 
 .data-entry {
+  border: 1px solid lightgray;
   display: inline-block;
   border-radius: 20px;
   text-align: center;
   margin: auto;
   width: 80%;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .buttons {
@@ -100,7 +101,7 @@ body {
   border-radius: 25px;
   width: 25%;
   margin: auto;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #create_account {
@@ -109,7 +110,7 @@ body {
   border-radius: 25px;
   width: 90%;
   margin: auto;
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .buttons:hover {
