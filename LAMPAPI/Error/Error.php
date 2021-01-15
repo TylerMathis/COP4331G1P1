@@ -22,7 +22,8 @@ class Error
         $this->status = $status;
     }
 
-    function toArray() {
+    function toArray()
+    {
         return array("title" => $this->title, "status" => $this->status, "detail" => $this->detail);
     }
 

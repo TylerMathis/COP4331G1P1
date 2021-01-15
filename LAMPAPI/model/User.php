@@ -19,7 +19,8 @@ class User
      * @param string $last_name
      * @param int $ID
      */
-    public function __construct($first_name, $last_name, $ID) {
+    public function __construct($first_name, $last_name, $ID)
+    {
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->ID = $ID;
@@ -31,7 +32,8 @@ class User
      * @param array $row
      * @return User
      */
-    public static function fromRow($row) {
+    public static function fromRow($row)
+    {
         return new self($row["FirstName"], $row["LastName"], $row["ID"]);
     }
 
@@ -40,7 +42,8 @@ class User
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return array("FirstName" => $this->first_name, "LastName" => $this->last_name, "ID" => $this->ID);
     }
 

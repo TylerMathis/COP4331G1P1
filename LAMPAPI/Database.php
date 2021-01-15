@@ -32,8 +32,7 @@ class Database
         // Open database connection
         $this->connection = new mysqli($host, $username, $password, $database);
 
-        if (!$this->connection)
-        {
+        if (!$this->connection) {
             $error = mysqli_error($this->connection);
             ErrorHandler::generic_error(new Error("Coult not connect to database.", $error));
         }

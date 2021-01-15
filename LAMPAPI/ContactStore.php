@@ -26,10 +26,12 @@ class ContactStore
     public function get_user_by_username($username)
     {
         // Sanitize username
-        $new_uname = $this->db->getConnection()->real_escape_string($username);
-        $result = $this->db->query("SELECT * FROM Users WHERE USERNAME = $new_uname");
+        $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE USERNAME=?");
+        $sql->bind_param("s", $username);
+        $sql->execute();
+        $result = $sql->get_result();
 
-        if (empty($result) || $result->num_rows < 1) {
+        if (!$result || $result->num_rows < 1) {
             return null;
         }
 
@@ -43,19 +45,15 @@ class ContactStore
      */
     public function verify_login($login, $password)
     {
-        // Sanitize both parameters
-        $new_uname = $this->db->getConnection()->real_escape_string($login);
-        $new_passwd = $this->db->getConnection()->real_escape_string($password);
-
-        // Run SQL query.
+        // Prepare and run SQL query.
         $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE Login=? AND Password=?");
-        $sql->bind_param("ss",$new_uname, $new_passwd);
+        $sql->bind_param("ss",$login, $password);
         $sql->execute();
 
         $result = $sql->get_result();
 
         // Make sure we got a result, if not the login is not valid.
-        if (!$sql || $result->num_rows < 1) {
+        if (!$result || $result->num_rows < 1) {
             echo mysqli_error($this->db->getConnection());
             $error = new Error("Invalid Login or Password.",
                 "Credentials could not be found in database.");

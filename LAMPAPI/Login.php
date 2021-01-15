@@ -29,8 +29,7 @@ if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists(
 
 $result = $store->verify_login($inData["login"], $inData["password"]);
 
-if ($result["error"] != null)
-{
+if ($result["error"] != null) {
     // Error out.
     ErrorHandler::generic_error($result["error"]);
     return;
