@@ -4,7 +4,18 @@ body {
 	background-size: 5%;
 	background-repeat: repeat-x repeat-y;
 	*/
-  background-color: #add8e6;
+  background: #add8e6;
+  animation: mymove 10s infinite;
+}
+
+@keyframes mymove {
+	from {background-color: #add8e6;}
+     	    20% {background-color: #2f4f4f;}
+	    40%{background-color: #5f9ea0;}
+	    60%{background-color: #E0FFFF;}
+	    80% {background-color: #20B2aa;}
+	to {background-color: #add8e6;}
+	
 }
 
 #title {
