@@ -9,44 +9,29 @@ body {
 }
 
 @keyframes mymove {
-	from {background-color: #add8e6;}
-     	    20% {background-color: #2f4f4f;}
-	    40%{background-color: #5f9ea0;}
-	    60%{background-color: #E0FFFF;}
-	    80% {background-color: #20B2aa;}
-	to {background-color: #add8e6;}
-	
-}
-
-#title {
-  font-size: 2vw;
-  text-align: center;
-  font-family: "Ubuntu", sans-serif;
-  color: #2f4f4f;
-}
-
-#subtitle {
-  font-size: 1.5vw;
-  text-align: center;
-  font-family: "Ubuntu", sans-serif;
-  color: #2f4f4f4f;
-}
-
-.buttons {
-  font-size: 1vw;
-  border-radius: 25px;
-  width: 25%;
-  margin-left: 35%;
-  font-family: "Ubuntu", sans-serif;
-}
-
-.buttons:hover {
-  background-color: #696969;
-  color: #69696969;
-  opacity: 50%;
+  from {
+    background-color: #add8e6;
+  }
+  20% {
+    background-color: #2f4f4f;
+  }
+  40% {
+    background-color: #5f9ea0;
+  }
+  60% {
+    background-color: #e0ffff;
+  }
+  80% {
+    background-color: #20b2aa;
+  }
+  to {
+    background-color: #add8e6;
+  }
 }
 
 .login {
+  display: grid;
+  row-gap: 0px;
   float: left;
   background-color: #ffffef;
   overflow: hidden;
@@ -59,6 +44,84 @@ body {
   margin-top: 10vh;
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
+}
+
+#title {
+  grid-row: 1;
+  font-size: 2vw;
+  text-align: center;
+  font-family: "Ubuntu", sans-serif;
+  color: #2f4f4f;
+}
+
+#subtitle {
+  grid-row: 2;
+  font-size: 1.5vw;
+  text-align: center;
+  font-family: "Ubuntu", sans-serif;
+  color: #2f4f4f4f;
+}
+
+.login-title {
+  grid-row: 3;
+  font-size: 1vw;
+  font-family: "Ubuntu", sans-serif;
+  text-align: center;
+  color: #2f4f4f;
+}
+
+.loginData {
+  display: inline-block;
+  grid-row: 4;
+  display: grid;
+  font-family: "Ubuntu", sans-serif;
+  text-align: center;
+  font-size: 1vw;
+  color: #696969;
+}
+
+.login-label {
+  display: inline-block;
+  text-align: center;
+}
+
+.data-entry {
+  display: inline-block;
+  border-radius: 20px;
+  text-align: center;
+  margin: auto;
+  width: 80%;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.buttons {
+  grid-row: 5;
+  font-size: 1vw;
+  border-radius: 25px;
+  width: 25%;
+  margin: auto;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.buttons:hover {
+  background-color: #696969;
+  color: #69696969;
+  opacity: 50%;
+}
+
+a:link {
+  font-size: small;
+  color: rgb(74, 154, 246);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.createAccount {
+  align-self: baseline;
+  height: auto;
+  width: auto;
+  text-align: right;
+  margin-right: 10px;
 }
 
 .phone-image {
@@ -81,37 +144,4 @@ body {
   border-bottom-right-radius: 25px;
 }
 
-input[type="text"],
-input[type="password"] {
-  border-radius: 20px;
-  text-align: center;
-  width: 80%;
-  margin-left: 10%;
-  margin-bottom: 2%;
-  font-family: "Ubuntu", sans-serif;
-}
-
-#username {
-  display: inline-block;
-  width: 80%;
-  margin-left: 10%;
-  text-align: center;
-}
-
-.login-label {
-  font-family: "Ubuntu", sans-serif;
-  text-align: center;
-  width: 70%;
-  height: 1.5vw;
-  font-size: 1vw;
-  margin-left: 10%;
-  margin-bottom: 2%;
-  color: #696969;
-}
-
-.login-title {
-  font-size: 1vw;
-  font-family: "Ubuntu", sans-serif;
-  text-align: center;
-  color: #2f4f4f;
-}
+/* CREATE ACCOUNT */

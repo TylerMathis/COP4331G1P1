@@ -53,6 +53,10 @@ function doLogin()
 
 }
 
+function doAccountCreate() {
+	
+}
+
 function saveCookie()
 {
 	var minutes = 20;
