@@ -103,6 +103,15 @@ body {
   font-family: "Ubuntu", sans-serif;
 }
 
+#create_account {
+   grid-row: 5;
+  font-size: 10px;
+  border-radius: 25px;
+  width: 90%;
+  margin: auto;
+  font-family: "Ubuntu", sans-serif;
+}
+
 .buttons:hover {
   background-color: #696969;
   color: #69696969;
@@ -116,7 +125,7 @@ a:link {
   text-decoration: none;
 }
 
-.createAccount {
+#createAccount {
   align-self: baseline;
   height: auto;
   width: auto;
@@ -138,10 +147,22 @@ a:link {
   max-height: 100%;
   width: auto;
   height: auto;
+  z-index: -1;
   position: relative;
   left: 0;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
 }
 
+.contactical-hand {
+  /* display: block; */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 1;
+  left: 0;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
 /* CREATE ACCOUNT */

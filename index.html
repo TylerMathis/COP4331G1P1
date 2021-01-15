@@ -16,17 +16,20 @@
 	
 	<div class=loginData>
 		<label class=login-label>Username:</label>
-		<input placeholder='Enter your username' class='data-entry'>
+		<input id='user' placeholder='Enter your username' class='data-entry'>
 		<label class=login-label>Password:</label>
-		<input placeholder='Enter your password' class='data-entry'>
+		<input id='pass' placeholder='Enter your password' class='data-entry'>
 	</div>
 	<button class="buttons" type="button" id=loginButton onclick="doLogin();">Login</button>
 	<span id="loginStatus"></span>
 	<span id="errorDump"></span>
-	<a href="create_account.html" class="createAccount">Don't have an account?</a>
+	<button class="buttons" onclick="goToCreateAccount();" type="button" href="create_account.html" id="create_account">Don't have an account?</button>
 </div>
 <div class="phone-image">
-	<img class="contactical" src="/images/contactical.png">
+	
+		<div><img class="contactical" src="/images/contactical.png"></div>
+	
+	
 </div>
 
 <div>

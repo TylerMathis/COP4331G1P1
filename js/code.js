@@ -53,6 +53,11 @@ function doLogin()
 
 }
 
+function goToCreateAccount() 
+{
+	window.location.href = "create_account.html";
+}
+
 function doAccountCreate() {
 	
 }
