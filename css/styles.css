@@ -8,6 +8,14 @@ body {
   animation: mymove 10s infinite;
 }
 
+.box {
+  display: flex;
+  justify-content: center;
+  /* align-self: center;    <---- REMOVE */
+  align-items: center;   /* <---- NEW    */
+  background: silver;
+}
+
 @keyframes mymove {
   from {
     background-color: #add8e6;
@@ -27,6 +35,10 @@ body {
   to {
     background-color: #add8e6;
   }
+}
+
+.login-new {
+  background-color: red;
 }
 
 .login {
