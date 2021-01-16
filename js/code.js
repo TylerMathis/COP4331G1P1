@@ -14,13 +14,22 @@ function doLogin()
 	var login = document.getElementById("user").value;
 	var password = document.getElementById("pass").value;
 //	var hash = md5( password );
+
+	// -- ZACH --
+	// Added because right now if you click the login button without entering anything it still runs the doLogin() function.
+	if (login.length == 0 || password.length == 0)
+	{
+		var badValue = (login.length == 0 ? "Username" : "Password");
+		alert('Please enter your ' + badValue);
+		return false;
+	}
 	
 	document.getElementById("loginStatus").innerHTML = "";
 
 //	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
 	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
 	var url = urlBase + '/Login.' + extension;
-
+	
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -44,7 +53,7 @@ function doLogin()
 
 		saveCookie();
 	
-		window.location.href = "landing_page.html";
+		window.location.href = "main.php";
 	}
 	catch(err)
 	{
@@ -57,6 +66,8 @@ function goToCreateAccount()
 {
 	window.location.href = "create_account.html";
 }
+
+function goToLogin()
 
 function doAccountCreate() {
 	var newFirst = document.getElementById("first-name").value;
