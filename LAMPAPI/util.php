@@ -32,3 +32,11 @@ function ensurePOST() {
         ErrorHandler::generic_error(new Error("Invalid Request Method. Please use POST."));
     }
 }
+
+/**
+ * Applies the JSON header to the content.
+ */
+function applyJSONHeader() {
+    // Set headers to JSON
+    header('Content-type: application/json');
+}

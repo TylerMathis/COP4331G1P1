@@ -30,10 +30,10 @@ class ContactStore
      * @param string $username The username to look up.
      * @return User|null
      */
-    public function get_user_by_username($username)
+    public function getUserByLogin($username)
     {
         // Sanitize and prepare SQL
-        $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE USERNAME=?");
+        $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE Login=?");
         $sql->bind_param("s", $username);
         $sql->execute();
         $result = $sql->get_result();
@@ -42,7 +42,7 @@ class ContactStore
             return null;
         }
 
-        return User::fromRow($result->fetch_assoc());
+        return User::fromArray($result->fetch_assoc());
     }
 
     /**
@@ -56,28 +56,35 @@ class ContactStore
      *
      * @param string $login The username of the user.
      * @param string $password The password of the user.
-     * @return array Whether the login succeeded or not.
+     * @return mysqli_result Whether the login succeeded or not.
      */
-    public function verify_login($login, $password)
+    public function verifyLogin($login, $password)
     {
         // Prepare and run SQL query.
         $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE Login=? AND Password=?");
         $sql->bind_param("ss",$login, $password);
         $sql->execute();
 
-        $result = $sql->get_result();
+        return $sql->get_result();
+    }
 
-        // Make sure we got a result, if not the login is not valid.
-        if (!$result || $result->num_rows < 1) {
-            echo mysqli_error($this->db->getConnection());
-            $error = new Error("Invalid Login or Password.",
-                "Credentials could not be found in database.");
-            return array("user" => null, "error" => $error);
+    /**
+     * @param array $arr The dictionary of user data.
+     * @return array Indicating success.
+     */
+    public function createUser($arr)
+    {
+        // First check if user already exists
+        if ($this->getUserByLogin($arr["Login"]) != null) {
+            return array("isDupe" => true, "result" => null);
         }
 
-        // Get the user data
-        $user = User::fromRow($result->fetch_assoc());
+        // Prepare and run SQL insertion.
+        $sql = $this->db->getConnection()
+            ->prepare("INSERT INTO Users (Firstname, LastName, Login, Password) VALUES (?, ?, ?, ?)");
+        $sql->bind_param("ssss", $arr["FirstName"], $arr["LastName"], $arr["Login"], $arr["Password"]);
+        $result = $sql->execute();
 
-        return array("user" => $user, "error" => null);
+        return array("isDupe" => false, "result" => $result);
     }
 }

@@ -19,8 +19,7 @@ ensureGET();
 $inData = getRequestInfo();
 $store = new ContactStore($db);
 
-// Set headers to JSON
-header('Content-type: application/json');
+applyJSONHeader();
 
 // Make sure that the request body has all the required components.
 if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists("password", $inData)) {
@@ -29,11 +28,12 @@ if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists(
 }
 
 // Make sure login is valid.
-$result = $store->verify_login($inData["login"], $inData["password"]);
+$result = $store->verifyLogin($inData["login"], $inData["password"]);
 
-if ($result["error"] != null) {
+if (!$result || $result->num_rows < 1) {
     // Error out.
-    ErrorHandler::generic_error($result["error"]);
+    ErrorHandler::generic_error(new Error("Invalid Username or Password",
+        "Credentials could not be found"));
     return;
 }
 
