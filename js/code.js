@@ -67,7 +67,10 @@ function goToCreateAccount()
 	window.location.href = "create_account.html";
 }
 
-function goToLogin()
+function goToLogin() 
+{
+	window.location.href = "index.html";
+}
 
 function doAccountCreate() {
 	var newFirst = document.getElementById("first-name").value;
