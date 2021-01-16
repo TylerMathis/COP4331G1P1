@@ -46,26 +46,26 @@ body {
   border-bottom-left-radius: 25px;
 }
 
-#title {
+.title {
   grid-row: 1;
   font-size: 2vw;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #2f4f4f;
 }
 
-#subtitle {
+.subtitle {
   grid-row: 2;
   font-size: 1.5vw;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #2f4f4f4f;
 }
 
-.login-title {
+.loginTitle {
   grid-row: 3;
   font-size: 1vw;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   text-align: center;
   color: #2f4f4f;
 }
@@ -74,43 +74,41 @@ body {
   display: inline-block;
   grid-row: 4;
   display: grid;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   text-align: center;
   font-size: 1vw;
   color: #696969;
 }
 
-.login-label {
+.loginLabel {
   display: inline-block;
   text-align: center;
 }
 
-.data-entry {
+.dataEntry {
   border: 1px solid lightgray;
   display: inline-block;
   border-radius: 20px;
   text-align: center;
   margin: auto;
   width: 80%;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+#loginStatus {
+  grid-row: 5;
+}
+#errorDump {
+  grid-row: 5;
 }
 
 .buttons {
-  grid-row: 5;
+  grid-row: 6;
   font-size: 1vw;
   border-radius: 25px;
   width: 25%;
   margin: auto;
-  font-family: 'Roboto', sans-serif;
-}
-
-#create_account {
-   grid-row: 5;
-  font-size: 10px;
-  border-radius: 25px;
-  width: 90%;
-  margin: auto;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .buttons:hover {
@@ -126,15 +124,15 @@ a:link {
   text-decoration: none;
 }
 
-#createAccount {
-  align-self: baseline;
-  height: auto;
-  width: auto;
-  text-align: right;
-  margin-right: 10px;
+.createAccount {
+  font-size: 10px;
+  border-radius: 25px;
+  width: 90%;
+  margin: auto;
+  font-family: "Roboto", sans-serif;
 }
 
-.phone-image {
+.phoneImage {
   float: left;
   max-height: 60%;
   width: 30vw;
@@ -155,7 +153,7 @@ a:link {
   border-bottom-right-radius: 25px;
 }
 
-.contactical-hand {
+.contacticalHand {
   /* display: block; */
   max-width: 100%;
   max-height: 100%;
