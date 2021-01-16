@@ -65,6 +65,23 @@ function doAccountCreate() {
 	var password = document.getElementById("pass").value;
 	var xhr = new XMLHttpRequest();
 
+	// Check if they entered values for First name/ Last name
+	if (newFirst.length == 0 || newLast.length == 0) 
+	{
+		var message = (newFirst.length == 0 ? "first name!" : "last name!");
+		alert("Make sure you type in a " + message);
+		return false;
+	}
+
+	// Check if they entered values for User and Password
+	if (login.length == 0 || password.length == 0) 
+	{
+		var message = (login.length == 0 ? "Username!" : "Password!");
+		alert("Make sure you type in a " + message);
+		return false;
+	}
+
+
 	// First check if the user already exists
 	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
 	var url = urlBase + '/Login.' + extension;
