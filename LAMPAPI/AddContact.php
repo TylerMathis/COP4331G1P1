@@ -1,4 +1,7 @@
 <?php
+
+//Original code by Richard Leinecker, edited by Mark Dubin
+
 	$inData = getRequestInfo();
 	
 	$firstName = $inData["firstName"];

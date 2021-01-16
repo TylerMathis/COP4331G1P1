@@ -1,5 +1,7 @@
 <?php
 
+//Original code by Richard Leinecker, edited by Mark Dubin
+
 	$inData = getRequestInfo();
 	
 	$searchResults = "";
@@ -12,7 +14,7 @@
 	} 
 	else
 	{
-		$sql = "select Name from Contacts where Name like '%" . $inData["search"] . "%' and UserID=" . $inData["userId"];
+		$sql = "select Contact from Contacts where firstName like '%" . $inData["search"] . "%' and UserID=" . $inData["userId"];
 		$result = $conn->query($sql);
 		if ($result->num_rows > 0)
 		{
