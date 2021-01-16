@@ -38,5 +38,9 @@ if (!$result || $result->num_rows < 1) {
 }
 
 // Print response info
-$user = $result["user"];
+$user = $store->getUserByLogin($inData["login"]);
+if ($user == null) {
+    ErrorHandler::generic_error(new Error("An unexpected Error Occurred", "User fetch failed."));
+}
+
 echo json_encode($user->toArray(), JSON_PRETTY_PRINT);
