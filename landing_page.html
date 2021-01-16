@@ -1,5 +1,38 @@
+<!DOCTYPE html>
+
+<script type="text/javascript" src="js/code.js"></script>
+
 <html>
-	<body>
-	<h3>welcome</h3>
-	</body>
+<head>
+
+	<title>contactical</title>
+	<link href="css/styles.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+</head>
+
+<body></body>
+<div class="login">
+	<h1 id="title">Contactical</h1> 
+	<div class=add-contact>
+		<button class="buttons" type="button" id=addContact>add new contact</button>
+		<button class="buttons" type="button" id=viewContacts onclick="doLogin();">contact list</button>
+		<button class="buttons" type="button" id=loginButton onclick="doLogin();"></button>
+	</div>
+	<button class="buttons" type="button" id=loginButton onclick="doLogin();">Login</button>
+	<span id="loginStatus"></span>
+	<span id="errorDump"></span>
+	<button class="buttons" onclick="goToCreateAccount();" type="button" href="create_account.html" id="create_account">Don't have an account?</button>
+</div>
+<div class="phone-image">
+	
+		<div><img class="contactical" src="/images/contactical.png"></div>
+	
+	
+</div>
+
+<div>
+	
+</div>
+
+</body>
 </html>
