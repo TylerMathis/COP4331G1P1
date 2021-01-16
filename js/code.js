@@ -14,8 +14,8 @@ function doLogin()
 	var login = document.getElementById("user").value;
 	var password = document.getElementById("pass").value;
 //	var hash = md5( password );
-
-	// -- ZACH --
+	
+  // -- ZACH --
 	// Added because right now if you click the login button without entering anything it still runs the doLogin() function.
 	if (login.length == 0 || password.length == 0)
 	{
@@ -23,13 +23,13 @@ function doLogin()
 		alert('Please enter your ' + badValue);
 		return false;
 	}
-	
+  
 	document.getElementById("loginStatus").innerHTML = "";
 
 //	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
 	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
 	var url = urlBase + '/Login.' + extension;
-	
+
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -53,7 +53,7 @@ function doLogin()
 
 		saveCookie();
 	
-		window.location.href = "main.php";
+		window.location.href = "landing_page.html";
 	}
 	catch(err)
 	{
@@ -67,17 +67,29 @@ function goToCreateAccount()
 	window.location.href = "create_account.html";
 }
 
-function goToLogin() 
-{
-	window.location.href = "index.html";
-}
-
 function doAccountCreate() {
 	var newFirst = document.getElementById("first-name").value;
 	var newLast = document.getElementById("last-name").value;
 	var login = document.getElementById("user").value;
 	var password = document.getElementById("pass").value;
 	var xhr = new XMLHttpRequest();
+
+	// Check if they entered values for First name/ Last name
+	if (newFirst.length == 0 || newLast.length == 0) 
+	{
+		var message = (newFirst.length == 0 ? "first name!" : "last name!");
+		alert("Make sure you type in a " + message);
+		return false;
+	}
+
+	// Check if they entered values for User and Password
+	if (login.length == 0 || password.length == 0) 
+	{
+		var message = (login.length == 0 ? "Username!" : "Password!");
+		alert("Make sure you type in a " + message);
+		return false;
+	}
+
 
 	// First check if the user already exists
 	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
