@@ -15,6 +15,15 @@ function doLogin()
 	var password = document.getElementById("pass").value;
 //	var hash = md5( password );
 	
+  // -- ZACH --
+	// Added because right now if you click the login button without entering anything it still runs the doLogin() function.
+	if (login.length == 0 || password.length == 0)
+	{
+		var badValue = (login.length == 0 ? "Username" : "Password");
+		alert('Please enter your ' + badValue);
+		return false;
+	}
+  
 	document.getElementById("loginStatus").innerHTML = "";
 
 //	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
