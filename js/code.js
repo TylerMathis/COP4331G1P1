@@ -24,7 +24,10 @@ function doLogin()
 	var hash = md5(password);
 	
 	// Create jsonPayload and api endpoint
-	var jsonPayload = '{"Login" : "' + login + '", "Password" : "' + hash + '"}';
+	var jsonPayload = {
+	     "Login" : login,
+	     "Password" : hash
+	};
 	var url = urlBase + "Login" + extension;
 
 	// Send POST with our data to look up
