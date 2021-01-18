@@ -37,7 +37,7 @@ function doLogin()
 	xhr.send(jsonPayload);
 
 	// Valid request
-	if (xhr.status == 200) {
+	if (xhr.status === 200) {
 		var response = JSON.parse(xhr.responseText);
 		userId = response.ID;
         firstName = response.FirstName;
@@ -102,7 +102,7 @@ function doAccountCreate() {
 	xhr.send(jsonPayload);
 
 	// Valid creation
-    if (xhr.status == 201) 
+    if (xhr.status === 201) 
 		window.location.href = "index.html";
 	// Invalid creation
     else {
