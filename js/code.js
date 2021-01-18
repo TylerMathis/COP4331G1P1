@@ -24,10 +24,10 @@ function doLogin()
 	var hash = md5(password);
 	
 	// Create jsonPayload and api endpoint
-	var jsonPayload = {
+	var jsonPayload = JSON.stringify({
 	     "Login" : login,
-	     "Password" : hash
-	};
+		 "Password" : hash
+		});
 	var url = urlBase + "Login" + extension;
 
 	// Send POST with our data to look up
@@ -87,7 +87,12 @@ function doAccountCreate() {
 	var hash = md5(password);
 
 	// Create jsonPayload and api endpoint
-	jsonPayload = '{"FirstName" : "' + newFirst + '", "LastName" : "' + newLast + '", "Login" : "' + login + '", "Password" : "' + hash + '"}';
+    jsonPayload = JSON.stringify({
+        "FirstName" : newFirst,
+        "LastName" : newLast,
+        "Login" : login,
+        "Password" : hash
+    });
 	url = urlBase + "CreateAccount" + extension;
 
 	// Send POST with our data to look up

@@ -12,9 +12,8 @@ include_once 'util.php';
 use Contactical\ErrorHandler;
 use Contactical\Error;
 
-// Removed so body is accepted
-// Ensure it's a GET Request
-// ensureGET();
+// Ensure it's a POST Request
+ensurePOST();
 
 // Create contact store
 $store = new ContactStore($db);
