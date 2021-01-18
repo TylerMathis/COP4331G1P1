@@ -12,23 +12,25 @@ include_once 'util.php';
 use Contactical\ErrorHandler;
 use Contactical\Error;
 
-// Ensure it's a GET Request
-ensureGET();
+// Ensure it's a POST Request
+ensurePOST();
 
-// Class Variables
-$inData = getRequestInfo();
+// Create contact store
 $store = new ContactStore($db);
+
+// Accept request body
+$userData = getRequestInfo();
 
 applyJSONHeader();
 
 // Make sure that the request body has all the required components.
-if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists("password", $inData)) {
+if ($userData == null || !array_key_exists("Login", $userData) || !array_key_exists("Password", $userData)) {
     ErrorHandler::generic_error(new Error("Invalid Login or Password"));
     return;
 }
 
 // Make sure login is valid.
-$result = $store->verifyLogin($inData["login"], $inData["password"]);
+$result = $store->verifyLogin($userData["Login"], $userData["Password"]);
 
 if (!$result || $result->num_rows < 1) {
     // Error out.
@@ -38,7 +40,7 @@ if (!$result || $result->num_rows < 1) {
 }
 
 // Print response info
-$user = $store->getUserByLogin($inData["login"]);
+$user = $store->getUserByLogin($userData["Login"]);
 if ($user == null) {
     ErrorHandler::generic_error(new Error("An unexpected Error Occurred", "User fetch failed."));
 }
