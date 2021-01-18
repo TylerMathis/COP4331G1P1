@@ -1,13 +1,10 @@
 body {
-  /*
 
-	background-size: 5%;
-	background-repeat: repeat-x repeat-y;
-	*/
+  background-color: cadetblue;
 }
 
 .container.loginContainer {
-  width: 300px;
+  width: 400px;
   min-height: 400px;
 }
 
