@@ -12,8 +12,7 @@
 	else
 	{
 		$sql = "insert into Colors (UserId,Name) VALUES (" . $userId . ",'" . $color . "')";
-		if( $result = $conn->query($sql) != TRUE )
-		{
+		if( $result = $conn->query($sql) != TRUE ) {
 			returnWithError( $conn->error );
 		}
 		$conn->close();

@@ -1,57 +1,46 @@
 <?php
+/**
+ * Variable Includes:
+ * @var Database $db
+ */
+include_once 'connection.php';
+include_once 'ContactStore.php';
+include_once 'Error/ErrorHandler.php';
+include_once 'Error/Error.php';
+include_once 'util.php';
 
-	$inData = getRequestInfo();
-	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
+use Contactical\ErrorHandler;
+use Contactical\Error;
 
-	$conn = new mysqli("localhost", "TheBeast", "ProwlsTheServer", "COP4331");
-	if ($conn->connect_error) 
-	{
-		returnWithError( $conn->connect_error );
-	} 
-	else
-	{
-		$sql = "SELECT ID,firstName,lastName FROM Users where Login='" . $inData["login"] . "' and Password='" . $inData["password"] . "'";
-		$result = $conn->query($sql);
-		if ($result->num_rows > 0)
-		{
-			$row = $result->fetch_assoc();
-			$firstName = $row["firstName"];
-			$lastName = $row["lastName"];
-			$id = $row["ID"];
-			
-			returnWithInfo($firstName, $lastName, $id );
-		}
-		else
-		{
-			returnWithError( "No Records Found" );
-		}
-		$conn->close();
-	}
-	
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-	}
+// Ensure it's a GET Request
+ensureGET();
 
-	function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
-	
-	function returnWithError( $err )
-	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
-	
-	function returnWithInfo( $firstName, $lastName, $id )
-	{
-		$retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
-		sendResultInfoAsJson( $retValue );
-	}
-	
-?>
+// Class Variables
+$inData = getRequestInfo();
+$store = new ContactStore($db);
+
+applyJSONHeader();
+
+// Make sure that the request body has all the required components.
+if ($inData == null || !array_key_exists("login", $inData) || !array_key_exists("password", $inData)) {
+    ErrorHandler::generic_error(new Error("Invalid Login or Password"));
+    return;
+}
+
+// Make sure login is valid.
+$result = $store->verifyLogin($inData["login"], $inData["password"]);
+
+if (!$result || $result->num_rows < 1) {
+    // Error out.
+    ErrorHandler::generic_error(new Error("Invalid Username or Password",
+        "Credentials could not be found"));
+    return;
+}
+
+// Print response info
+$user = $store->getUserByLogin($inData["login"]);
+if ($user == null) {
+    ErrorHandler::generic_error(new Error("An unexpected Error Occurred", "User fetch failed."));
+}
+
+echo json_encode($user->toArray(), JSON_PRETTY_PRINT);
