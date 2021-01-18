@@ -1,4 +1,4 @@
-var urlBase = 'http://contactical.xyz/LAMPAPI';
+var urlBase = 'LAMPAPI/';
 var extension = 'php';
 
 var userId = 0;
@@ -27,37 +27,29 @@ function doLogin()
 	document.getElementById("loginStatus").innerHTML = "";
 
 //	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
-	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
-	var url = urlBase + '/Login.' + extension;
+	var jsonPayload = '{"Login" : "' + login + '", "Password" : "' + password + '"}';
+	var url = urlBase + 'Login.' + extension;
 
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, false);
+	xhr.open("GET", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.send(jsonPayload);
-		
+	xhr.send(jsonPayload);
+
+	if (xhr.status === 200) {
+
+
 		var jsonObject = JSON.parse( xhr.responseText );
-		
 		userId = jsonObject.id;
-		
-		if( userId < 1 )
-		{
-			document.getElementById("loginStatus").innerHTML = "User/Password combination incorrect";
-			document.getElementById("errorDump").innerHTML = jsonObject.error;
-			return;
-		}
-		
+
 		firstName = jsonObject.firstName;
 		lastName = jsonObject.lastName;
 
 		saveCookie();
-	
+
 		window.location.href = "landing_page.html";
-	}
-	catch(err)
-	{
-		document.getElementById("loginStatus").innerHTML = err.message;
+	} else {
+		var error = JSON.parse(xhr.responseText);
+		alert(error.title);
 	}
 
 }
