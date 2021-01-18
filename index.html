@@ -10,37 +10,34 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
 
-<body>
-<div class="container">
-	<div class="row h-100 justify-content-center align-items-center">
-		<div class="col-12 h-75 justify-content-center my-auto">
-			<div class="container-sm" style="max-width: 800px; background-color: #f0f1ff; border-radius: 25px; padding: 1.5rem;">
-				<div class="row">
-					<div class="col-6">
-						<h1 style="text-align: center">Contactical Login</h1>
-						<form style="display: flex; flex-direction: column;">
-							<div class="form-group">
-								<label class="form-label" for="exampleInputEmail1">Email address</label>
-								<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-							</div>
-							<div class="form-group"">
-								<label class="form-label" for="exampleInputPassword1">Password</label>
-								<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-							</div>
-							<button type="submit" style="align-self: center" class="btn btn-primary">Login</button>
-						</form>
-					</div>
-					<div class="col-6">
-						<img style="max-width: 100%;" src="images/hand.png">
-					</div>
+<body class="d-flex align-items-center text-center">
+<div class="container loginContainer">
+	<div class="row">
+		<div class="col-12">
+			<h1 style="margin-bottom: 50px;">Contactical</h1>
+		</div>
+	</div>
+	<div class="row" style="border-radius: 25px; overflow: hidden;">
+		<div class="col-6 d-flex align-items-center justify-content-center flex-column" style="background-color: #ffffef">
+			<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
+				<path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+			</svg>
+			<h3>Login</h3>
+			<form>
+				<div class="form-group">
+					<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
 				</div>
-			</div>
+				<div class="form-group mb-3">
+					<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+		<div class="col-6" style="padding: 0; overflow: hidden;">
+			<img src="images/contactical.png" style="max-width: 350px;">
 		</div>
 	</div>
 </div>
-
-
-
 
 </body>
 </html>
