@@ -4,8 +4,8 @@ body {
 }
 
 .container.loginContainer {
-  width: 400px;
-  min-height: 400px;
+  max-width: 500px;
+  /*min-height: 400px;*/
 }
 
 .box {
