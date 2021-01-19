@@ -24,8 +24,8 @@ applyJSONHeader();
 // Make sure all required components are available.
 if ($userData == null || !array_key_exists("FirstName", $userData)
     || !array_key_exists("LastName", $userData)
-    || !array_key_exists("Password", $userData)
-    || !array_key_exists("Login", $userData)) {
+    || !array_key_exists("Login", $userData)
+    || !array_key_exists("Password", $userData)) {
 
     ErrorHandler::generic_error(new Error("Missing required data",
         "One or more required pieces of data are not present."));

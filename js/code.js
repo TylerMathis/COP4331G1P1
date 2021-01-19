@@ -13,14 +13,11 @@ function doLogin()
 	// Retrieve login and password
 	let login = document.getElementById("user").value;
 	let password = document.getElementById("pass").value;
-
-	// Hash the password
-	let hash = md5(password);
 	
 	// Create jsonPayload and api endpoint
 	let jsonPayload = JSON.stringify({
 	     "Login" : login,
-		 "Password" : hash
+		 "Password" : password
 		});
 
 	let url = urlBase + "login" + extension;
@@ -81,15 +78,12 @@ function doAccountCreate() {
 		return false;
 	}
 
-	// Hash password
-	let hash = md5(password);
-
 	// Create jsonPayload and api endpoint
     let jsonPayload = JSON.stringify({
         "FirstName" : newFirst,
         "LastName" : newLast,
         "Login" : login,
-        "Password" : hash
+        "Password" : password
     });
 	let url = urlBase + "createAccount" + extension;
 
