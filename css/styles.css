@@ -1,32 +1,38 @@
 body {
-  /*
-	background-image: url(/images/background.jpg);
-	background-size: 5%;
-	background-repeat: repeat-x repeat-y;
-	*/
-  background: #add8e6;
-  animation: mymove 10s infinite;
+
+  background-color: cadetblue;
+  background-image: url("/images/office.webp");
 }
 
-@keyframes mymove {
-  from {
-    background-color: #add8e6;
-  }
-  20% {
-    background-color: #2f4f4f;
-  }
-  40% {
-    background-color: #5f9ea0;
-  }
-  60% {
-    background-color: #e0ffff;
-  }
-  80% {
-    background-color: #20b2aa;
-  }
-  to {
-    background-color: #add8e6;
-  }
+.loginHeader {
+  margin-bottom: 20px; margin-top: 20px;
+}
+
+.loginCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.container.loginContainer {
+  max-width: 500px;
+  /*min-height: 400px;*/
+  background-color: white;
+  border-radius: 25px;
+  padding: 25px;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  /* align-self: center;    <---- REMOVE */
+  align-items: center;   /* <---- NEW    */
+  background: silver;
+}
+
+.login-new {
+  background-color: red;
 }
 
 .login {

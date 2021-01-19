@@ -14,12 +14,6 @@ function doLogin()
 	let login = document.getElementById("user").value;
 	let password = document.getElementById("pass").value;
 
-    // Check if either login or password is blank
-    if (login.length === 0 || password.length === 0) {
-        alert("Please provide a " + (login.length === 0 ? "username" : "password"));
-        return false;
-    }
-
 	// Hash the password
 	let hash = md5(password);
 	
@@ -28,6 +22,7 @@ function doLogin()
 	     "Login" : login,
 		 "Password" : hash
 		});
+
 	let url = urlBase + "Login" + extension;
 
 	// Send POST with our data to look up
@@ -44,13 +39,15 @@ function doLogin()
         firstName = response.FirstName;
         lastName = response.LastName;
         // saveCookie();
-        window.location.href = "landing_page.html";
+		window.location.href = "landing_page.html";
 	}
 	// Invalid request
     else {
 		let error = JSON.parse(xhr.responseText);
-        document.getElementById("loginStatus").innerHTML = error.title;
+        displayError(error.title, error.detail);
     }
+
+	return false;
 }
 
 function goToCreateAccount() 
@@ -110,6 +107,28 @@ function doAccountCreate() {
         let jsonResponse = JSON.parse(xhr.responseText);
 		document.getElementById("loginStatus").innerHTML = jsonResponse.title;
     }
+}
+
+function displayError(title, desc) {
+	let loginView = document.getElementById("loginView");
+
+	let errorDiv = document.createElement("div");
+	errorDiv.className = "alert alert-danger";
+	errorDiv.style.width = "75%";
+	errorDiv.id = "errorDiv";
+
+	let errorHeader = document.createElement("h5");
+	errorHeader.style.textAlign = "left";
+	errorHeader.innerHTML = title;
+	errorDiv.appendChild(errorHeader);
+
+	let errorDesc = document.createElement("p");
+	errorDesc.style.textAlign = "left";
+	errorDesc.innerHTML = desc;
+	errorDesc.style.marginBottom = "0px";
+	errorDiv.appendChild(errorDesc);
+
+	loginView.prepend(errorDiv);
 }
 
 /*
