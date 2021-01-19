@@ -1,5 +1,5 @@
-var urlBase = 'http://contactical.xyz/LAMPAPI';
-var extension = 'php';
+var urlBase = 'LAMPAPI/';
+var extension = '.php';
 
 var userId = 0;
 var firstName = "";
@@ -7,59 +7,49 @@ var lastName = "";
 
 function doLogin()
 {
-	var userId = 0;
-	var firstName = "";
-	var lastName = "";
-	
-	var login = document.getElementById("user").value;
-	var password = document.getElementById("pass").value;
-//	var hash = md5( password );
-	
-  // -- ZACH --
-	// Added because right now if you click the login button without entering anything it still runs the doLogin() function.
-	if (login.length == 0 || password.length == 0)
-	{
-		var badValue = (login.length == 0 ? "Username" : "Password");
-		alert('Please enter your ' + badValue);
-		return false;
-	}
-  
+	// Reset loginStatus
 	document.getElementById("loginStatus").innerHTML = "";
 
-//	var jsonPayload = '{"login" : "' + login + '", "password" : "' + hash + '"}';
-	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
-	var url = urlBase + '/Login.' + extension;
+	// Retrieve login and password
+	var login = document.getElementById("user").value;
+	var password = document.getElementById("pass").value;
 
+    // Check if either login or password is blank
+    if (login.length == 0 || password.length == 0) {
+        alert("Please provide a " + (login.length == 0 ? "username" : "password"));
+        return false;
+    }
+
+	// Hash the password
+	var hash = md5(password);
+	
+	// Create jsonPayload and api endpoint
+	var jsonPayload = JSON.stringify({
+	     "Login" : login,
+		 "Password" : hash
+		});
+	var url = urlBase + "Login" + extension;
+
+	// Send POST with our data to look up
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.send(jsonPayload);
-		
-		var jsonObject = JSON.parse( xhr.responseText );
-		
-		userId = jsonObject.id;
-		
-		if( userId < 1 )
-		{
-			document.getElementById("loginStatus").innerHTML = "User/Password combination incorrect";
-			document.getElementById("errorDump").innerHTML = jsonObject.error;
-			return;
-		}
-		
-		firstName = jsonObject.firstName;
-		lastName = jsonObject.lastName;
+	xhr.send(jsonPayload);
 
-		saveCookie();
-	
-		window.location.href = "landing_page.html";
+	// Valid request
+	if (xhr.status === 200) {
+		var response = JSON.parse(xhr.responseText);
+		userId = response.ID;
+        firstName = response.FirstName;
+        lastName = response.LastName;
+        saveCookie();
+        window.location.href = "landing_page.html";
 	}
-	catch(err)
-	{
-		document.getElementById("loginStatus").innerHTML = err.message;
-	}
-
+	// Invalid request
+    else {
+		var error = JSON.parse(xhr.responseText);
+        document.getElementById("loginStatus").innerHTML = error.title;
+    }
 }
 
 function goToCreateAccount() 
@@ -73,75 +63,52 @@ function goToLogin()
 }
 
 function doAccountCreate() {
+    // Get all document elements
 	var newFirst = document.getElementById("first-name").value;
 	var newLast = document.getElementById("last-name").value;
 	var login = document.getElementById("user").value;
 	var password = document.getElementById("pass").value;
-	var xhr = new XMLHttpRequest();
 
 	// Check if they entered values for First name/ Last name
 	if (newFirst.length == 0 || newLast.length == 0) 
 	{
-		var message = (newFirst.length == 0 ? "first name!" : "last name!");
-		alert("Make sure you type in a " + message);
+		alert("Make sure you type in a " + (newFirst.length == 0 ? "first name!" : "last name!"));
 		return false;
 	}
 
 	// Check if they entered values for User and Password
 	if (login.length == 0 || password.length == 0) 
 	{
-		var message = (login.length == 0 ? "Username!" : "Password!");
-		alert("Make sure you type in a " + message);
+		alert("Make sure you type in a " + (login.length == 0 ? "Username!" : "Password!"));
 		return false;
 	}
 
+	// Hash password
+	var hash = md5(password);
 
-	// First check if the user already exists
-	var jsonPayload = '{"login" : "' + login + '", "password" : "' + password + '"}';
-	var url = urlBase + '/Login.' + extension;
+	// Create jsonPayload and api endpoint
+    jsonPayload = JSON.stringify({
+        "FirstName" : newFirst,
+        "LastName" : newLast,
+        "Login" : login,
+        "Password" : hash
+    });
+	url = urlBase + "CreateAccount" + extension;
+
+	// Send POST with our data to look up
+	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.send(jsonPayload);
-		var jsonObject = JSON.parse( xhr.responseText );
-		userId = jsonObject.id;
-		if( userId >= 1 ) {
-			document.getElementById("loginStatus").innerHTML = "User already exists!";
-			return;
-		}
-	}
-	catch(err) {
-		document.getElementById("loginStatus").innerHTML = err.message;
-	}
-		
-	jsonPayload = '{"firstName" : "' + newFirst + '", "lastName" : "' + newLast + '", "login" : "' + login + '", "password" : "' + password + '"}';
-	url = urlBase + '/CreateAccount.' + extension;
+	xhr.send(jsonPayload);
 
-	xhr.open("POST", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.send(jsonPayload);
-		
-		var jsonObject = JSON.parse( xhr.responseText );
-
-		if (jsonObject.error != "") {
-			document.getElementById("loginStatus").innerHTML = err.message;
-			return;
-		}
-				
-		firstName = jsonObject.firstName;
-		lastName = jsonObject.lastName;
-
-		saveCookie();
-	
+	// Valid creation
+    if (xhr.status === 201) 
 		window.location.href = "index.html";
-	}
-	catch(err)
-	{
-		document.getElementById("loginStatus").innerHTML = err.message;
-	}
+	// Invalid creation
+    else {
+        var jsonResponse = JSON.parse(xhr.responseText);
+		document.getElementById("loginStatus").innerHTML = jsonResponse.title;
+    }
 }
 
 function saveCookie()
@@ -192,76 +159,4 @@ function doLogout()
 	lastName = "";
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "index.html";
-}
-
-function addColor()
-{
-	var newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
-	
-	var jsonPayload = '{"color" : "' + newColor + '", "userId" : ' + userId + '}';
-	var url = urlBase + '/AddColor.' + extension;
-	
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorAddResult").innerHTML = "Color has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
-	}
-	
-}
-
-function searchColor()
-{
-	var srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	var colorList = "";
-	
-	var jsonPayload = '{"search" : "' + srch + '","userId" : ' + userId + '}';
-	var url = urlBase + '/SearchColors.' + extension;
-	
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
-				var jsonObject = JSON.parse( xhr.responseText );
-				
-				for( var i=0; i<jsonObject.results.length; i++ )
-				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						colorList += "<br />\r\n";
-					}
-				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
-	}
-	
 }
