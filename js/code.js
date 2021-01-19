@@ -23,7 +23,7 @@ function doLogin()
 		 "Password" : hash
 		});
 
-	let url = urlBase + "Login" + extension;
+	let url = urlBase + "login" + extension;
 
 	// Send POST with our data to look up
 	let xhr = new XMLHttpRequest();
@@ -91,7 +91,7 @@ function doAccountCreate() {
         "Login" : login,
         "Password" : hash
     });
-	let url = urlBase + "CreateAccount" + extension;
+	let url = urlBase + "createAccount" + extension;
 
 	// Send POST with our data to look up
 	let xhr = new XMLHttpRequest();
