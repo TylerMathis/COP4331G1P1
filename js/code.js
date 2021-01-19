@@ -44,7 +44,7 @@ function doLogin()
 	// Invalid request
     else {
 		let error = JSON.parse(xhr.responseText);
-        displayError(error.title, error.detail);
+        displayNotification(error.title, error.detail, "danger");
     }
 
 	return false;
@@ -100,35 +100,44 @@ function doAccountCreate() {
 	xhr.send(jsonPayload);
 
 	// Valid creation
-    if (xhr.status === 201) 
-		window.location.href = "index.html";
+    if (xhr.status === 201) {
+		displayNotification("Success!", "Please return to login", "success");
+	}
 	// Invalid creation
     else {
-        let jsonResponse = JSON.parse(xhr.responseText);
-		document.getElementById("loginStatus").innerHTML = jsonResponse.title;
-    }
+		let error = JSON.parse(xhr.responseText);
+		displayNotification(error.title, error.detail, "danger");
+	}
+	
+	return false;
 }
 
-function displayError(title, desc) {
+function displayNotification(title, desc, type) {
+	let alertType = "alert-" + type;
 	let loginView = document.getElementById("loginView");
 
-	let errorDiv = document.createElement("div");
-	errorDiv.className = "alert alert-danger";
-	errorDiv.style.width = "75%";
-	errorDiv.id = "errorDiv";
+	if (document.getElementById("notiDiv") != null) {
+		let curNoti = document.getElementById("notiDiv");
+		curNoti.parentNode.removeChild(curNoti);
+	}
 
-	let errorHeader = document.createElement("h5");
-	errorHeader.style.textAlign = "left";
-	errorHeader.innerHTML = title;
-	errorDiv.appendChild(errorHeader);
+	let notiDiv = document.createElement("div");
+	notiDiv.className = "alert " + alertType;
+	notiDiv.style.width = "75%";
+	notiDiv.id = "notiDiv";
 
-	let errorDesc = document.createElement("p");
-	errorDesc.style.textAlign = "left";
-	errorDesc.innerHTML = desc;
-	errorDesc.style.marginBottom = "0px";
-	errorDiv.appendChild(errorDesc);
+	let notiHeader = document.createElement("h5");
+	notiHeader.style.textAlign = "left";
+	notiHeader.innerHTML = title;
+	notiDiv.appendChild(notiHeader);
 
-	loginView.prepend(errorDiv);
+	let notiDesc = document.createElement("p");
+	notiDesc.style.textAlign = "left";
+	notiDesc.innerHTML = desc;
+	notiDesc.style.marginBottom = "0px";
+	notiDiv.appendChild(notiDesc);
+
+	loginView.prepend(notiDiv);
 }
 
 /*
