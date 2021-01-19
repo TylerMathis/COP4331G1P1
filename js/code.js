@@ -1,9 +1,9 @@
-var urlBase = 'LAMPAPI/';
-var extension = '.php';
+const urlBase = 'LAMPAPI/';
+const extension = '.php';
 
-var userId = 0;
-var firstName = "";
-var lastName = "";
+let userId = 0;
+let firstName = "";
+let lastName = "";
 
 function doLogin()
 {
@@ -11,43 +11,44 @@ function doLogin()
 	document.getElementById("loginStatus").innerHTML = "";
 
 	// Retrieve login and password
-	var login = document.getElementById("user").value;
-	var password = document.getElementById("pass").value;
+	let login = document.getElementById("user").value;
+	let password = document.getElementById("pass").value;
 
     // Check if either login or password is blank
-    if (login.length == 0 || password.length == 0) {
-        alert("Please provide a " + (login.length == 0 ? "username" : "password"));
+    if (login.length === 0 || password.length === 0) {
+        alert("Please provide a " + (login.length === 0 ? "username" : "password"));
         return false;
     }
 
 	// Hash the password
-	var hash = md5(password);
+	let hash = md5(password);
 	
 	// Create jsonPayload and api endpoint
-	var jsonPayload = JSON.stringify({
+	let jsonPayload = JSON.stringify({
 	     "Login" : login,
 		 "Password" : hash
 		});
-	var url = urlBase + "Login" + extension;
+	let url = urlBase + "Login" + extension;
 
 	// Send POST with our data to look up
-	var xhr = new XMLHttpRequest();
+	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	xhr.send(jsonPayload);
 
 	// Valid request
 	if (xhr.status === 200) {
-		var response = JSON.parse(xhr.responseText);
+		let response = JSON.parse(xhr.responseText);
+		// noinspection JSUnresolvedVariable
 		userId = response.ID;
         firstName = response.FirstName;
         lastName = response.LastName;
-        saveCookie();
+        // saveCookie();
         window.location.href = "landing_page.html";
 	}
 	// Invalid request
     else {
-		var error = JSON.parse(xhr.responseText);
+		let error = JSON.parse(xhr.responseText);
         document.getElementById("loginStatus").innerHTML = error.title;
     }
 }
@@ -64,39 +65,39 @@ function goToLogin()
 
 function doAccountCreate() {
     // Get all document elements
-	var newFirst = document.getElementById("first-name").value;
-	var newLast = document.getElementById("last-name").value;
-	var login = document.getElementById("user").value;
-	var password = document.getElementById("pass").value;
+	let newFirst = document.getElementById("first-name").value;
+	let newLast = document.getElementById("last-name").value;
+	let login = document.getElementById("user").value;
+	let password = document.getElementById("pass").value;
 
 	// Check if they entered values for First name/ Last name
-	if (newFirst.length == 0 || newLast.length == 0) 
+	if (newFirst.length === 0 || newLast.length === 0)
 	{
-		alert("Make sure you type in a " + (newFirst.length == 0 ? "first name!" : "last name!"));
+		alert("Make sure you type in a " + (newFirst.length === 0 ? "first name!" : "last name!"));
 		return false;
 	}
 
 	// Check if they entered values for User and Password
-	if (login.length == 0 || password.length == 0) 
+	if (login.length === 0 || password.length === 0)
 	{
-		alert("Make sure you type in a " + (login.length == 0 ? "Username!" : "Password!"));
+		alert("Make sure you type in a " + (login.length === 0 ? "Username!" : "Password!"));
 		return false;
 	}
 
 	// Hash password
-	var hash = md5(password);
+	let hash = md5(password);
 
 	// Create jsonPayload and api endpoint
-    jsonPayload = JSON.stringify({
+    let jsonPayload = JSON.stringify({
         "FirstName" : newFirst,
         "LastName" : newLast,
         "Login" : login,
         "Password" : hash
     });
-	url = urlBase + "CreateAccount" + extension;
+	let url = urlBase + "CreateAccount" + extension;
 
 	// Send POST with our data to look up
-	var xhr = new XMLHttpRequest();
+	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, false);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	xhr.send(jsonPayload);
@@ -106,15 +107,16 @@ function doAccountCreate() {
 		window.location.href = "index.html";
 	// Invalid creation
     else {
-        var jsonResponse = JSON.parse(xhr.responseText);
+        let jsonResponse = JSON.parse(xhr.responseText);
 		document.getElementById("loginStatus").innerHTML = jsonResponse.title;
     }
 }
 
+/*
 function saveCookie()
 {
-	var minutes = 20;
-	var date = new Date();
+	const minutes = 20;
+	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
 	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
@@ -122,12 +124,12 @@ function saveCookie()
 function readCookie()
 {
 	userId = -1;
-	var data = document.cookie;
-	var splits = data.split(",");
-	for(var i = 0; i < splits.length; i++) 
+	let data = document.cookie;
+	let splits = data.split(",");
+	for(let i = 0; i < splits.length; i++)
 	{
-		var thisOne = splits[i].trim();
-		var tokens = thisOne.split("=");
+		let thisOne = splits[i].trim();
+		let tokens = thisOne.split("=");
 		if( tokens[0] == "firstName" )
 		{
 			firstName = tokens[1];
@@ -160,3 +162,4 @@ function doLogout()
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "index.html";
 }
+*/
