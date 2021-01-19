@@ -20,7 +20,7 @@ function doLogin()
 	// Create jsonPayload and api endpoint
 	let jsonPayload = JSON.stringify({
 	     "Login" : login,
-		 "Password" : password
+		 "Password" : hash
 		});
 
 	let url = urlBase + "Login" + extension;
