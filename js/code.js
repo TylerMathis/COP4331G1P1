@@ -20,7 +20,7 @@ function doLogin()
 	// Create jsonPayload and api endpoint
 	let jsonPayload = JSON.stringify({
 	     "Login" : login,
-		 "Password" : hash
+		 "Password" : password
 		});
 
 	let url = urlBase + "Login" + extension;
@@ -39,14 +39,15 @@ function doLogin()
         firstName = response.FirstName;
         lastName = response.LastName;
         // saveCookie();
-        return true;
+		window.location.href = "landing_page.html";
 	}
 	// Invalid request
     else {
 		let error = JSON.parse(xhr.responseText);
-        document.getElementById("loginStatus").innerHTML = error.title;
-        return false;
+        displayError(error.title, error.detail);
     }
+
+	return false;
 }
 
 function goToCreateAccount() 
@@ -106,6 +107,28 @@ function doAccountCreate() {
         let jsonResponse = JSON.parse(xhr.responseText);
 		document.getElementById("loginStatus").innerHTML = jsonResponse.title;
     }
+}
+
+function displayError(title, desc) {
+	let loginView = document.getElementById("loginView");
+
+	let errorDiv = document.createElement("div");
+	errorDiv.className = "alert alert-danger";
+	errorDiv.style.width = "75%";
+	errorDiv.id = "errorDiv";
+
+	let errorHeader = document.createElement("h5");
+	errorHeader.style.textAlign = "left";
+	errorHeader.innerHTML = title;
+	errorDiv.appendChild(errorHeader);
+
+	let errorDesc = document.createElement("p");
+	errorDesc.style.textAlign = "left";
+	errorDesc.innerHTML = desc;
+	errorDesc.style.marginBottom = "0px";
+	errorDiv.appendChild(errorDesc);
+
+	loginView.prepend(errorDiv);
 }
 
 /*
