@@ -1,7 +1,7 @@
 body {
 
   background-color: cadetblue;
-  background-image: url("/COP4331G1P1/images/office.webp");
+  background-image: url("/images/office.webp");
 }
 
 .loginHeader {
@@ -29,27 +29,6 @@ body {
   /* align-self: center;    <---- REMOVE */
   align-items: center;   /* <---- NEW    */
   background: silver;
-}
-
-@keyframes mymove {
-  from {
-    background-color: #add8e6;
-  }
-  20% {
-    background-color: #2f4f4f;
-  }
-  40% {
-    background-color: #5f9ea0;
-  }
-  60% {
-    background-color: #e0ffff;
-  }
-  80% {
-    background-color: #20b2aa;
-  }
-  to {
-    background-color: #add8e6;
-  }
 }
 
 .login-new {

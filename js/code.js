@@ -14,12 +14,6 @@ function doLogin()
 	let login = document.getElementById("user").value;
 	let password = document.getElementById("pass").value;
 
-    // Check if either login or password is blank
-    if (login.length === 0 || password.length === 0) {
-        alert("Please provide a " + (login.length === 0 ? "username" : "password"));
-        return false;
-    }
-
 	// Hash the password
 	let hash = md5(password);
 	
@@ -28,6 +22,7 @@ function doLogin()
 	     "Login" : login,
 		 "Password" : hash
 		});
+
 	let url = urlBase + "Login" + extension;
 
 	// Send POST with our data to look up
@@ -44,12 +39,13 @@ function doLogin()
         firstName = response.FirstName;
         lastName = response.LastName;
         // saveCookie();
-        window.location.href = "landing_page.html";
+        return true;
 	}
 	// Invalid request
     else {
 		let error = JSON.parse(xhr.responseText);
         document.getElementById("loginStatus").innerHTML = error.title;
+        return false;
     }
 }
 
