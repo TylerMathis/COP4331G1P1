@@ -4,9 +4,23 @@ body {
   background-image: url("/COP4331G1P1/images/office.webp");
 }
 
+.loginHeader {
+  margin-bottom: 20px; margin-top: 20px;
+}
+
+.loginCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .container.loginContainer {
   max-width: 500px;
   /*min-height: 400px;*/
+  background-color: white;
+  border-radius: 25px;
+  padding: 25px;
 }
 
 .box {
