@@ -29,10 +29,8 @@ if ($userData == null || !array_key_exists("Login", $userData) || !array_key_exi
     return;
 }
 
-// Make sure login is valid.
-$result = $store->verifyLogin($userData["Login"], $userData["Password"]);
-
-if (!$result || $result->num_rows < 1) {
+// Check login
+if (!$store->verifyLogin($userData["Login"], $userData["Password"])) {
     // Error out.
     ErrorHandler::generic_error(new Error("Invalid Username or Password",
         "Credentials could not be found"));

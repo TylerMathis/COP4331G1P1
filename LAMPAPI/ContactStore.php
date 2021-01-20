@@ -56,16 +56,22 @@ class ContactStore
      *
      * @param string $login The username of the user.
      * @param string $password The password of the user.
-     * @return mysqli_result Whether the login succeeded or not.
+     * @return bool Whether the login succeeded or not.
      */
     public function verifyLogin($login, $password)
     {
         // Prepare and run SQL query.
-        $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE Login=? AND Password=?");
-        $sql->bind_param("ss",$login, $password);
+        $sql = $this->db->getConnection()->prepare("SELECT Password FROM Users WHERE Login=?");
+        $sql->bind_param("s",$login);
         $sql->execute();
 
-        return $sql->get_result();
+        // Receive and interpret the result.
+        $result = $sql->get_result();
+        if (!$result || $result->num_rows == 0)
+            return false;
+        $hashedPass = $result->fetch_array()["Password"];
+
+        return password_verify($password, $hashedPass);
     }
 
     /**
@@ -74,15 +80,18 @@ class ContactStore
      */
     public function createUser($arr)
     {
-        // First check if user already exists
+        // First check if user already exists.
         if ($this->getUserByLogin($arr["Login"]) != null) {
             return array("isDupe" => true, "result" => null);
         }
+        
+        // Prepare hashed password for insertion.
+        $hashedPass = password_hash($arr["Password"], PASSWORD_DEFAULT);
 
         // Prepare and run SQL insertion.
         $sql = $this->db->getConnection()
             ->prepare("INSERT INTO Users (Firstname, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-        $sql->bind_param("ssss", $arr["FirstName"], $arr["LastName"], $arr["Login"], $arr["Password"]);
+        $sql->bind_param("ssss", $arr["FirstName"], $arr["LastName"], $arr["Login"], $hashedPass);
         $result = $sql->execute();
 
         return array("isDupe" => false, "result" => $result);
