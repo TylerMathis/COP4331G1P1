@@ -26,13 +26,15 @@
 
 			<h3 class="mb-3">Create Account</h3>
 			<form class="form-floating" style="width: 75%;" onsubmit="return doAccountCreate()">
-				<div class="form-floating mb-2">
-					<input required class="form-control" id="first-name" aria-describedby="emailHelp" placeholder=" ">
-					<label for="first-name">First Name</label>
-				</div>
-				<div class="form-floating mb-2">
-					<input required class="form-control" id="last-name" aria-describedby="emailHelp" placeholder=" ">
-					<label for="last-name">Last Name</label>
+				<div class="d-flex">
+					<div class="form-floating mb-2">
+						<input required class="form-control firstName" id="first-name" aria-describedby="emailHelp" placeholder=" ">
+						<label for="first-name">First Name</label>
+					</div>
+					<div class="form-floating mb-2">
+						<input required class="form-control lastName" id="last-name" aria-describedby="emailHelp" placeholder=" ">
+						<label for="last-name">Last Name</label>
+					</div>
 				</div>
 				<div class="form-floating mb-2">
 					<input required class="form-control" id="user" aria-describedby="emailHelp" placeholder=" ">
