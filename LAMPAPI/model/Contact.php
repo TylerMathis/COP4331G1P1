@@ -42,6 +42,10 @@ class Contact
         $this->id = $id;
     }
 
+    /**
+     * @param array $arr array to serialize from.
+     * @return Contact The newly created Contact
+     */
     public static function fromArray($arr) {
         return new self($arr["UserID"], $arr["FirstName"],
             $arr["LastName"], $arr["PhoneNumber"], $arr["Address"], $arr["ID"]);

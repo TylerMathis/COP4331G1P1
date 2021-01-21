@@ -3,9 +3,6 @@
 include_once "Database.php";
 include_once "model/Contact.php";
 
-use Contactical\ErrorHandler;
-use Contactical\Error;
-
 class ContactStore
 {
     /**
@@ -50,7 +47,7 @@ class ContactStore
      * @param Contact $contact
      * @return false|mysqli_result
      */
-    function createContact($contact) {
+    public function createContact($contact) {
         $sql = $this->db->getConnection()->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?)");
         $sql->bind_param("issssi",
             $contact->userID,
@@ -65,8 +62,32 @@ class ContactStore
         return $sql->get_result();
     }
 
-    function updateContact($id, $fields) {
+    /**
+     * Updates a contact
+     *
+     * @param Contact $contact
+     * @return bool
+     */
+    public function updateContact($contact) {
+        $sql = $this->db->getConnection()->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=? WHERE ID=?");
+        $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
+        $sql->execute();
 
+        return $sql->get_result() == false ? false : true;
+    }
+
+    /**
+     * Deletes a given contact
+     *
+     * @param int $id The contact ID to delete
+     * @return bool
+     */
+    public function deleteContact($id) {
+        $sql = $this->db->getConnection()->prepare("DELETE FROM ".ContactStore::TABLE_NAME." WHERE ID=?");
+        $sql->bind_param("i", $id);
+        $sql->execute();
+
+        return $sql->get_result() == false ? false : true;
     }
 
 
