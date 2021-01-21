@@ -5,10 +5,18 @@
  */
 class User
 {
-    private $first_name;
-    private $last_name;
-    private $ID;
-    private $login;
+
+    /** @var string $firstName */
+    public $firstName;
+
+    /** @var string $lastName */
+    public $lastName;
+
+    /** @var int $ID */
+    public $ID;
+
+    /** @var string $login */
+    public $login;
 
     /**
      * User constructor.
@@ -19,8 +27,8 @@ class User
      */
     public function __construct($first_name, $last_name, $ID, $login)
     {
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
+        $this->firstName = $first_name;
+        $this->lastName = $last_name;
         $this->ID = $ID;
         $this->login = $login;
     }
@@ -43,39 +51,7 @@ class User
      */
     public function toArray()
     {
-        return array("FirstName" => $this->first_name, "LastName" => $this->last_name,
+        return array("FirstName" => $this->firstName, "LastName" => $this->lastName,
             "ID" => $this->ID, "Login" => $this->login);
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->first_name;
-    }
-
-    /**
-     * @return int
-     */
-    public function getID()
-    {
-        return $this->ID;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->last_name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLogin()
-    {
-        return $this->login;
     }
 }
