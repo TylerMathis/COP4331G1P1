@@ -1,7 +1,5 @@
 body {
-
-  background-color: cadetblue;
-  background-image: url("/images/office.webp");
+  background: url("/images/office.webp") no-repeat center center fixed;
 }
 
 .loginHeader {
