@@ -5,13 +5,13 @@
  */
 include_once 'util.php';
 include_once 'connection.php';
-include_once 'ContactStore.php';
+include_once 'UserStore.php';
 
 use Contactical\ErrorHandler;
 use Contactical\Error;
 
 // Initialize store.
-$store = new ContactStore($db);
+$store = new UserStore($db);
 
 // Make sure it's a post request
 ensurePOST();
