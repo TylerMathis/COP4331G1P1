@@ -11,7 +11,8 @@ class ContactStore
     private $db;
     const TABLE_NAME = "Contacts";
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
@@ -21,8 +22,9 @@ class ContactStore
      * @param int $userID
      * @return false|array
      */
-    public function getContactsForUser($userID) {
-        $sql = $this->db->getConnection()->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE USERID = ?");
+    public function getContactsForUser($userID)
+    {
+        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE USERID = ?");
         $sql->bind_param("i", $userID);
         $sql->execute();
 
@@ -47,8 +49,9 @@ class ContactStore
      * @param Contact $contact
      * @return false|mysqli_result
      */
-    public function createContact($contact) {
-        $sql = $this->db->getConnection()->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?)");
+    public function createContact($contact)
+    {
+        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?)");
         $sql->bind_param("issssi",
             $contact->userID,
             $contact->firstName,
@@ -68,8 +71,9 @@ class ContactStore
      * @param Contact $contact
      * @return bool
      */
-    public function updateContact($contact) {
-        $sql = $this->db->getConnection()->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=? WHERE ID=?");
+    public function updateContact($contact)
+    {
+        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=? WHERE ID=?");
         $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
         $sql->execute();
 
@@ -82,8 +86,9 @@ class ContactStore
      * @param int $id The contact ID to delete
      * @return bool
      */
-    public function deleteContact($id) {
-        $sql = $this->db->getConnection()->prepare("DELETE FROM ".ContactStore::TABLE_NAME." WHERE ID=?");
+    public function deleteContact($id)
+    {
+        $sql = $this->db->prepare("DELETE FROM ".ContactStore::TABLE_NAME." WHERE ID=?");
         $sql->bind_param("i", $id);
         $sql->execute();
 

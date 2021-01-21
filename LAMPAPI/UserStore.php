@@ -33,7 +33,7 @@ class UserStore
     public function getUserByLogin($username)
     {
         // Sanitize and prepare SQL
-        $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE Login=?");
+        $sql = $this->db->prepare("SELECT * FROM Users WHERE Login=?");
         $sql->bind_param("s", $username);
         $sql->execute();
         $result = $sql->get_result();
@@ -61,7 +61,7 @@ class UserStore
     public function verifyLogin($login, $password)
     {
         // Prepare and run SQL query.
-        $sql = $this->db->getConnection()->prepare("SELECT Password FROM Users WHERE Login=?");
+        $sql = $this->db->prepare("SELECT Password FROM Users WHERE Login=?");
         $sql->bind_param("s",$login);
         $sql->execute();
 
@@ -89,8 +89,7 @@ class UserStore
         $hashedPass = password_hash($arr["Password"], PASSWORD_DEFAULT);
 
         // Prepare and run SQL insertion.
-        $sql = $this->db->getConnection()
-            ->prepare("INSERT INTO Users (Firstname, LastName, Login, Password) VALUES (?, ?, ?, ?)");
+        $sql = $this->db->prepare("INSERT INTO Users (Firstname, LastName, Login, Password) VALUES (?, ?, ?, ?)");
         $sql->bind_param("ssss", $arr["FirstName"], $arr["LastName"], $arr["Login"], $hashedPass);
         $result = $sql->execute();
 

@@ -33,7 +33,8 @@ class Contact
      * @param $address
      * @param $id
      */
-    function __construct($userID, $firstName, $lastName, $phoneNumber, $address, $id) {
+    function __construct($userID, $firstName, $lastName, $phoneNumber, $address, $id)
+    {
         $this->userID = $userID;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -46,7 +47,8 @@ class Contact
      * @param array $arr array to serialize from.
      * @return Contact The newly created Contact
      */
-    public static function fromArray($arr) {
+    public static function fromArray($arr)
+    {
         return new self($arr["UserID"], $arr["FirstName"],
             $arr["LastName"], $arr["PhoneNumber"], $arr["Address"], $arr["ID"]);
     }

@@ -42,16 +42,6 @@ class Database
     }
 
     /**
-     * Gets the persistent database connection.
-     *
-     * @return mysqli
-     */
-    public function getConnection()
-    {
-        return $this->connection;
-    }
-
-    /**
      * Performs a query with the current connection.
      *
      * @param $sql string The sql to execute
@@ -59,5 +49,24 @@ class Database
      */
     public function query($sql) {
         return $this->connection->query($sql);
+    }
+
+    /**
+     * Returns a prepared sql statement.
+     *
+     * @param string $sql
+     * @return false|mysqli_stmt
+     */
+    public function prepare($sql) {
+        return $this->connection->prepare($sql);
+    }
+
+    /**
+     * Get's the associated error.
+     *
+     * @return string
+     */
+    public function getError() {
+        return $this->connection->error;
     }
 }
