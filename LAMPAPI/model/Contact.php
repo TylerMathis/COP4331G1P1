@@ -52,4 +52,13 @@ class Contact
         return new self($arr["UserID"], $arr["FirstName"],
             $arr["LastName"], $arr["PhoneNumber"], $arr["Address"], $arr["ID"]);
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array("UserID" => $this->userID, "FirstName" => $this->firstName, "LastName" => $this->lastName,
+            "PhoneNumber" => $this->phoneNumber, "Address" => $this->address, "ID" => $this->id);
+    }
 }
