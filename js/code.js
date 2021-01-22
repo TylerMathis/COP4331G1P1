@@ -11,6 +11,8 @@ window.onload = function () {
 	// Swap blurred background on load.
 	image.onload = function () {
 		this.style.objectFit = "cover";
+		this.style.width = "100%";
+		this.style.height = "100%";
 		document.getElementById("background").appendChild(this);
 		document.getElementById("background").style.removeProperty("filter");
 	};
