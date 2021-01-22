@@ -1,7 +1,5 @@
 body {
-
   background-color: cadetblue;
-  background-image: url("/images/office.webp");
 }
 
 .loginHeader {
@@ -13,6 +11,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  z-index: 0;
 }
 
 .container.loginContainer {
@@ -21,6 +20,7 @@ body {
   background-color: white;
   border-radius: 25px;
   padding: 25px;
+  z-index: 1;
 }
 
 .box {
@@ -47,9 +47,24 @@ body {
   background-color: red;
 }
 
+.backgroundBlurImg {
+  position: absolute;
+  background-image: url("/COP4331G1P1/images/office.jpeg");
+  overflow: hidden;
+
+  /* Full height */
+  height: 100%;
+  width: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .login {
   display: grid;
-  row-gap: 0px;
+  row-gap: 0;
   float: left;
   background-color: #ffffef;
   overflow: hidden;

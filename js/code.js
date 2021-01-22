@@ -5,6 +5,18 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+window.onload = function () {
+	const image = new Image();
+
+	// Swap blurred background on load.
+	image.onload = function () {
+		this.style.objectFit = "cover";
+		document.getElementById("background").appendChild(this);
+		document.getElementById("background").style.removeProperty("filter");
+	};
+	image.src = "https://images.unsplash.com/photo-1577412647305-991150c7d163?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80";
+};
+
 function doLogin()
 {
 	// Reset loginStatus
