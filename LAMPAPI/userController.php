@@ -84,7 +84,7 @@ function deleteContact() {
 
 function updateContact() {
     // Precondition
-    verifyFields(array("ID", "FirstName", "LastName", "Email", "PhoneNumber", "Address"));
+    verifyFields(array("ID", "FirstName", "LastName"));
 
     global $store;
     $result = $store->updateContact(Contact::fromArray(getRequestInfo()));
