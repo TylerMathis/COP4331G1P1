@@ -34,7 +34,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 function createContact()
 {
     // Precondition
-    verifyFields(array("FirstName", "LastName", "Email", "Address"));
+    verifyFields(array("FirstName", "LastName", "Email", "Address", "PhoneNumber"));
 
     global $store;
     $result = $store->createContact(Contact::fromArray(getRequestInfo()));
@@ -84,7 +84,7 @@ function deleteContact() {
 
 function updateContact() {
     // Precondition
-    verifyFields(array("ID", "FirstName", "LastName", "PhoneNumber", "Address"));
+    verifyFields(array("ID", "FirstName", "LastName", "Email", "PhoneNumber", "Address"));
 
     global $store;
     $result = $store->updateContact(Contact::fromArray(getRequestInfo()));

@@ -50,7 +50,7 @@ class Contact
     public static function fromArray($arr)
     {
         return new self($arr["UserID"], $arr["FirstName"],
-            $arr["LastName"], $arr["PhoneNumber"], $arr["Address"], $arr["ID"]);
+            $arr["LastName"], $arr["PhoneNumber"], $arr["Address"], array_key_exists("ID", $arr) ? $arr["ID"] : null);
     }
 
     /**

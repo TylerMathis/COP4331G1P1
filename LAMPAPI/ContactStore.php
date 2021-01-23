@@ -47,11 +47,12 @@ class ContactStore
      * Creates a new contact and adds it to the database.
      *
      * @param Contact $contact
-     * @return false|mysqli_result
+     * @return bool
      */
     public function createContact($contact)
     {
-        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?)");
+        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?, ?)");
+        echo $this->db->getError();
         $sql->bind_param("issssi",
             $contact->userID,
             $contact->firstName,
@@ -62,7 +63,11 @@ class ContactStore
         );
         $sql->execute();
 
-        return $sql->get_result();
+        if ($sql->affected_rows < 1) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
