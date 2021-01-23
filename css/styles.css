@@ -49,7 +49,7 @@ body {
 
 .backgroundBlurImg {
   position: absolute;
-  background-image: url("/COP4331G1P1/images/office.jpeg");
+  background-image: url("/images/office-lores.jpg");
   overflow: hidden;
 
   /* Full height */

@@ -11,10 +11,12 @@ window.onload = function () {
 	// Swap blurred background on load.
 	image.onload = function () {
 		this.style.objectFit = "cover";
+		this.style.width = "100%";
+		this.style.height = "100%";
 		document.getElementById("background").appendChild(this);
 		document.getElementById("background").style.removeProperty("filter");
 	};
-	image.src = "https://images.unsplash.com/photo-1577412647305-991150c7d163?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80";
+	image.src = "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
 };
 
 function doLogin()
