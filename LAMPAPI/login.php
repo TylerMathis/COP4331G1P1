@@ -4,7 +4,7 @@
  * @var Database $db
  */
 include_once 'connection.php';
-include_once 'ContactStore.php';
+include_once 'UserStore.php';
 include_once 'Error/ErrorHandler.php';
 include_once 'Error/Error.php';
 include_once 'util.php';
@@ -16,7 +16,7 @@ use Contactical\Error;
 ensurePOST();
 
 // Create contact store
-$store = new ContactStore($db);
+$store = new UserStore($db);
 
 // Accept request body
 $userData = getRequestInfo();

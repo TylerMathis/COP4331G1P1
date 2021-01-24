@@ -1,99 +1,104 @@
 <?php
 
-include_once 'model/User.php';
+include_once "Database.php";
+include_once "model/Contact.php";
 
-use Contactical\Error;
-
-/**
- * Class ContactStore
- */
 class ContactStore
 {
     /**
-     * @var Database $db
+     * @var Database $db;
      */
     private $db;
+    const TABLE_NAME = "Contacts";
 
-    /**
-     * ContactStore constructor.
-     *
-     * @param Database $db
-     */
     public function __construct($db)
     {
         $this->db = $db;
     }
 
     /**
-     * Gets a username from the DB given the username.
+     * Fetches the contacts associated with the given user ID.
      *
-     * @param string $username The username to look up.
-     * @return User|null
+     * @param int $userID
+     * @return false|array
      */
-    public function getUserByLogin($username)
+    public function getContactsForUser($userID)
     {
-        // Sanitize and prepare SQL
-        $sql = $this->db->getConnection()->prepare("SELECT * FROM Users WHERE Login=?");
-        $sql->bind_param("s", $username);
-        $sql->execute();
-        $result = $sql->get_result();
-
-        if (!$result || $result->num_rows < 1) {
-            return null;
-        }
-
-        return User::fromArray($result->fetch_assoc());
-    }
-
-    /**
-     * Verifies the login given the parameters. Returns an associative
-     * array with two elements:
-     * - The User object, keyed by "user"
-     * - The Error object, keyed by "error"
-     *
-     * On a successful transaction the @link Error object will be null, and
-     * the @link User object will be non-null, vice versa if the transaction fails.
-     *
-     * @param string $login The username of the user.
-     * @param string $password The password of the user.
-     * @return bool Whether the login succeeded or not.
-     */
-    public function verifyLogin($login, $password)
-    {
-        // Prepare and run SQL query.
-        $sql = $this->db->getConnection()->prepare("SELECT Password FROM Users WHERE Login=?");
-        $sql->bind_param("s",$login);
+        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE USERID = ?");
+        $sql->bind_param("i", $userID);
         $sql->execute();
 
-        // Receive and interpret the result.
         $result = $sql->get_result();
-        if (!$result || $result->num_rows == 0)
+        if (!$result) {
             return false;
-        $hashedPass = $result->fetch_array()["Password"];
+        }
 
-        return password_verify($password, $hashedPass);
+        $contacts = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $contact = Contact::fromArray($row);
+            array_push($contacts, $contact);
+        }
+
+        return $contacts;
     }
 
     /**
-     * @param array $arr The dictionary of user data.
-     * @return array Indicating success.
+     * Creates a new contact and adds it to the database.
+     *
+     * @param Contact $contact
+     * @return bool
      */
-    public function createUser($arr)
+    public function createContact($contact)
     {
-        // First check if user already exists.
-        if ($this->getUserByLogin($arr["Login"]) != null) {
-            return array("isDupe" => true, "result" => null);
+        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?, ?)");
+        echo $this->db->getError();
+        $sql->bind_param("issssi",
+            $contact->userID,
+            $contact->firstName,
+            $contact->lastName,
+            $contact->phoneNumber,
+            $contact->address,
+            $contact->id
+        );
+        $sql->execute();
+
+        if ($sql->affected_rows < 1) {
+            return false;
         }
-        
-        // Prepare hashed password for insertion.
-        $hashedPass = password_hash($arr["Password"], PASSWORD_DEFAULT);
 
-        // Prepare and run SQL insertion.
-        $sql = $this->db->getConnection()
-            ->prepare("INSERT INTO Users (Firstname, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-        $sql->bind_param("ssss", $arr["FirstName"], $arr["LastName"], $arr["Login"], $hashedPass);
-        $result = $sql->execute();
-
-        return array("isDupe" => false, "result" => $result);
+        return true;
     }
+
+    /**
+     * Updates a contact
+     *
+     * @param Contact $contact
+     * @return bool
+     */
+    public function updateContact($contact)
+    {
+        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=? WHERE ID=?");
+        $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
+        $sql->execute();
+
+        return $sql->get_result() == false ? false : true;
+    }
+
+    /**
+     * Deletes a given contact
+     *
+     * @param int $id The contact ID to delete
+     * @return bool
+     */
+    public function deleteContact($id)
+    {
+        $sql = $this->db->prepare("DELETE FROM ".ContactStore::TABLE_NAME." WHERE ID=?");
+        $sql->bind_param("i", $id);
+        $sql->execute();
+
+        return $sql->get_result() == false ? false : true;
+    }
+
+
 }
