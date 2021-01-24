@@ -32,7 +32,7 @@ class Contact
     /** @var int $id */
     public $id;
 
-    private static $fieldNames = array("UserID", "FirstName", "LastName", "PhoneNumber", "Address", "City", "ZIP", "ID");
+    private static $fieldNames = array("UserID", "FirstName", "LastName", "PhoneNumber", "Address", "City", "State", "ZIP", "ID");
 
     /**
      * Contact constructor.
