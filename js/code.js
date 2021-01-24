@@ -164,7 +164,7 @@ function doCreateContact() {
 
 	// Valid creation
     if (xhr.status === 201) {
-		displayNotification("Success!", "Please return to login", "success");
+		displayNotification("Success!", "Contact created", "success");
 	}
 	// Invalid creation
     else {
