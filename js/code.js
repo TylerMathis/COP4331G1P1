@@ -85,7 +85,7 @@ function doAccountCreate() {
         "Login" : login,
         "Password" : password
     });
-	let url = urlBase + "createAccount" + extension;
+	let url = urlBase + "createUser" + extension;
 
 	// Send POST with our data to look up
 	let xhr = new XMLHttpRequest();
