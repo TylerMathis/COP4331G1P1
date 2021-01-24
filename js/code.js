@@ -73,29 +73,15 @@ function goToLogin()
 
 function doAccountCreate() {
     // Get all document elements
-	let newFirst = document.getElementById("first-name").value;
-	let newLast = document.getElementById("last-name").value;
+	let first = document.getElementById("first-name").value;
+	let last = document.getElementById("last-name").value;
 	let login = document.getElementById("user").value;
 	let password = document.getElementById("pass").value;
 
-	// Check if they entered values for First name/ Last name
-	if (newFirst.length === 0 || newLast.length === 0)
-	{
-		alert("Make sure you type in a " + (newFirst.length === 0 ? "first name!" : "last name!"));
-		return false;
-	}
-
-	// Check if they entered values for User and Password
-	if (login.length === 0 || password.length === 0)
-	{
-		alert("Make sure you type in a " + (login.length === 0 ? "Username!" : "Password!"));
-		return false;
-	}
-
 	// Create jsonPayload and api endpoint
     let jsonPayload = JSON.stringify({
-        "FirstName" : newFirst,
-        "LastName" : newLast,
+        "FirstName" : first,
+        "LastName" : last,
         "Login" : login,
         "Password" : password
     });
@@ -146,6 +132,47 @@ function displayNotification(title, desc, type) {
 	notiDiv.appendChild(notiDesc);
 
 	loginView.prepend(notiDiv);
+}
+
+function doCreateContact() {
+	// Get all data
+	let first = document.getElementById("first-name").value;
+	let last = document.getElementById("last-name").value;
+	let phone = document.getElementById("phone-number").value;
+	let address = document.getElementById("address").value;
+	let city = document.getElementById("city").value;
+	let state = document.getElementById("state").value;
+	let zip = document.getElementById("zip").value;
+
+	// Create JSON payload and api endpoint
+	let jsonPayload = JSON.stringify({
+		"FirstName": first,
+		"LastName": last,
+		"PhoneNumber": phone,
+		"Address": address,
+		"City": city,
+		"State": state,
+		"ZIP": zip
+    });
+	let url = urlBase + "createContact" + extension;
+
+	// Send POST with our data to look up
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, false);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	xhr.send(jsonPayload);
+
+	// Valid creation
+    if (xhr.status === 201) {
+		displayNotification("Success!", "Please return to login", "success");
+	}
+	// Invalid creation
+    else {
+		let error = JSON.parse(xhr.responseText);
+		displayNotification(error.title, error.detail, "danger");
+	}
+	
+	return false;
 }
 
 /*
