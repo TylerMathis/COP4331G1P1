@@ -18,10 +18,10 @@ function saveCookie(firstName, lastName, ID)
 function clearCookie()
 {
     document.cookie = JSON.stringify({
-        "FirstName" : -1,
-        "LastName" : -1,
-        "ID" : -1,
-        "Expires" : "Thu, 01 Jan 1970 00:00:00 GMT"
+        "FirstName" : null,
+        "LastName" : null,
+        "ID" : null,
+        "Expires" : null
     });
 }
 
@@ -35,7 +35,7 @@ function getCookie()
 function validCookie()
 {
     let cookie = getCookie();
-    if (cookie["ID"] === -1)
+    if (cookie === "" || cookie["ID"] === null)
         return false;
     
     let curTime = Date.now();
