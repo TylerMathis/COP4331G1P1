@@ -1,28 +1,58 @@
+// The duration of each cookie
+const duration = 20;
+
+// Save a cookie with indicated duration
 function saveCookie(firstName, lastName, ID)
 {
-    const duration = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(duration*60*1000));	
 	document.cookie = JSON.stringify({
-        "firstName" : firstName,
-        "lastName" : lastName,
+        "FirstName" : firstName,
+        "LastName" : lastName,
         "ID" : ID,
-        "expires:" : date.toGMTString()
+        "Expires" : date.toGMTString()
     });
 }
 
+// Clears a cookie
 function clearCookie()
 {
-    document.cookie = JSON.stringify({
-        "firstName" : -1,
-        "lastName" : -1,
-        "userID" : -1,
-        "expires" : "Thu, 01 Jan 1970 00:00:00 GMT"
-    });
+    document.cookie = "";
 }
 
+// Returns cookie in JSON format
 function getCookie()
 {
-	let data = document.cookie;
-	return JSON.parse(data);
+	return JSON.parse(document.cookie);
+}
+
+// Returns the validity of a cookie
+function validCookie()
+{
+    let cookie = getCookie();
+    if (cookie === "")
+        return false;
+    
+    let curTime = Date.now();
+    let expires = Date.parse(cookie["Expires"]);
+    return expires > curTime;
+}
+
+// Automates login if possible
+function autoLogin()
+{
+    if (!validCookie())
+        return false;
+        
+    window.location.href = "landing_page.html";
+    return true;
+}
+
+// Simply for debug.
+function cookieDebug()
+{
+    let cookie = getCookie();
+
+    document.getElementById("cookieStatus").innerHTML = JSON.stringify(cookie);
+    document.getElementById("cookieValid").innerHTML = "Cookie is ".concat(validCookie()?"valid":"invalid");
 }
