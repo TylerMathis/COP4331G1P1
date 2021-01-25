@@ -23,7 +23,7 @@ function clearCookie()
 // Returns cookie in JSON format
 function getCookie()
 {
-    if (document.cookie == null)
+    if (document.cookie == null || document.cookie == "")
         return null;
 	return JSON.parse(document.cookie);
 }
