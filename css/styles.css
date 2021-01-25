@@ -36,11 +36,29 @@ body {
   border-top-right-radius: 0;
   border-right: none;
   margin-right: 1px;
+  position: relative;
+}
+
+.loginForm {
+  width: 75%;
+}
+
+.loginForm .form-control:focus {
+  z-index: 5;
+}
+
+label {
+  /*
+   Floating labels would get hidden by focused elements that increased their z-index,
+   This css ensures the label z index is always on top.
+  */
+  z-index: 6;
 }
 
 .form-control.lastName {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
+  position: relative;
 }
 
 .login-new {
