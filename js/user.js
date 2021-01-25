@@ -3,9 +3,8 @@ const extension = '.php';
 
 // Tries to autologin a user. If it can't then it loads the hi res background
 window.onload = function () {
-	if (window.location.href == "https://contactical.xyz/index.html")
-		if (autoLogin())
-			return;
+	if (window.location.href == "https://contactical.xyz/index.html" && autoLogin())
+		return;
 	loadHiRes();
 };
 
