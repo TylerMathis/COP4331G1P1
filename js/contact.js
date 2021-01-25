@@ -1,6 +1,3 @@
-const urlBase = 'LAMPAPI/';
-const extension = '.php';
-
 function doCreateContact()
 {
 	// Get all data
