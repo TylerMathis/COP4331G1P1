@@ -17,12 +17,7 @@ function saveCookie(firstName, lastName, ID)
 // Clears a cookie
 function clearCookie()
 {
-    document.cookie = JSON.stringify({
-        "FirstName" : null,
-        "LastName" : null,
-        "ID" : null,
-        "Expires" : null
-    });
+    document.cookie = "";
 }
 
 // Returns cookie in JSON format
@@ -35,7 +30,7 @@ function getCookie()
 function validCookie()
 {
     let cookie = getCookie();
-    if (cookie === "" || cookie["ID"] === null)
+    if (cookie === "")
         return false;
     
     let curTime = Date.now();
