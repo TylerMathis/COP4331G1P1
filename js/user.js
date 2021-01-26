@@ -13,9 +13,6 @@ window.onload = function () {
 function goToLogin() { window.location.href = "index.html"; }
 function doLogin(login, password)
 {
-	// Reset loginStatus
-	document.getElementById("loginStatus").innerHTML = "";
-
 	// Retrieve login and password
 	if (login === undefined)
 		login = document.getElementById("user").value;
@@ -39,7 +36,8 @@ function doLogin(login, password)
 	// Valid request
 	if (xhr.status === 200) {
 		let response = JSON.parse(xhr.responseText);
-        saveCookie(response.FirstName, response.LastName, response.ID);
+		if (document.getElementById("remember-me").checked)
+        	saveCookie(response.FirstName, response.LastName, response.ID);
 		window.location.href = "landing_page.html";
 	}
 	// Invalid request
