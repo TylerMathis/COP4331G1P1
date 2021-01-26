@@ -125,7 +125,6 @@ class ContactStore
 
         $result = $sql->get_result();
         if (!$result) {
-            echo $sql->error;
             return false;
         }
 
