@@ -42,7 +42,7 @@ if ($result->error == SQL_DUPE_UNI) {
     ErrorHandler::generic_error(new Error("Account already exists",
         "Another account with the same login already exists.", 409));
     return;
-} else if (!$result) { // If not some other error occurred.
+} else if (!$result->sqlResult) { // If not some other error occurred.
     ErrorHandler::generic_error(new Error("Account could not be created", "Please try again."));
     return;
 }
