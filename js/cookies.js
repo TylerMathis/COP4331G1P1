@@ -1,7 +1,7 @@
 // The duration of each cookie
 const duration = 20;
 
-// Save a cookie that expires in 7 days
+// Save a cookie
 function saveCookie(firstName, lastName, ID)
 {
 	let data = JSON.stringify({
@@ -9,7 +9,7 @@ function saveCookie(firstName, lastName, ID)
         "LastName" : lastName,
         "ID" : ID
     });
-    Cookies.set("user", data, { expires: 7 });
+    Cookies.set("user", data);
 }
 
 // Clears a cookie
