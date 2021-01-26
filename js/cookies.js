@@ -1,41 +1,33 @@
 // The duration of each cookie
 const duration = 20;
 
-// Save a cookie with indicated duration
+// Save a cookie
 function saveCookie(firstName, lastName, ID)
 {
-	let date = new Date();
-	date.setTime(date.getTime()+(duration*60*1000));	
-	document.cookie = JSON.stringify({
+	let data = JSON.stringify({
         "FirstName" : firstName,
         "LastName" : lastName,
-        "ID" : ID,
-        "Expires" : date.toGMTString()
+        "ID" : ID
     });
+    Cookies.set("user", data);
 }
 
 // Clears a cookie
 function clearCookie()
 {
-    document.cookie = "";
+    Cookies.remove("user");
 }
 
 // Returns cookie in JSON format
 function getCookie()
 {
-	return JSON.parse(document.cookie);
+    return Cookies.get("user");
 }
 
 // Returns the validity of a cookie
 function validCookie()
 {
-    let cookie = getCookie();
-    if (cookie === "")
-        return false;
-    
-    let curTime = Date.now();
-    let expires = Date.parse(cookie["Expires"]);
-    return expires > curTime;
+    return getCookie() !== undefined;
 }
 
 // Automates login if possible

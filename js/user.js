@@ -3,19 +3,16 @@ const extension = '.php';
 
 // Tries to autologin a user. If it can't then it loads the hi res background
 window.onload = function () {
-	console.log(document.cookie);
-	if (window.location.href === "https://contactical.xyz/index.html")
-		if (autoLogin())
-			return;
+	const dom = "https://contactical.xyz/";
+	if ((window.location.href === dom.concat("index.html") ||
+		window.location.href === dom) && autoLogin())
+		return;
 	loadHiRes();
 };
 
 function goToLogin() { window.location.href = "index.html"; }
 function doLogin(login, password)
 {
-	// Reset loginStatus
-	document.getElementById("loginStatus").innerHTML = "";
-
 	// Retrieve login and password
 	if (login === undefined)
 		login = document.getElementById("user").value;
@@ -39,7 +36,8 @@ function doLogin(login, password)
 	// Valid request
 	if (xhr.status === 200) {
 		let response = JSON.parse(xhr.responseText);
-        //saveCookie(response.FirstName, response.LastName, response.ID);
+		if (document.getElementById("remember-me").checked)
+        	saveCookie(response.FirstName, response.LastName, response.ID);
 		window.location.href = "landing_page.html";
 	}
 	// Invalid request
