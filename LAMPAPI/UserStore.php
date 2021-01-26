@@ -1,6 +1,7 @@
 <?php
 
 include_once 'model/User.php';
+include_once 'Error/Result.php';
 
 use Contactical\Error;
 
@@ -76,23 +77,18 @@ class UserStore
 
     /**
      * @param array $arr The dictionary of user data.
-     * @return array Indicating success.
+     * @return Result.
      */
     public function createUser($arr)
     {
-        // First check if user already exists.
-        if ($this->getUserByLogin($arr["Login"]) != null) {
-            return array("isDupe" => true, "result" => null);
-        }
-        
         // Prepare hashed password for insertion.
         $hashedPass = password_hash($arr["Password"], PASSWORD_DEFAULT);
 
         // Prepare and run SQL insertion.
         $sql = $this->db->prepare("INSERT INTO Users (Firstname, LastName, Login, Password) VALUES (?, ?, ?, ?)");
         $sql->bind_param("ssss", $arr["FirstName"], $arr["LastName"], $arr["Login"], $hashedPass);
-        $result = $sql->execute();
+        $sql->execute();
 
-        return array("isDupe" => false, "result" => $result);
+        return Result::of($sql->get_result(), $this->db->getErrorNo());
     }
 }

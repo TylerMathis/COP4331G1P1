@@ -7,6 +7,8 @@ include_once 'util.php';
 include_once 'connection.php';
 include_once 'UserStore.php';
 
+define("SQL_DUPE_UNI", 1062);
+
 use Contactical\ErrorHandler;
 use Contactical\Error;
 
@@ -36,12 +38,11 @@ if ($userData == null || !array_key_exists("FirstName", $userData)
 $result = $store->createUser($userData);
 
 // Check if it's duplicated.
-if ($result["isDupe"]) {
+if ($result->error == SQL_DUPE_UNI) {
     ErrorHandler::generic_error(new Error("Account already exists",
-        "Another account with the same login already exists.",
-    409));
+        "Another account with the same login already exists.", 409));
     return;
-} else if (!$result["result"]) { // If not some other error occurred.
+} else if (!$result) { // If not some other error occurred.
     ErrorHandler::generic_error(new Error("Account could not be created", "Please try again."));
     return;
 }

@@ -69,4 +69,11 @@ class Database
     public function getError() {
         return $this->connection->error;
     }
+
+    /**
+     * @return int
+     */
+    public function getErrorNo() {
+        return $this->connection->errno;
+    }
 }
