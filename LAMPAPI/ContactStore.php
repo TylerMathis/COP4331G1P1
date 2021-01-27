@@ -33,6 +33,14 @@ class ContactStore
             return false;
         }
 
+       return $this->serializeContacts($result);
+    }
+
+    /**
+     * @param mysqli_result $result
+     * @return array
+     */
+    private function serializeContacts($result) {
         $contacts = array();
 
         while ($row = $result->fetch_assoc()) {
@@ -98,6 +106,29 @@ class ContactStore
         $sql->execute();
 
         return $sql->get_result() == false ? false : true;
+    }
+
+    /**
+     * Does a contact query from the given keywords.
+     *
+     * @param int $userID
+     * @param string $keyword
+     * @return array|false
+     */
+    public function searchContact($userID, $keyword) {
+        $keyword = $keyword."%";
+        $userID = intval($userID);
+        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE (UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR PhoneNumber LIKE ?))");
+        $sql->bind_param("isss", $userID, $keyword, $keyword, $keyword);
+        $sql->execute();
+
+
+        $result = $sql->get_result();
+        if (!$result) {
+            return false;
+        }
+
+        return $this->serializeContacts($result);
     }
 
 

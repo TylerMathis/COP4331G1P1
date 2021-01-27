@@ -19,7 +19,7 @@ function doCreateContact()
 		"State": state,
 		"ZIP": zip
     });
-	let url = urlBase + "userController" + extension;
+	let url = urlBase + "contactController" + extension;
 
 	// Send POST with our data to look up
 	let xhr = new XMLHttpRequest();
