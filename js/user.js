@@ -1,14 +1,34 @@
 const urlBase = 'LAMPAPI/';
 const extension = '.php';
 
+let firstName = "";
+let lastName = "";
+let fullName = "";
+let id = -1;
+
 // Tries to autologin a user. If it can't then it loads the hi res background
 window.onload = function () {
-	const dom = "https://contactical.xyz/";
-	if ((window.location.href === dom.concat("index.html") ||
-		window.location.href === dom) && autoLogin())
-		return;
+	// For local containers
+	const dom = "http://localhost/";
+	// const dom = "https://contactical.xyz/";
+	if (window.location.href === dom.concat("index.html") || window.location.href === dom) {
+		if (autoLogin())
+			return;
+	}
+	else if (window.location.href !== dom.concat("create_account.html")) {
+		populateUserCache();
+		welcomeUser();
+	}
 	loadHiRes();
 };
+
+function populateUserCache() {
+	let cookie = getCookie();
+	firstName = cookie["FirstName"];
+	lastName = cookie["LastName"];
+	fullName = firstName + " " + lastName;
+	id = cookie["ID"];
+}
 
 function goToLogin() { window.location.href = "index.html"; }
 function doLogin(login, password)
@@ -36,8 +56,9 @@ function doLogin(login, password)
 	// Valid request
 	if (xhr.status === 200) {
 		let response = JSON.parse(xhr.responseText);
-		if (document.getElementById("remember-me").checked)
-        	saveCookie(response.FirstName, response.LastName, response.ID);
+		let remember = document.getElementById("remember-me").checked;
+		// Always save a cookie, but store whether or not they want to be remembered
+        saveCookie(response.FirstName, response.LastName, response.ID, remember);
 		window.location.href = "landing_page.html";
 	}
 	// Invalid request
@@ -85,6 +106,10 @@ function doCreateAccount()
 	}
 	
 	return false;
+}
+
+function welcomeUser() {
+	document.getElementById("welcome").innerHTML = "Welcome " + fullName;
 }
 
 function doLogout()
