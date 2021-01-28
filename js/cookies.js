@@ -2,12 +2,13 @@
 const duration = 20;
 
 // Save a cookie
-function saveCookie(firstName, lastName, ID)
+function saveCookie(firstName, lastName, ID, remember)
 {
 	let data = JSON.stringify({
         "FirstName" : firstName,
         "LastName" : lastName,
-        "ID" : ID
+        "ID" : ID,
+        "Remember" : remember
     });
     Cookies.set("user", data);
 }
@@ -21,13 +22,17 @@ function clearCookie()
 // Returns cookie in JSON format
 function getCookie()
 {
-    return Cookies.get("user");
+    let cookie = Cookies.get("user");
+    if (cookie === undefined)
+        return undefined;
+    return JSON.parse(cookie);
 }
 
 // Returns the validity of a cookie
 function validCookie()
 {
-    return getCookie() !== undefined;
+    let cookie = getCookie();
+    return !(cookie === undefined || !cookie["Remember"]);
 }
 
 // Automates login if possible
@@ -38,13 +43,4 @@ function autoLogin()
         
     window.location.href = "landing_page.html";
     return true;
-}
-
-// Simply for debug.
-function cookieDebug()
-{
-    let cookie = getCookie();
-
-    document.getElementById("cookieStatus").innerHTML = JSON.stringify(cookie);
-    document.getElementById("cookieValid").innerHTML = "Cookie is ".concat(validCookie()?"valid":"invalid");
 }
