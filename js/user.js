@@ -6,22 +6,6 @@ let lastName = "";
 let fullName = "";
 let id = -1;
 
-// Tries to autologin a user. If it can't then it loads the hi res background
-window.onload = function () {
-	// For local containers
-	// const dom = "http://localhost/";
-	const dom = "https://contactical.xyz/";
-	if (window.location.href === dom.concat("index.html") || window.location.href === dom) {
-		if (autoLogin())
-			return;
-	}
-	else if (window.location.href !== dom.concat("create_account.html")) {
-		populateUserCache();
-		welcomeUser();
-	}
-	loadHiRes();
-};
-
 function populateUserCache() {
 	let cookie = getCookie();
 	firstName = cookie["FirstName"];
