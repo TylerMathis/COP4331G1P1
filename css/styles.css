@@ -2,10 +2,32 @@ body {
   background-color: cadetblue;
 }
 
+.contacts {
+  max-height: 60vh;
+}
+
+.contact-link {
+  color: inherit;
+}
+
+.contact-card:hover {
+  background-color: #0000aa22;
+}
+
 .beveledBox {
   background-color: white;
   border-radius: 25px;
   padding: 25px;
+}
+
+.profile-icon {
+  width: 30px;
+  height: 30px;
+  max-height: 30px;
+  min-width: 30px;
+  border-radius: 15px;
+  background-color: lightblue;
+  margin: 5px;
 }
 
 .loginHeader {
@@ -31,8 +53,7 @@ body {
 
 .container.backgroundContainer {
   max-width: 1500px;
-  height: 80%;
-  background-color: #000000AA;
+  background-color: #00000055;
   border-radius: 25px;
   padding: 25px;
 }
