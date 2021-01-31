@@ -2,5 +2,4 @@
 window.onload = function () {
     populateUserCache();
     welcomeUser();
-    loadHiRes();
 };
