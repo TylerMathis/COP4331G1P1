@@ -1,13 +1,13 @@
 function doCreateContact()
 {
 	// Get all data
-	let first = document.getElementById("first-name").value;
-	let last = document.getElementById("last-name").value;
-	let phone = document.getElementById("phone-number").value;
-	let address = document.getElementById("address").value;
-	let city = document.getElementById("city").value;
-	let state = document.getElementById("state").value;
-	let zip = document.getElementById("zip").value;
+	let first = document.getElementById("new-first-name").value;
+	let last = document.getElementById("new-last-name").value;
+	let phone = document.getElementById("new-phone-number").value;
+	let address = document.getElementById("new-address").value;
+	let city = document.getElementById("new-city").value;
+	let state = document.getElementById("new-state").value;
+	let zip = document.getElementById("new-zip").value;
 
 	// Create JSON payload and api endpoint
 	let jsonPayload = JSON.stringify({
@@ -17,8 +17,9 @@ function doCreateContact()
 		"Address": address,
 		"City": city,
 		"State": state,
-		"ZIP": zip
-    });
+		"ZIP": zip,
+		"UserID": id
+	});
 	let url = urlBase + "contactController" + extension;
 
 	// Send POST with our data to look up
