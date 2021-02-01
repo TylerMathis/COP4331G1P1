@@ -1,2 +1,4 @@
 *.swp
 .idea
+
+LAMPAPI/secret.php
