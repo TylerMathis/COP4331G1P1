@@ -62,14 +62,14 @@ class ContactStore
         $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (FirstName, LastName, PhoneNumber, Address, City, State, ZIP, UserID) values (?, ?, ?, ?, ?, ?, ?, ?)");
         echo $this->db->getError();
         $sql->bind_param("sssssssi",
-            $contact->FirstName,
-            $contact->LastName,
-            $contact->PhoneNumber,
-            $contact->Address,
-            $contact->City,
-            $contact->State,
-            $contact->Zip,
-            $contact->UserID
+            $contact->firstName,
+            $contact->lastName,
+            $contact->phoneNumber,
+            $contact->address,
+            $contact->city,
+            $contact->state,
+            $contact->zip,
+            $contact->userID
         );
         $sql->execute();
 
