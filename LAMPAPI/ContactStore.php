@@ -59,18 +59,21 @@ class ContactStore
      */
     public function createContact($contact)
     {
-        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address,ID) values (?, ?, ?, ?, ?, ?)");
+        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address, City, State, ZIP, ID) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         echo $this->db->getError();
-        $sql->bind_param("issssi",
+        $sql->bind_param("issssisss",
             $contact->userID,
             $contact->firstName,
             $contact->lastName,
             $contact->phoneNumber,
             $contact->address,
+            $contact->city,
+            $contact->state,
+            $contact->zip,
             $contact->id
         );
         $sql->execute();
-
+        echo $this->db->getError();
         if ($sql->affected_rows < 1) {
             return false;
         }
