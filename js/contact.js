@@ -108,6 +108,17 @@ function selectContact(contactID)
 	document.getElementById("info-zip").innerHTML = contact["ZIP"];
 	document.getElementById("info-city").innerHTML = contact["City"];
 	document.getElementById("info-state").innerHTML = contact["State"];
+
+	// Get editing ready
+	document.getElementById("edit-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
+	document.getElementById("edit-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
+	document.getElementById("edit-first-name").placeholder = contact["FirstName"];
+	document.getElementById("edit-last-name").placeholder = contact["LastName"];
+	document.getElementById("edit-phone-number").placeholder = contact["PhoneNumber"];
+	document.getElementById("edit-address").placeholder = contact["Address"];
+	document.getElementById("edit-zip").placeholder = contact["ZIP"];
+	document.getElementById("edit-city").placeholder = contact["City"];
+	document.getElementById("edit-state").value = contact["State"];
 }
 
 function deleteSelectedContact()
@@ -125,6 +136,10 @@ function deleteSelectedContact()
 		if (xhr.status === 200) {
 			displayNotification("Success", "Contact deleted", "info");
 		}
+}
+
+function editSelectedContact() {
+
 }
 
 function doCreateContact()
