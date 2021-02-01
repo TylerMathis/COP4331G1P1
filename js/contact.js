@@ -15,9 +15,10 @@ function populateContacts(firstTime)
 
 	contactMap.clear();
 	let contacts = JSON.parse(xhr.responseText);
-	contacts.forEach(appendContact);
+	if (contacts.length === undefined) return;
 
-	if (firstTime && contacts.length > 0)
+	contacts.forEach(appendContact);
+	if (firstTime)
 		selectContact(contacts[0]["ID"]);
 }
 
@@ -109,9 +110,21 @@ function selectContact(contactID)
 	document.getElementById("info-state").innerHTML = contact["State"];
 }
 
-function deleteContact()
+function deleteSelectedContact()
 {
-
+		// Create api endpoint with userID encoded
+		let url = urlBase + "contactController" + extension;
+		url += "?ID=" + selectedContact;
+	
+		// Send DELETE with our contact to delete
+		let xhr = new XMLHttpRequest();
+		xhr.open("DELETE", url, false);
+		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+		xhr.send();
+	
+		if (xhr.status === 200) {
+			displayNotification("Success", "Contact deleted", "info");
+		}
 }
 
 function doCreateContact()

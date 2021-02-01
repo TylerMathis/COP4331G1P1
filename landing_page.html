@@ -330,6 +330,7 @@
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
 										Delete
 									</button>
+									<!-- Delete Modal -->
 									<div class="modal fade" id="deleteModal" data-bs-backdrop="static" tabindex="-1">
 										<div class="modal-dialog modal-dialog-centered">
 											<div class="modal-content">
@@ -339,7 +340,7 @@
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-													<button type="button" class="btn btn-primary">Yes</button>
+													<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="deleteSelectedContact()">Yes</button>
 												</div>
 											</div>
 										</div>
