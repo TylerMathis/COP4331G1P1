@@ -8,7 +8,7 @@ include_once 'Database.php';
  * local SQL setup. It will automatically be gitignored.
 */
 
-/* Place in secret.php:
+/* Place in secret.php using your credentials:
 
 // Database Hostname
 define("SQL_HOST", "127.0.0.1");
