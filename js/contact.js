@@ -1,7 +1,11 @@
+// Local store for all contacts
 let contactMap = new Map();
 let selectedContact = -1;
 
-function populateContacts(firstTime)
+// Requests all of a user's contacts, and pushes them onto the contacts list
+// Parameters:
+// 		displayFirst: whether or not we should automatically display the first user
+function populateContacts(displayFirst)
 {
 	// Clear all children of the contact holder
 	let contactLanding = document.getElementById("contactLanding");
@@ -24,10 +28,13 @@ function populateContacts(firstTime)
 	if (contacts.length === undefined) return;
 
 	contacts.forEach(appendContact);
-	if (firstTime)
+	if (displayFirst)
 		selectContact(contacts[0]["ID"]);
 }
 
+// Appends a contact to the contact list
+// Parameters:
+// 		contact: the contact to be appended
 function appendContact(contact)
 {
 	// Appends contacts with this structure
@@ -99,6 +106,9 @@ function appendContact(contact)
 	contactLanding.appendChild(contactLink);
 }
 
+// Selects a contact for display
+// Paremters:
+// 		contactID: the id of the contact selected
 function selectContact(contactID)
 {
 	// Select the given contact and update info panel
@@ -127,6 +137,7 @@ function selectContact(contactID)
 	document.getElementById("edit-state").value = contact["State"];
 }
 
+// Deletes whichever contact is currently selected
 function deleteSelectedContact()
 {
 		// Create api endpoint with userID encoded
@@ -150,11 +161,13 @@ function deleteSelectedContact()
 		populateContacts(true);
 }
 
+// Temporary service alert
 function editSelectedContact()
 {
 	alert("We don't support this feature yet, check back later!");
 }
 
+// Creates a contact!
 function doCreateContact()
 {
 	// Get all data
@@ -195,5 +208,6 @@ function doCreateContact()
 		displayNotification(error.title, error.detail, "danger");
 	}
 
+	// Update all of the contacts, but maintain the current display
 	populateContacts(false);
 }
