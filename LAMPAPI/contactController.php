@@ -75,7 +75,7 @@ function deleteContact() {
     global $store;
     $result = $store->deleteContact(getRequestInfo()["ID"]);
 
-    if (!$result) {
+    if ($result != false && $result->num_rows == 0) {
         ErrorHandler::generic_error(new Error("Contacts could not be deleted", "Please try again later."));
     }
 
@@ -89,7 +89,7 @@ function updateContact() {
     global $store;
     $result = $store->updateContact(Contact::fromArray(getRequestInfo()));
 
-    if (!$result) {
+    if ($result != false && $result->num_rows == 0) {
         ErrorHandler::generic_error(new Error("Contacts could not be updated", "Please try again later."));
     }
 

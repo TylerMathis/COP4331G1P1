@@ -85,7 +85,7 @@ class ContactStore
      * Updates a contact
      *
      * @param Contact $contact
-     * @return bool
+     * @return false|mysqli_result
      */
     public function updateContact($contact)
     {
@@ -93,14 +93,14 @@ class ContactStore
         $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
         $sql->execute();
 
-        return $sql->get_result() == false ? false : true;
+        return $sql->get_result();
     }
 
     /**
      * Deletes a given contact
      *
      * @param int $id The contact ID to delete
-     * @return bool
+     * @return false|mysqli_result
      */
     public function deleteContact($id)
     {
@@ -108,7 +108,7 @@ class ContactStore
         $sql->bind_param("i", $id);
         $sql->execute();
 
-        return $sql->get_result() == false ? false : true;
+        return $sql->get_result();
     }
 
     /**
