@@ -59,18 +59,17 @@ class ContactStore
      */
     public function createContact($contact)
     {
-        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address, City, State, ZIP, ID) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (FirstName, LastName, PhoneNumber, Address, City, State, ZIP, UserID) values (?, ?, ?, ?, ?, ?, ?, ?)");
         echo $this->db->getError();
-        $sql->bind_param("isssssssi",
-            $contact->userID,
-            $contact->firstName,
-            $contact->lastName,
-            $contact->phoneNumber,
-            $contact->address,
-            $contact->city,
-            $contact->state,
-            $contact->zip,
-            $contact->id
+        $sql->bind_param("sssssssi",
+            $contact->FirstName,
+            $contact->LastName,
+            $contact->PhoneNumber,
+            $contact->Address,
+            $contact->City,
+            $contact->State,
+            $contact->Zip,
+            $contact->UserID
         );
         $sql->execute();
 
@@ -85,7 +84,7 @@ class ContactStore
      * Updates a contact
      *
      * @param Contact $contact
-     * @return bool
+     * @return false|mysqli_result
      */
     public function updateContact($contact)
     {
@@ -93,14 +92,14 @@ class ContactStore
         $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
         $sql->execute();
 
-        return $sql->get_result() == false ? false : true;
+        return $sql->get_result();
     }
 
     /**
      * Deletes a given contact
      *
      * @param int $id The contact ID to delete
-     * @return bool
+     * @return false|mysqli_result
      */
     public function deleteContact($id)
     {
@@ -108,7 +107,7 @@ class ContactStore
         $sql->bind_param("i", $id);
         $sql->execute();
 
-        return $sql->get_result() == false ? false : true;
+        return $sql->get_result();
     }
 
     /**
