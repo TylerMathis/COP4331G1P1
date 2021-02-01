@@ -3,6 +3,12 @@ let selectedContact = -1;
 
 function populateContacts(firstTime)
 {
+	// Clear all children of the contact holder
+	let contactLanding = document.getElementById("contactLanding");
+	while (contactLanding.firstChild)
+		contactLanding.removeChild(contactLanding.firstChild);
+
+
 	// Create api endpoint with userID encoded
 	let url = urlBase + "contactController" + extension;
 	url += "?UserID=" + id;
@@ -43,7 +49,6 @@ function appendContact(contact)
 	// Add contact to local map store
 	let contactID = contact["ID"];
 	contactMap[contactID] = contact;
-
 
 	let contactFirst = contact["FirstName"];
 	let contactLast = contact["LastName"];
@@ -105,6 +110,7 @@ function selectContact(contactID)
 	document.getElementById("info-last-name").innerHTML = contact["LastName"];
 	document.getElementById("info-phone-number").innerHTML = contact["PhoneNumber"];
 	document.getElementById("info-address").innerHTML = contact["Address"];
+	console.log(contact["ZIP"]);
 	document.getElementById("info-zip").innerHTML = contact["ZIP"];
 	document.getElementById("info-city").innerHTML = contact["City"];
 	document.getElementById("info-state").innerHTML = contact["State"];
@@ -136,10 +142,17 @@ function deleteSelectedContact()
 		if (xhr.status === 200) {
 			displayNotification("Success", "Contact deleted", "info");
 		}
+		else {
+			let error = JSON.parse(xhr.responseText);
+			displayNotification(error.title, error.detail, "danger");
+		}
+
+		populateContacts(true);
 }
 
-function editSelectedContact() {
-
+function editSelectedContact()
+{
+	alert("We don't support this feature yet, check back later!");
 }
 
 function doCreateContact()
@@ -181,6 +194,6 @@ function doCreateContact()
 		let error = JSON.parse(xhr.responseText);
 		displayNotification(error.title, error.detail, "danger");
 	}
-	
-	return false;
+
+	populateContacts(false);
 }
