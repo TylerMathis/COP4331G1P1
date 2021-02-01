@@ -1,4 +1,7 @@
-function populateContacts() {
+let contactMap = new Map();
+let selectedContact = -1;
+
+function populateContacts(firstTime) {
 
 	// Create api endpoint with userID encoded
 	let url = urlBase + "contactController" + extension;
@@ -10,11 +13,36 @@ function populateContacts() {
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	xhr.send();
 
+	contactMap.clear();
 	let contacts = JSON.parse(xhr.responseText);
 	contacts.forEach(appendContact);
+
+	if (firstTime && contacts.length > 0)
+		selectContact(contacts[0]["ID"]);
 }
 
 function appendContact(contact) {
+
+	// Appends contacts with this structure
+	/* 
+	<a class="contact-link" href="#">
+		<div class="list-group-item d-flex contact-card" style="min-height: 50px">
+			<div class="profile-icon d-flex justify-content-center align-self-center">
+				<div class="align-self-center" style="width: 100%;">
+					<h3 style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">TM</h3>
+				</div>
+			</div>
+			<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
+				<h5 style="text-align: center; margin: 0; width: 100%;">Tyler Mathis</h5>
+			</div>
+		</div>
+	</a>
+	*/
+
+	// Add contact to local map store
+	let contactID = contact["ID"];
+	contactMap[contactID] = contact;
+
 
 	let contactFirst = contact["FirstName"];
 	let contactLast = contact["LastName"];
@@ -24,8 +52,9 @@ function appendContact(contact) {
 	let contactLanding = document.getElementById("contactLanding");
 
 	let contactLink = document.createElement("a");
+	contactLink.style.color = "inherit";
 	contactLink.className = "contact-link";
-	contactLink.href = "#";
+	contactLink.href = "javascript:selectContact(" + contactID + ")";
 
 		let contactDiv = document.createElement("div");
 		contactDiv.className = "list-group-item d-flex contact-card";
@@ -64,18 +93,18 @@ function appendContact(contact) {
 	contactLanding.appendChild(contactLink);
 }
 
-/* <a class="contact-link" href="#">
-	<div class="list-group-item d-flex contact-card" style="min-height: 50px">
-		<div class="profile-icon d-flex justify-content-center align-self-center">
-			<div class="align-self-center" style="width: 100%;">
-				<h3 style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">TM</h3>
-			</div>
-		</div>
-		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
-			<h5 style="text-align: center; margin: 0; width: 100%;">Tyler Mathis</h5>
-		</div>
-	</div>
-</a> */
+function selectContact(contactID) {
+	let contact = contactMap[contactID];
+	document.getElementById("info-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
+	document.getElementById("info-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
+	document.getElementById("info-first-name").innerHTML = contact["FirstName"];
+	document.getElementById("info-last-name").innerHTML = contact["LastName"];
+	document.getElementById("info-phone-number").innerHTML = contact["PhoneNumber"];
+	document.getElementById("info-address").innerHTML = contact["Address"];
+	document.getElementById("info-zip").innerHTML = contact["ZIP"];
+	document.getElementById("info-city").innerHTML = contact["City"];
+	document.getElementById("info-state").innerHTML = contact["State"];
+}
 
 function doCreateContact()
 {
