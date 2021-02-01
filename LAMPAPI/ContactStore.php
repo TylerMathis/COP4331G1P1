@@ -73,7 +73,7 @@ class ContactStore
             $contact->id
         );
         $sql->execute();
-        echo $this->db->getError();
+
         if ($sql->affected_rows < 1) {
             return false;
         }
