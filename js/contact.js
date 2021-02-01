@@ -1,8 +1,8 @@
 let contactMap = new Map();
 let selectedContact = -1;
 
-function populateContacts(firstTime) {
-
+function populateContacts(firstTime)
+{
 	// Create api endpoint with userID encoded
 	let url = urlBase + "contactController" + extension;
 	url += "?UserID=" + id;
@@ -21,8 +21,8 @@ function populateContacts(firstTime) {
 		selectContact(contacts[0]["ID"]);
 }
 
-function appendContact(contact) {
-
+function appendContact(contact)
+{
 	// Appends contacts with this structure
 	/* 
 	<a class="contact-link" href="#">
@@ -93,7 +93,10 @@ function appendContact(contact) {
 	contactLanding.appendChild(contactLink);
 }
 
-function selectContact(contactID) {
+function selectContact(contactID)
+{
+	// Select the given contact and update info panel
+	selectedContact = contactID;
 	let contact = contactMap[contactID];
 	document.getElementById("info-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
 	document.getElementById("info-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
@@ -104,6 +107,11 @@ function selectContact(contactID) {
 	document.getElementById("info-zip").innerHTML = contact["ZIP"];
 	document.getElementById("info-city").innerHTML = contact["City"];
 	document.getElementById("info-state").innerHTML = contact["State"];
+}
+
+function deleteContact()
+{
+
 }
 
 function doCreateContact()
