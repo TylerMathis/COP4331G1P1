@@ -25,12 +25,6 @@ body {
     }
 }
 
-.logout {
-  position: absolute;
-  top: 100px;
-  right: 200px;
-}
-
 .contacts {
   max-height: 60vh;
 }
