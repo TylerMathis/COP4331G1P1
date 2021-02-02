@@ -55,7 +55,7 @@ class ContactStore
      * Creates a new contact and adds it to the database.
      *
      * @param Contact $contact
-     * @return bool
+     * @return false|int
      */
     public function createContact($contact)
     {
@@ -78,7 +78,7 @@ class ContactStore
             return false;
         }
 
-        return true;
+        return $sql->insert_id;
     }
 
     /**
