@@ -1,7 +1,6 @@
 // Local store for all contacts
-let contacts = [];
+let contacts = new Map;
 let selectedContact = undefined;
-let selectedIndex = -1;
 
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
@@ -11,16 +10,12 @@ $(document).on("click", "#create-btn", onClickCreate);
 function onClickContact(e) {
 	e.preventDefault();
 
-	// Capture index stored in html.
-	const index = $(this).attr("index");
-	selectedIndex = index;
+	// Capture contact ID from DOM
+	const contactID = $(this).data("contact-id");
 
 	// Fetch contact from local cache.
-	const contact = contacts[index];
+	const contact = contacts.get(contactID);
 	displayContact(contact);
-
-	// Update selected index.
-	selectedContact = contact;
 }
 
 function onClickDelete(e) {
@@ -32,7 +27,7 @@ function onClickDelete(e) {
 	deleteContact(selectedContact);
 
 	// Remove from DOM
-	removeContactLink(selectedIndex);
+	removeContactLink(selectedContact.ID);
 
 	// Remove from local cache.
 	contacts.splice(selectedContact, selectedContact);
@@ -60,6 +55,10 @@ function onClickCreate(e) {
 }
 
 function displayContact(contact) {
+
+	// Update selected index.
+	selectedContact = contact;
+
 	document.getElementById("info-fullname").innerHTML = contact.FirstName + " " + contact.LastName;
 	document.getElementById("info-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
 	document.getElementById("info-first-name").innerHTML = contact["FirstName"];
@@ -94,8 +93,14 @@ function populateContacts(displayFirst)
 	while (contactLanding.firstChild)
 		contactLanding.removeChild(contactLanding.firstChild);
 
-	contacts = getContacts();
-	contacts.forEach(appendContactLink);
+	const fetchedContacts = getContacts();
+
+	// Hash values into map
+	fetchedContacts.forEach(function (contact) {
+		contacts.set(contact.ID, contact);
+	});
+
+	contacts.values().forEach(appendContactLink);
 
 	// Display first contact if requested.
 	if (displayFirst) {
@@ -107,11 +112,11 @@ function populateContacts(displayFirst)
 /**
  * Removes contact like from DOM.
  *
- * @param i Index of the contact with respect to the local cache.
+ * @param id ID of the contact.
  */
-function removeContactLink(i) {
+function removeContactLink(id) {
 	$(".list-group").children().each(function (index, link) {
-		if ($(link).attr("index") === i) {
+		if ($(link).data("contact-id") === id) {
 			$(link).remove();
 		}
 	})
@@ -121,9 +126,8 @@ function removeContactLink(i) {
  * Appends a contact to the contact list
  *
  * @param contact The contact to be appended
- * @param i The index of the contact
  */
-function appendContactLink(contact, i)
+function appendContactLink(contact)
 {
 	// Appends contacts with this structure
 	/* 
@@ -142,7 +146,7 @@ function appendContactLink(contact, i)
 	*/
 
 	// Add contact to local array store
-	contacts.push(contact);
+	contacts.set(contact.ID, contact);
 
 	let contactFirst = contact.FirstName;
 	let contactLast = contact.LastName;
@@ -152,7 +156,9 @@ function appendContactLink(contact, i)
 	let contactLanding = document.getElementById("contactLanding");
 
 	let contactLink = document.createElement("a");
-	contactLink.setAttribute("index", i);
+
+	// Add associated data
+	contactLink.dataset.contactId = contact.ID;
 	contactLink.style.color = "inherit";
 	contactLink.className = "contact-link";
 
