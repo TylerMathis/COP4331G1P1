@@ -39,4 +39,23 @@ function displayNotification(title, desc, type) {
 	notiDiv.appendChild(notiDesc);
 
 	notificationLanding.prepend(notiDiv);
+
+	setTimeout(removeNotification, 8000);
 }
+
+// Fades and removes a notification
+function removeNotification() {
+	if (document.getElementById("notiDiv") != null) {
+		let curNoti = document.getElementById("notiDiv");
+		let fade = setInterval(function () {
+			if (!curNoti.style.opacity)
+				curNoti.style.opacity = 1;
+			if (curNoti.style.opacity > 0)
+				curNoti.style.opacity -= 0.01;
+			else
+				clearInterval(fade);
+		}, 5);
+		setTimeout(function () {curNoti.parentNode.removeChild(curNoti)}, 500);
+	}
+}
+
