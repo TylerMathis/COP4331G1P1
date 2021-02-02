@@ -26,11 +26,16 @@ function onClickContact(e) {
 function onClickDelete(e) {
 	e.preventDefault();
 
+	console.log(selectedContact);
+
 	// Update remote DB
 	deleteContact(selectedContact);
 
 	// Remove from DOM
 	removeContactLink(selectedIndex);
+
+	// Remove from local cache.
+	contacts.splice(selectedContact, selectedContact);
 }
 
 function onClickCreate(e) {
@@ -51,8 +56,7 @@ function onClickCreate(e) {
 	createContact(contact);
 
 	// Update DOM
-	appendContactLink(contact, contacts.length);
-	contacts.push(contact);
+	populateContacts(true);
 }
 
 function displayContact(contact) {
