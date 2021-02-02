@@ -28,30 +28,29 @@ function onClickDelete(e) {
 
 	// Remove from DOM
 	removeContactLink(selectedContact.ID);
-
-	// Remove from local cache.
-	contacts.splice(selectedContact, selectedContact);
 }
 
 function onClickCreate(e) {
 	e.preventDefault();
 
-	const contact = {
-		"FirstName": document.getElementById("new-first-name").value,
-		"LastName": document.getElementById("new-last-name").value,
-		"PhoneNumber": document.getElementById("new-phone-number").value,
-		"Address": document.getElementById("new-address").value,
-		"City": document.getElementById("new-city").value,
-		"State": document.getElementById("new-state").value,
-		"ZIP": document.getElementById("new-zip").value,
-		"UserID": id
-	}
+	// Fetch DOM and serialize
+	const form = document.getElementById("editForm");
+	const data = new FormData(form);
 
-	// Update DB
-	createContact(contact);
+	// Get Form Data
+	const contact = {};
+	data.forEach(function (value, key) {
+		contact[key] = value;
+	});
+
+	console.log(contact);
+
+	// Update DB and assign ID's
+	contact.UserID = id;
+	contact.ID = createContact(contact);
 
 	// Update DOM
-	populateContacts(true);
+	appendContactLink(contact);
 }
 
 function displayContact(contact) {
@@ -60,7 +59,7 @@ function displayContact(contact) {
 	selectedContact = contact;
 
 	document.getElementById("info-fullname").innerHTML = contact.FirstName + " " + contact.LastName;
-	document.getElementById("info-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
+	document.getElementById("info-initials").innerHTML = contact.FirstName[0] + contact["LastName"][0];
 	document.getElementById("info-first-name").innerHTML = contact["FirstName"];
 	document.getElementById("info-last-name").innerHTML = contact["LastName"];
 	document.getElementById("info-phone-number").innerHTML = contact["PhoneNumber"];
@@ -100,11 +99,11 @@ function populateContacts(displayFirst)
 		contacts.set(contact.ID, contact);
 	});
 
-	contacts.values().forEach(appendContactLink);
+	contacts.forEach(appendContactLink);
 
 	// Display first contact if requested.
 	if (displayFirst) {
-		displayContact(contacts[0]);
+		displayContact(contacts.entries().next().value[1]);
 	}
 
 }
@@ -119,7 +118,10 @@ function removeContactLink(id) {
 		if ($(link).data("contact-id") === id) {
 			$(link).remove();
 		}
-	})
+	});
+
+	// Delete from local cache.
+	contacts.delete(id);
 }
 
 /**

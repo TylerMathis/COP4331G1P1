@@ -49,6 +49,7 @@ function getContacts() {
  * Creates a new contact in the DB
  *
  * @param contact The contact to add.
+ * @return The ID of the newly created contact.
  */
 function createContact(contact) {
     // Create JSON payload and api endpoint
@@ -64,8 +65,11 @@ function createContact(contact) {
     // Valid creation
     if (xhr.status === 201) {
         displayNotification("Success!", "Contact created", "success");
+        return JSON.parse(xhr.responseText).ID;
     } else { // Invalid Creation
         let error = JSON.parse(xhr.responseText);
         displayNotification(error.title, error.detail, "danger");
     }
+
+    return -1;
 }
