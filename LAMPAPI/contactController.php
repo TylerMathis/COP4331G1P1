@@ -46,6 +46,9 @@ function createContact()
 
     // Indicate success response
     http_response_code(201);
+
+    // Then provide the ID
+    echo json_encode(array("ID" => $result));
 }
 
 function getContacts()
