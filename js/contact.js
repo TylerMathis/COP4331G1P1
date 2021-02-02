@@ -97,9 +97,8 @@ function populateContacts(displayFirst)
 	// Hash values into map
 	fetchedContacts.forEach(function (contact) {
 		contacts.set(contact.ID, contact);
+		appendContactLink(contact);
 	});
-
-	contacts.forEach(appendContactLink);
 
 	// Display first contact if requested.
 	if (displayFirst) {
