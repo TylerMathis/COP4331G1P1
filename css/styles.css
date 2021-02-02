@@ -242,6 +242,16 @@ a:link {
   font-family: "Roboto", sans-serif;
 }
 
+.btn.btn-primary.add-button {
+  display: flex;
+  min-height: 40px;
+  border-radius: 20px;
+  min-width: 40px;
+  padding: 0 10px 0 0;
+  align-items: center;
+  justify-content: space-between
+}
+
 .phoneImage {
   float: left;
   max-height: 60%;
