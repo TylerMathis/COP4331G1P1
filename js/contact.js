@@ -1,10 +1,88 @@
 // Local store for all contacts
-let contactMap = new Map();
-let selectedContact = -1;
+let contacts = [];
+let selectedContact = undefined;
+let selectedIndex = -1;
 
-// Requests all of a user's contacts, and pushes them onto the contacts list
-// Parameters:
-// 		displayFirst: whether or not we should automatically display the first user
+// Assign event handlers.
+$(document).on("click", ".contact-link", onClickContact);
+$(document).on("click", "#delete-btn", onClickDelete);
+$(document).on("click", "#create-btn", onClickCreate);
+
+function onClickContact(e) {
+	e.preventDefault();
+
+	// Capture index stored in html.
+	const index = $(this).attr("index");
+	selectedIndex = index;
+
+	// Fetch contact from local cache.
+	const contact = contacts[index];
+	displayContact(contact);
+
+	// Update selected index.
+	selectedContact = contact;
+}
+
+function onClickDelete(e) {
+	e.preventDefault();
+
+	// Update remote DB
+	deleteContact(selectedContact);
+
+	// Remove from DOM
+	removeContactLink(selectedIndex);
+}
+
+function onClickCreate(e) {
+	e.preventDefault();
+
+	const contact = {
+		"FirstName": document.getElementById("new-first-name").value,
+		"LastName": document.getElementById("new-last-name").value,
+		"PhoneNumber": document.getElementById("new-phone-number").value,
+		"Address": document.getElementById("new-address").value,
+		"City": document.getElementById("new-city").value,
+		"State": document.getElementById("new-state").value,
+		"ZIP": document.getElementById("new-zip").value,
+		"UserID": id
+	}
+
+	// Update DB
+	createContact(contact);
+
+	// Update DOM
+	appendContactLink(contact, contacts.length);
+	contacts.push(contact);
+}
+
+function displayContact(contact) {
+	document.getElementById("info-fullname").innerHTML = contact.FirstName + " " + contact.LastName;
+	document.getElementById("info-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
+	document.getElementById("info-first-name").innerHTML = contact["FirstName"];
+	document.getElementById("info-last-name").innerHTML = contact["LastName"];
+	document.getElementById("info-phone-number").innerHTML = contact["PhoneNumber"];
+	document.getElementById("info-address").innerHTML = contact["Address"];
+	document.getElementById("info-zip").innerHTML = contact["ZIP"];
+	document.getElementById("info-city").innerHTML = contact["City"];
+	document.getElementById("info-state").innerHTML = contact["State"];
+
+	// Get editing ready
+	document.getElementById("edit-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
+	document.getElementById("edit-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
+	document.getElementById("edit-first-name").placeholder = contact["FirstName"];
+	document.getElementById("edit-last-name").placeholder = contact["LastName"];
+	document.getElementById("edit-phone-number").placeholder = contact["PhoneNumber"];
+	document.getElementById("edit-address").placeholder = contact["Address"];
+	document.getElementById("edit-zip").placeholder = contact["ZIP"];
+	document.getElementById("edit-city").placeholder = contact["City"];
+	document.getElementById("edit-state").value = contact["State"];
+}
+
+/**
+ * Requests all of a user's contacts, and pushes them onto the contacts list
+ *
+ * @param displayFirst whether or not we should automatically display the first user
+ */
 function populateContacts(displayFirst)
 {
 	// Clear all children of the contact holder
@@ -12,30 +90,36 @@ function populateContacts(displayFirst)
 	while (contactLanding.firstChild)
 		contactLanding.removeChild(contactLanding.firstChild);
 
+	contacts = getContacts();
+	contacts.forEach(appendContactLink);
 
-	// Create api endpoint with userID encoded
-	let url = urlBase + "contactController" + extension;
-	url += "?UserID=" + id;
+	// Display first contact if requested.
+	if (displayFirst) {
+		displayContact(contacts[0]);
+	}
 
-	// Send POST with our data to look up
-	let xhr = new XMLHttpRequest();
-	xhr.open("GET", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	xhr.send();
-
-	contactMap.clear();
-	let contacts = JSON.parse(xhr.responseText);
-	if (contacts.length === undefined) return;
-
-	contacts.forEach(appendContact);
-	if (displayFirst)
-		selectContact(contacts[0]["ID"]);
 }
 
-// Appends a contact to the contact list
-// Parameters:
-// 		contact: the contact to be appended
-function appendContact(contact)
+/**
+ * Removes contact like from DOM.
+ *
+ * @param i Index of the contact with respect to the local cache.
+ */
+function removeContactLink(i) {
+	$(".list-group").children().each(function (index, link) {
+		if ($(link).attr("index") === i) {
+			$(link).remove();
+		}
+	})
+}
+
+/**
+ * Appends a contact to the contact list
+ *
+ * @param contact The contact to be appended
+ * @param i The index of the contact
+ */
+function appendContactLink(contact, i)
 {
 	// Appends contacts with this structure
 	/* 
@@ -53,21 +137,20 @@ function appendContact(contact)
 	</a>
 	*/
 
-	// Add contact to local map store
-	let contactID = contact["ID"];
-	contactMap[contactID] = contact;
+	// Add contact to local array store
+	contacts.push(contact);
 
-	let contactFirst = contact["FirstName"];
-	let contactLast = contact["LastName"];
+	let contactFirst = contact.FirstName;
+	let contactLast = contact.LastName;
 	let contactInitials = contactFirst[0] + contactLast[0];
 	let contactFullName = contactFirst + " " + contactLast;
 
 	let contactLanding = document.getElementById("contactLanding");
 
 	let contactLink = document.createElement("a");
+	contactLink.setAttribute("index", i);
 	contactLink.style.color = "inherit";
 	contactLink.className = "contact-link";
-	contactLink.href = "javascript:selectContact(" + contactID + ")";
 
 		let contactDiv = document.createElement("div");
 		contactDiv.className = "list-group-item d-flex contact-card";
@@ -106,108 +189,8 @@ function appendContact(contact)
 	contactLanding.appendChild(contactLink);
 }
 
-// Selects a contact for display
-// Paremters:
-// 		contactID: the id of the contact selected
-function selectContact(contactID)
-{
-	// Select the given contact and update info panel
-	selectedContact = contactID;
-	let contact = contactMap[contactID];
-	document.getElementById("info-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
-	document.getElementById("info-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
-	document.getElementById("info-first-name").innerHTML = contact["FirstName"];
-	document.getElementById("info-last-name").innerHTML = contact["LastName"];
-	document.getElementById("info-phone-number").innerHTML = contact["PhoneNumber"];
-	document.getElementById("info-address").innerHTML = contact["Address"];
-	console.log(contact["ZIP"]);
-	document.getElementById("info-zip").innerHTML = contact["ZIP"];
-	document.getElementById("info-city").innerHTML = contact["City"];
-	document.getElementById("info-state").innerHTML = contact["State"];
-
-	// Get editing ready
-	document.getElementById("edit-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
-	document.getElementById("edit-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
-	document.getElementById("edit-first-name").placeholder = contact["FirstName"];
-	document.getElementById("edit-last-name").placeholder = contact["LastName"];
-	document.getElementById("edit-phone-number").placeholder = contact["PhoneNumber"];
-	document.getElementById("edit-address").placeholder = contact["Address"];
-	document.getElementById("edit-zip").placeholder = contact["ZIP"];
-	document.getElementById("edit-city").placeholder = contact["City"];
-	document.getElementById("edit-state").value = contact["State"];
-}
-
-// Deletes whichever contact is currently selected
-function deleteSelectedContact()
-{
-		// Create api endpoint with userID encoded
-		let url = urlBase + "contactController" + extension;
-		url += "?ID=" + selectedContact;
-	
-		// Send DELETE with our contact to delete
-		let xhr = new XMLHttpRequest();
-		xhr.open("DELETE", url, false);
-		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-		xhr.send();
-	
-		if (xhr.status === 200) {
-			displayNotification("Success", "Contact deleted", "info");
-		}
-		else {
-			let error = JSON.parse(xhr.responseText);
-			displayNotification(error.title, error.detail, "danger");
-		}
-
-		populateContacts(true);
-}
-
 // Temporary service alert
 function editSelectedContact()
 {
 	alert("We don't support this feature yet, check back later!");
-}
-
-// Creates a contact!
-function doCreateContact()
-{
-	// Get all data
-	let first = document.getElementById("new-first-name").value;
-	let last = document.getElementById("new-last-name").value;
-	let phone = document.getElementById("new-phone-number").value;
-	let address = document.getElementById("new-address").value;
-	let city = document.getElementById("new-city").value;
-	let state = document.getElementById("new-state").value;
-	let zip = document.getElementById("new-zip").value;
-
-	// Create JSON payload and api endpoint
-	let jsonPayload = JSON.stringify({
-		"FirstName": first,
-		"LastName": last,
-		"PhoneNumber": phone,
-		"Address": address,
-		"City": city,
-		"State": state,
-		"ZIP": zip,
-		"UserID": id
-	});
-	let url = urlBase + "contactController" + extension;
-
-	// Send POST with our data to look up
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	xhr.send(jsonPayload);
-
-	// Valid creation
-    if (xhr.status === 201) {
-		displayNotification("Success!", "Contact created", "success");
-	}
-	// Invalid creation
-    else {
-		let error = JSON.parse(xhr.responseText);
-		displayNotification(error.title, error.detail, "danger");
-	}
-
-	// Update all of the contacts, but maintain the current display
-	populateContacts(false);
 }
