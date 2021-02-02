@@ -34,7 +34,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 function createContact()
 {
     // Precondition
-    verifyFields(array("FirstName", "LastName", "Email", "Address", "PhoneNumber", "UserID"));
+    verifyFields(array("FirstName", "LastName", "PhoneNumber", "Address", "City", "State", "ZIP", "UserID"));
 
     global $store;
     $result = $store->createContact(Contact::fromArray(getRequestInfo()));

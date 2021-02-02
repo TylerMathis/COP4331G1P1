@@ -2,6 +2,56 @@ body {
   background-color: cadetblue;
 }
 
+html, body {
+  width: 100%;
+  height:100%;
+}
+
+body {
+    background: linear-gradient(-45deg, #FF6C32, #4b8bf2, #FF6C32);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.contacts {
+  max-height: 60vh;
+}
+
+.contact-link {
+  color: inherit;
+}
+
+.contact-card:hover {
+  background-color: #0000aa22;
+}
+
+.beveledBox {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.profile-icon {
+  width: 30px;
+  height: 30px;
+  max-height: 30px;
+  min-width: 30px;
+  border-radius: 15px;
+  background-color: lightblue;
+  margin: 5px;
+}
+
 .loginHeader {
   margin-bottom: 20px; margin-top: 20px;
 }
@@ -21,6 +71,13 @@ body {
   border-radius: 25px;
   padding: 25px;
   z-index: 1;
+}
+
+.container.backgroundContainer {
+  max-width: 1500px;
+  background-color: #00000055;
+  border-radius: 25px;
+  padding: 25px;
 }
 
 .box {
@@ -78,6 +135,8 @@ label {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  z-index: -1;
 }
 
 .login {
@@ -181,6 +240,16 @@ a:link {
   width: 90%;
   margin: auto;
   font-family: "Roboto", sans-serif;
+}
+
+.btn.btn-primary.add-button {
+  display: flex;
+  min-height: 40px;
+  border-radius: 20px;
+  min-width: 40px;
+  padding: 0 10px 0 0;
+  align-items: center;
+  justify-content: space-between
 }
 
 .phoneImage {

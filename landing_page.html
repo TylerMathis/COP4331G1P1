@@ -6,6 +6,8 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/contactStore.js"></script>
 	<script type="text/javascript" src="js/cookies.js"></script>
 	<script type="text/javascript" src="js/design.js"></script>
 	<script type="text/javascript" src="js/landing_page.js"></script>
@@ -14,26 +16,390 @@
 </head>
 
 <body class="d-flex align-items-center text-center" style="background-color: cornflowerblue; height: 100%;">
-<div id="background" class="backgroundBlurImg" style="filter: blur(8px);"></div>
-<div class="container loginContainer">
-	<div class="row">
-		<div class="col-12 loginHeader">
-			<h1 style="color: #0b5ed7">
-				Contactical
-			</h1>
-			<h5 class="text-muted">The Most Tactical way to store contacts.</h5>
+
+<div class="container backgroundContainer">
+
+	<div class="row gy-5">
+		<!--Nav Bar-->
+		<div class="col-12">
+			<div class="p-1 beveledBox">
+				<nav class="navbar navbar-expand-lg navbar-light">
+					<div class="container-fluid">
+						<div style="font-size: 30px;">
+							<img src="/android-chrome-512x512.png" alt="Contactical Logo" width="40" height="40" class="d-inline-block align-top" style="margin-right: -3px;">
+							ontactical
+						</div>
+						<h5 class="text-muted" style="margin-top: 5px;">The Most Tactical way to store contacts.</h5>
+						<div>
+							<p id="welcome" style="font-size:medium;"></p>
+							<div style="margin-top: -20px; text-align: right;">
+								<a href="javascript:doLogout()">Logout</a>
+							</div>
+						</div>
+					</div>
+				</nav>
+			</div>
+		</div>
+
+		<!--Contacts-->
+		<div class="col-4">
+
+			<div class="p-3 beveledBox">
+				<div class="d-flex" style="justify-content: space-between; align-items: center">
+					<h1 style="text-align: left">Contacts</h1>
+					<button data-bs-toggle="modal" data-bs-target="#newModal" type="button" class="btn btn-primary add-button">
+						<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16" style="padding: 0">
+							<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+						</svg>
+						<div>Add</div>
+					</button>
+				</div>
+
+				<!--
+				<div class="input-group mb-3">
+					<input type="text" class="form-control" placeholder="Search Query">
+					<button type="button" class="btn btn-outline-secondary">All</button>
+					<button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+						<span class="visually-hidden">Toggle Dropdown</span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li><a class="dropdown-item" href="#">Name</a></li>
+						<li><a class="dropdown-item" href="#">Phone Number</a></li>
+						<li><a class="dropdown-item" href="#">Address</a></li>
+					</ul>
+				</div>
+				-->
+				<ul class="list-group contacts overflow-auto" id="contactLanding">
+					<!--Contact Group-->
+				</ul>
+			</div>
+		</div>
+
+		<!--Actions-->
+		<div class="col-8">
+			<div class="p-3 beveledBox" id="notificationLanding">
+				<div class="row gy-3">
+
+					<!-- New -->
+					<div class="col-2">
+						<!-- New Modal -->
+						<div class="modal fade" id="newModal" data-bs-backdrop="static" tabindex="-1">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+
+									<!-- Modal Title -->
+									<div class="modal-header">
+										<h5 class="modal-title">New Contact</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+									</div>
+
+									<!-- Modal Body -->
+									<div class="modal-body">
+										<!--Info-->
+										<div class="info">
+											<form id="editForm" class="row g-3">
+												<div class="col-md-4">
+													<label for="new-first-name" class="form-label">First Name</label>
+													<input name="FirstName" type="name" class="form-control" id="new-first-name">
+												</div>
+												<div class="col-md-4">
+													<label for="new-last-name" class="form-label">Last Name</label>
+													<input name="LastName" type="name" class="form-control" id="new-last-name">
+												</div>
+												<div class="col-md-4">
+													<label for="new-phone-number" class="form-label">Phone Number</label>
+													<input name="PhoneNumber" type="phone-number" class="form-control" id="new-phone-number">
+												</div>
+												<div class="col-8">
+													<label for="new-address" class="form-label">Address</label>
+													<input name="Address" type="text" class="form-control" id="new-address" placeholder="1234 Main St">
+												</div>
+												<div class="col-md-4">
+													<label for="new-zip" class="form-label">Zip</label>
+													<input name="ZIP" type="text" class="form-control" id="new-zip">
+												</div>
+												<div class="col-md-8">
+													<label for="new-city" class="form-label">City</label>
+													<input name="City" type="text" class="form-control" id="new-city">
+												</div>
+												<div class="col-md-4">
+													<label for="new-state" class="form-label">State</label>
+													<select name="State" id="new-state" class="form-select">
+														<option selected>Choose...</option>
+														<option value="AL">Alabama</option>
+														<option value="AK">Alaska</option>
+														<option value="AZ">Arizona</option>
+														<option value="AR">Arkansas</option>
+														<option value="CA">California</option>
+														<option value="CO">Colorado</option>
+														<option value="CT">Connecticut</option>
+														<option value="DE">Delaware</option>
+														<option value="DC">District Of Columbia</option>
+														<option value="FL">Florida</option>
+														<option value="GA">Georgia</option>
+														<option value="HI">Hawaii</option>
+														<option value="ID">Idaho</option>
+														<option value="IL">Illinois</option>
+														<option value="IN">Indiana</option>
+														<option value="IA">Iowa</option>
+														<option value="KS">Kansas</option>
+														<option value="KY">Kentucky</option>
+														<option value="LA">Louisiana</option>
+														<option value="ME">Maine</option>
+														<option value="MD">Maryland</option>
+														<option value="MA">Massachusetts</option>
+														<option value="MI">Michigan</option>
+														<option value="MN">Minnesota</option>
+														<option value="MS">Mississippi</option>
+														<option value="MO">Missouri</option>
+														<option value="MT">Montana</option>
+														<option value="NE">Nebraska</option>
+														<option value="NV">Nevada</option>
+														<option value="NH">New Hampshire</option>
+														<option value="NJ">New Jersey</option>
+														<option value="NM">New Mexico</option>
+														<option value="NY">New York</option>
+														<option value="NC">North Carolina</option>
+														<option value="ND">North Dakota</option>
+														<option value="OH">Ohio</option>
+														<option value="OK">Oklahoma</option>
+														<option value="OR">Oregon</option>
+														<option value="PA">Pennsylvania</option>
+														<option value="RI">Rhode Island</option>
+														<option value="SC">South Carolina</option>
+														<option value="SD">South Dakota</option>
+														<option value="TN">Tennessee</option>
+														<option value="TX">Texas</option>
+														<option value="UT">Utah</option>
+														<option value="VT">Vermont</option>
+														<option value="VA">Virginia</option>
+														<option value="WA">Washington</option>
+														<option value="WV">West Virginia</option>
+														<option value="WI">Wisconsin</option>
+														<option value="WY">Wyoming</option>
+													</select>
+												</div>
+											</form>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+										<button id="create-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-8">
+						<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
+							<h5 style="text-align: center; margin: 0; width: 100%;">Contact Info</h5>
+						</div>
+					</div>
+					<div class="col-2"></div>
+
+					<!-- Data -->
+					<div class="col-2"></div>
+					<div class="col-8">
+						<div style="border: 1px solid #ccc; border-radius: 16px;">
+							<div class="row">
+								<!-- Edit -->
+								<div class="col-md-4" style="min-height: 50px; margin-top: 25px;">
+									<!-- Edit Modal Trigger -->
+									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+										Edit
+									</button>
+									
+									<!-- Edit Modal -->
+									<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+
+												<!-- Modal Title -->
+												<div class="modal-header">
+													<h5 class="modal-title">Editing</h5>
+													<div class="profile-icon d-flex justify-content-center align-self-center" style="margin-left: 82px;">
+														<div class="align-self-center" style="width: 100%;">
+															<h3 style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0" id="edit-initials"></h3>
+														</div>
+													</div>
+													<h5 class="modal-title" id="edit-fullname"></h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+												</div>
+
+												<!-- Modal Body -->
+												<div class="modal-body">
+													<!--Info-->
+													<div class="info">
+														<form class="row g-3">
+															<div class="col-md-4">
+																<label for="edit-first-name" class="form-label">First Name</label>
+																<input type="name" class="form-control" id="edit-first-name">
+															</div>
+															<div class="col-md-4">
+																<label for="edit-last-name" class="form-label">Last Name</label>
+																<input type="name" class="form-control" id="edit-last-name">
+															</div>
+															<div class="col-md-4">
+																<label for="edit-phone-number" class="form-label">Phone Number</label>
+																<input type="phone-number" class="form-control" id="edit-phone-number">
+															</div>
+															<div class="col-8">
+																<label for="edit-address" class="form-label">Address</label>
+																<input type="text" class="form-control" id="edit-address" placeholder="1234 Main St">
+															</div>
+															<div class="col-md-4">
+																<label for="edit-zip" class="form-label">Zip</label>
+																<input type="text" class="form-control" id="edit-zip">
+															</div>
+															<div class="col-md-8">
+																<label for="edit-city" class="form-label">City</label>
+																<input type="text" class="form-control" id="edit-city">
+															</div>
+															<div class="col-md-4">
+																<label for="edit-state" class="form-label">State</label>
+																<select id="edit-state" class="form-select">
+																	<option selected>Choose...</option>
+																	<option value="AL">Alabama</option>
+																	<option value="AK">Alaska</option>
+																	<option value="AZ">Arizona</option>
+																	<option value="AR">Arkansas</option>
+																	<option value="CA">California</option>
+																	<option value="CO">Colorado</option>
+																	<option value="CT">Connecticut</option>
+																	<option value="DE">Delaware</option>
+																	<option value="DC">District Of Columbia</option>
+																	<option value="FL">Florida</option>
+																	<option value="GA">Georgia</option>
+																	<option value="HI">Hawaii</option>
+																	<option value="ID">Idaho</option>
+																	<option value="IL">Illinois</option>
+																	<option value="IN">Indiana</option>
+																	<option value="IA">Iowa</option>
+																	<option value="KS">Kansas</option>
+																	<option value="KY">Kentucky</option>
+																	<option value="LA">Louisiana</option>
+																	<option value="ME">Maine</option>
+																	<option value="MD">Maryland</option>
+																	<option value="MA">Massachusetts</option>
+																	<option value="MI">Michigan</option>
+																	<option value="MN">Minnesota</option>
+																	<option value="MS">Mississippi</option>
+																	<option value="MO">Missouri</option>
+																	<option value="MT">Montana</option>
+																	<option value="NE">Nebraska</option>
+																	<option value="NV">Nevada</option>
+																	<option value="NH">New Hampshire</option>
+																	<option value="NJ">New Jersey</option>
+																	<option value="NM">New Mexico</option>
+																	<option value="NY">New York</option>
+																	<option value="NC">North Carolina</option>
+																	<option value="ND">North Dakota</option>
+																	<option value="OH">Ohio</option>
+																	<option value="OK">Oklahoma</option>
+																	<option value="OR">Oregon</option>
+																	<option value="PA">Pennsylvania</option>
+																	<option value="RI">Rhode Island</option>
+																	<option value="SC">South Carolina</option>
+																	<option value="SD">South Dakota</option>
+																	<option value="TN">Tennessee</option>
+																	<option value="TX">Texas</option>
+																	<option value="UT">Utah</option>
+																	<option value="VT">Vermont</option>
+																	<option value="VA">Virginia</option>
+																	<option value="WA">Washington</option>
+																	<option value="WV">West Virginia</option>
+																	<option value="WI">Wisconsin</option>
+																	<option value="WY">Wyoming</option>
+																</select>
+															</div>
+														</form>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+													<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="editSelectedContact()">Save changes</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="d-flex" style="min-height: 50px; margin-top: 25px;">
+										<div class="profile-icon d-flex justify-content-center align-self-center">
+											<div class="align-self-center" style="width: 100%;">
+												<h3 id="info-initials" style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">NC</h3>
+											</div>
+										</div>
+										<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
+											<h5 id="info-fullname" style="text-align: center; margin: 0; width: 100%;">No Contacts</h5>
+										</div>
+									</div>
+								</div>
+								<!-- Delete -->
+								<div class="col-md-4" style="min-height: 50px; margin-top: 25px;">
+									<!-- Delete Modal Trigger -->
+									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
+										Delete
+									</button>
+									<!-- Delete Modal -->
+									<div class="modal fade" id="deleteModal" data-bs-backdrop="static" tabindex="-1">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+													<button id="delete-btn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="info" style="margin-top: 25px;">
+										<form class="row g-3">
+											<div class="col-md-4">
+												<label for="info-first-name"><strong>First Name</strong></label>
+												<p id="info-first-name">No Contacts</p>
+											</div>
+											<div class="col-md-4">
+												<label for="info-last-name"><strong>Last Name</strong></label>
+												<p id="info-last-name">No Contacts</p>
+											</div>
+											<div class="col-md-4">
+												<label for="info-phone-number"><strong>Phone Number</strong></label>
+												<p id="info-phone-number">No Contacts</p>
+											</div>
+											<div class="col-md-8">
+												<label for="info-address"><strong>Address</strong></label>
+												<p id="info-address">No Contacts</p>
+											</div>
+											<div class="col-md-4">
+												<label for="info-zip"><strong>ZIP</strong></label>
+												<p id="info-zip">No Contacts</p>
+											</div>
+											<div class="col-md-8">
+												<label for="info-city"><strong>City</strong></label>
+												<p id="info-city">No Contacts</p>
+											</div>
+											<div class="col-md-4">
+												<label for="info-state"><strong>State</strong></label>
+												<p id="info-state">No Contacts</p>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-2"></div>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div class="row" style="border-radius: 25px; overflow: hidden;">
-		<div class="loginCard" id="loginView">
-			<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
-				<path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-			</svg>
-			<h3 id="welcome" class="mb-3">Welcome</h3>
-			<p class="mb-3">Seems you're a bit early to the party!<br/>In the meantime, check out our <a href="https://github.com/TylerMathis/COP4331G1P1">GitHub</a> for updates.</p>
-			<a href="javascript:doLogout()">Logout...</a>
-		</div>
-	</div>
+	
 </div>
 
 </body>

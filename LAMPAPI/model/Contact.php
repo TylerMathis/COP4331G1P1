@@ -85,6 +85,6 @@ class Contact
     {
         return array("UserID" => $this->userID, "FirstName" => $this->firstName, "LastName" => $this->lastName,
             "PhoneNumber" => $this->phoneNumber, "Address" => $this->address, "City" => $this->city,
-            "State" => $this->state, "ZIP" => $this->id, "ID" => $this->id);
+            "State" => $this->state, "ZIP" => $this->zip, "ID" => $this->id);
     }
 }

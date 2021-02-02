@@ -2,5 +2,5 @@
 window.onload = function () {
     populateUserCache();
     welcomeUser();
-    loadHiRes();
+    populateContacts(true);
 };

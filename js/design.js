@@ -15,7 +15,7 @@ function loadHiRes() {
 // Displays a notification to the user
 function displayNotification(title, desc, type) {
 	let alertType = "alert-" + type;
-	let loginView = document.getElementById("loginView");
+	let notificationLanding = document.getElementById("notificationLanding");
 
 	if (document.getElementById("notiDiv") != null) {
 		let curNoti = document.getElementById("notiDiv");
@@ -38,5 +38,5 @@ function displayNotification(title, desc, type) {
 	notiDesc.style.marginBottom = "0px";
 	notiDiv.appendChild(notiDesc);
 
-	loginView.prepend(notiDiv);
+	notificationLanding.prepend(notiDiv);
 }
