@@ -35,6 +35,11 @@ body {
 
 .contact-card:hover {
   background-color: #e0e0e0;
+  transition: 0.3s;
+}
+
+.list-group-item.active {
+  transition: 0.3s;
 }
 
 .beveledBox {
