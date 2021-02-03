@@ -54,6 +54,20 @@ body {
   overflow: hidden;
 }
 
+.form-control[type=text] {
+  height: 40px;
+  background-color: #e0e0e0;
+  border: none;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.form-control[type=text]:focus {
+  background-color: #e0e0e0;
+}
+
 h3.profile-ab{
   text-align: center;
   font-weight: bold;
