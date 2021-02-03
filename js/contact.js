@@ -165,7 +165,7 @@ function appendContactLink(contact) {
 	<div class="list-group-item d-flex contact-card" style="min-height: 50px">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
-				<h3 style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">${contactInitials}</h3>
+				<h3 class="profile-ab">${contactInitials}</h3>
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">

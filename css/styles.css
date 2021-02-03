@@ -48,10 +48,17 @@ body {
   max-height: 40px;
   min-width: 40px;
   border-radius: 20px;
-  background-color: gray;
+  background-color: #c2c2c2;
   color: white;
   margin: 5px;
   overflow: hidden;
+}
+
+h3.profile-ab{
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 0
 }
 
 .loginHeader {
