@@ -37,7 +37,7 @@
 	</div>
 
 	<!--Contacts-->
-	<div class="d-flex" style="justify-items: left;">
+	<div class="d-flex" style="justify-items: left; width: 100%">
 		<div class="p-3 beveledBox" style="margin-right: 20px; min-width: 350px">
 			<div class="d-flex" style="justify-content: space-between; align-items: center;">
 				<h1 style="text-align: left">Contacts</h1>
@@ -67,7 +67,7 @@
 			</ul>
 		</div>
 
-		<div class="p-3 beveledBox" id="notificationLanding" style="max-width: 1000px;">
+		<div class="p-3 beveledBox" id="notificationLanding" style="width: 100%;">
 			<!-- New -->
 			<div class="d-flex" style="align-items: center">
 				<!-- New Modal -->
@@ -180,28 +180,26 @@
 			</div>
 			<div>
 				<div class="d-flex align-items-center w-100" style="padding: 5px; justify-content: space-between;">
-					<nav class="navbar navbar-light bg-light" style="width: 100%; height: 70px">
-						<a class="navbar-brand mb-0 h1" href="#">Contact Info</a>
-						<div>
-							<button class="btn btn-primary rounded">
-								<div class="d-flex align-items-center">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-										<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-										<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-									</svg>
-									<h5 style="margin: 0; padding-left: 5px;">Edit</h5>
-								</div>
-							</button>
-							<button class="btn btn-danger rounded">
-								<div class="d-flex align-items-center">
-									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-										<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-									</svg>
-									<h5 style="margin: 0; padding-left: 5px;">Delete</h5>
-								</div>
-							</button>
-						</div>
-					</nav>
+					<h1>Contact Info</h1>
+					<div>
+						<button class="btn btn-primary rounded" data-bs-toggle="modal" data-bs-target="#editModal">
+							<div class="d-flex align-items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+									<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+									<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+								</svg>
+								<h5 style="margin: 0; padding-left: 5px;">Edit</h5>
+							</div>
+						</button>
+						<button class="btn btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal">
+							<div class="d-flex align-items-center">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+									<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+								</svg>
+								<h5 style="margin: 0; padding-left: 5px;">Delete</h5>
+							</div>
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -211,11 +209,6 @@
 					<div class="row">
 						<!-- Edit -->
 						<div class="col-md-4" style="min-height: 50px; margin-top: 25px;">
-							<!-- Edit Modal Trigger -->
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
-								Edit
-							</button>
-
 							<!-- Edit Modal -->
 							<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1">
 								<div class="modal-dialog modal-dialog-centered">
@@ -344,10 +337,6 @@
 						</div>
 						<!-- Delete -->
 						<div class="col-md-4" style="min-height: 50px; margin-top: 25px;">
-							<!-- Delete Modal Trigger -->
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal">
-								Delete
-							</button>
 							<!-- Delete Modal -->
 							<div class="modal fade" id="deleteModal" data-bs-backdrop="static" tabindex="-1">
 								<div class="modal-dialog modal-dialog-centered">
