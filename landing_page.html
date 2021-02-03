@@ -67,7 +67,7 @@
 			</ul>
 		</div>
 
-		<div class="p-3 beveledBox" id="notificationLanding" style="width: 100%;">
+		<div class="p-3 beveledBox" id="notificationLanding" style="width: 100%; overflow: hidden">
 			<!-- New -->
 			<div class="d-flex" style="align-items: center">
 				<!-- New Modal -->
@@ -204,7 +204,7 @@
 			</div>
 
 			<!-- Data -->
-			<div style="display: flex; flex-direction: column;border: 1px solid #ccc; border-radius: 16px; width: 100%">
+			<div style="display: flex; flex-direction: column; width: 100%;">
 				<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
@@ -333,35 +333,42 @@
 						</div>
 					</div>
 				</div>
-
-				<div id="info-pane" class="info" style="display: flex; flex-direction: column; justify-items: center; align-items: center">
-					<div class="profile-icon enlarged d-flex justify-content-center align-self-center">
-						<div class="align-self-center" style="width: 100%;">
-							<h3 class="profile-ab enlarged" id="info-initials" style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">NC</h3>
-						</div>
-					</div>
-					<h1 id="info-full-name">First Last</h1>
-					<div data-contact-key="PhoneNumber">
-						<label for="info-phone-number"><strong>Phone Number</strong></label>
-						<p id="info-phone-number">No Contacts</p>
-					</div>
-					<div data-contact-key="Address">
-						<label for="info-address"><strong>Address</strong></label>
-						<p id="info-address">No Contacts</p>
-					</div>
-					<div data-contact-key="ZIP">
-						<label for="info-zip"><strong>ZIP</strong></label>
-						<p id="info-zip">No Contacts</p>
-					</div>
-					<div data-contact-key="City">
-						<label for="info-city"><strong>City</strong></label>
-						<p id="info-city">No Contacts</p>
-					</div>
-					<div data-contact-key="State">
-						<label for="info-state"><strong>State</strong></label>
-						<p id="info-state">No Contacts</p>
+				<div class="profile-icon enlarged d-flex justify-content-center align-self-center">
+					<div class="align-self-center" style="width: 100%;">
+						<h3 class="profile-ab enlarged" id="info-initials" style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">NC</h3>
 					</div>
 				</div>
+				<h1 id="info-full-name">First Last</h1>
+				<div style="display: flex; flex-direction: column; align-items: center; overflow: auto">
+					<div id="info-pane" class="info" style="display: flex; flex-direction: column; width: 600px;">
+						<div data-contact-key="PhoneNumber">
+							<label class="contact-field" for="info-phone-number">Phone Number</label>
+							<p class="contact-field" id="info-phone-number">No Contacts</p>
+							<hr>
+						</div>
+
+						<div data-contact-key="Address">
+							<label class="contact-field" for="info-address">Address</label>
+							<p class="contact-field" id="info-address">No Contacts</p>
+							<hr>
+						</div>
+						<div data-contact-key="ZIP">
+							<label class="contact-field" for="info-zip">ZIP</label>
+							<p class="contact-field" id="info-zip">No Contacts</p>
+							<hr>
+						</div>
+						<div data-contact-key="City">
+							<label class="contact-field" for="info-city">City</label>
+							<p class="contact-field" id="info-city">No Contacts</p>
+							<hr>
+						</div>
+						<div data-contact-key="State">
+							<label class="contact-field" for="info-state">State</label>
+							<p class="contact-field" id="info-state">No Contacts</p>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>

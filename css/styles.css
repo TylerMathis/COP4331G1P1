@@ -39,7 +39,7 @@ body {
 
 .beveledBox {
   background-color: white;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 .profile-icon {
@@ -85,6 +85,19 @@ h3.profile-ab{
   text-transform: uppercase;
 }
 
+label.contact-field {
+  width: 100%;
+  font-size: 15px;
+  text-align: left;
+  color: gray;
+}
+
+p.contact-field {
+  font-size: 25px;
+  text-align: left;
+  margin-bottom: 0;
+}
+
 h3.profile-ab.enlarged{
   text-align: center;
   margin-bottom: 0;
@@ -117,6 +130,7 @@ h3.profile-ab.enlarged{
   background-color: #00000055;
   border-radius: 25px;
   padding: 25px;
+  max-height: 100%;
 }
 
 .btn.rounded {
@@ -225,7 +239,6 @@ label {
 }
 
 .loginData {
-  display: inline-block;
   grid-row: 4;
   display: grid;
   font-family: "Roboto", sans-serif;
