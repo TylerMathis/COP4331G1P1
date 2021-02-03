@@ -103,6 +103,11 @@ h3.profile-ab{
   padding: 25px;
 }
 
+.btn.rounded {
+  height: 40px;
+  border-radius: 20px !important;
+}
+
 .box {
   display: flex;
   justify-content: center;
@@ -250,12 +255,6 @@ label {
   opacity: 50%;
 }
 
-a:link {
-  font-size: small;
-  color: rgb(74, 154, 246);
-  background-color: transparent;
-  text-decoration: none;
-}
 
 .createAccount {
   font-size: 10px;
