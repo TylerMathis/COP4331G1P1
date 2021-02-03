@@ -26,7 +26,14 @@ body {
 }
 
 .contacts {
-  /*max-height: 100vh;*/
+  overflow: auto;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.list-group-item {
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
 }
 
 .contact-link {
@@ -62,7 +69,7 @@ body {
 .profile-icon.enlarged {
   width: 80px;
   height: 80px;
-  max-height: 80px;
+  min-height: 80px;
   min-width: 80px;
   border-radius: 40px;
   background-color: #c2c2c2;
@@ -132,10 +139,12 @@ h3.profile-ab.enlarged{
 
 .container.backgroundContainer {
   max-width: 1500px;
+  width: 90%;
   background-color: #00000055;
   border-radius: 25px;
   padding: 25px;
-  max-height: 1500px;
+  height: 90%;
+  max-height: 1000px;
 }
 
 .btn.rounded {

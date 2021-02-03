@@ -18,7 +18,7 @@
 <body class="d-flex align-items-center text-center justify-content-center" style="background-color: cornflowerblue; height: 100%;">
 
 <div class="container backgroundContainer d-flex flex-column align-items-center">
-	<div class="p-1 beveledBox mb-3" style="width: 100%; min-width: 60px">
+	<div class="p-1 beveledBox mb-3" style="width: 100%; min-width: 60px;">
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<div class="container-fluid">
 				<div style="font-size: 30px;">
@@ -37,8 +37,8 @@
 	</div>
 
 	<!--Contacts-->
-	<div class="d-flex" style="justify-items: left; width: 100%">
-		<div class="p-3 beveledBox d-flex flex-column" style="margin-right: 20px; min-width: 350px; max-height: 700px;">
+	<div class="d-flex" style="justify-items: left; width: 100%; flex: 1 1 auto; overflow: auto;">
+		<div class="p-3 beveledBox d-flex flex-column" style="margin-right: 20px; min-width: 350px;">
 			<div class="d-flex" style="justify-content: space-between; align-items: center;">
 				<h1 style="text-align: left">Contacts</h1>
 				<button data-bs-toggle="modal" data-bs-target="#newModal" type="button" class="btn btn-primary add-button">
@@ -62,12 +62,12 @@
 				<!--						<li><a class="dropdown-item" href="#">Address</a></li>-->
 				<!--					</ul>-->
 			</div>
-			<ul class="list-group contacts" id="contactLanding" style="overflow: auto;">
+			<ul class="list-group contacts" id="contactLanding" >
 				<!--Contact Group-->
 			</ul>
 		</div>
 
-		<div class="p-3 beveledBox d-flex flex-column" id="notificationLanding" style="width: 100%; min-height: 700px; overflow: auto">
+		<div class="p-3 beveledBox d-flex flex-column" id="notificationLanding" style="width: 100%; min-width: 350px; overflow: auto; flex: 1 1 auto">
 			<!-- New -->
 			<div class="d-flex" style="align-items: center">
 				<!-- New Modal -->
@@ -204,7 +204,7 @@
 			</div>
 
 			<!-- Data -->
-			<div style="display: flex; flex-direction: column; width: 100%;">
+			<div style="display: flex; flex-direction: column; width: 100%; overflow: auto">
 				<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
@@ -340,7 +340,7 @@
 				</div>
 				<h1 id="info-full-name">First Last</h1>
 				<div style="display: flex; flex-direction: column; align-items: center;">
-					<div id="info-pane" class="info" style="display: flex; flex-direction: column; width: 600px; overflow: auto">
+					<div id="info-pane" class="info" style="display: flex; flex-direction: column; width: 100%; max-width: 500px; overflow: auto">
 						<div data-contact-key="PhoneNumber">
 							<label class="contact-field" for="info-phone-number">Phone Number</label>
 							<p class="contact-field" id="info-phone-number">No Contacts</p>
