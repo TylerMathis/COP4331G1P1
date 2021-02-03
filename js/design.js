@@ -23,20 +23,25 @@ function displayNotification(title, desc, type) {
 	}
 
 	let notiDiv = document.createElement("div");
-	notiDiv.className = "alert " + alertType;
+	notiDiv.className = "alert " + alertType + " alert-dismissable fade show";
 	notiDiv.style.width = "75%";
 	notiDiv.id = "notiDiv";
+
+	let notiHeaderDiv = document.createElement("div");
+	notiHeaderDiv.className = "d-flex";
+	notiHeaderDiv.style.justifyContent = "space-between";
+	notiDiv.appendChild(notiHeaderDiv);
 
 	let notiHeader = document.createElement("h5");
 	notiHeader.style.textAlign = "left";
 	notiHeader.innerHTML = title;
-	notiDiv.appendChild(notiHeader);
+	notiHeaderDiv.appendChild(notiHeader);
 
 	let notiClose = document.createElement("button");
 	notiClose.type = "button";
-	notiClose.className = "btn.close";
+	notiClose.className = "btn-close";
 	notiClose.dataset.bsDismiss = "alert";
-	notiHeader.appendChild(notiClose);
+	notiHeaderDiv.appendChild(notiClose);
 
 	let notiDesc = document.createElement("p");
 	notiDesc.style.textAlign = "left";
