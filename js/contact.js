@@ -7,6 +7,7 @@ let selectedLink = undefined;
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
+$(document).on("click", "#update-btn", onClickUpdate);
 
 function onClickContact(e) {
 	e.preventDefault();
@@ -48,7 +49,7 @@ function onClickCreate(e) {
 	e.preventDefault();
 
 	// Fetch DOM and serialize
-	const form = document.getElementById("editForm");
+	const form = document.getElementById("new-form");
 	const data = new FormData(form);
 
 	// Get Form Data
@@ -64,6 +65,30 @@ function onClickCreate(e) {
 	contact.ID = createContact(contact);
 
 	// Update DOM
+	appendContactLink(contact);
+}
+
+function onClickUpdate(e) {
+	e.preventDefault();
+
+	// Fetch DOM and serialize
+	const form = document.getElementById("update-form");
+	const data = new FormData(form);
+
+	// Merge form data
+	let contact = selectedContact;
+	data.forEach(function (value, key) {
+		if (value !== "")
+			contact[key] = value;
+	});
+
+	console.log(contact);
+
+	// Update DB
+	updateContact(contact);
+
+	// Update DOM
+	removeContactLink(contact.ID);
 	appendContactLink(contact);
 }
 
@@ -88,15 +113,15 @@ function displayContact(contact) {
 	document.getElementById("info-state").innerHTML = contact["State"];
 
 	// Get editing ready
-	document.getElementById("edit-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
-	document.getElementById("edit-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
-	document.getElementById("edit-first-name").placeholder = contact["FirstName"];
-	document.getElementById("edit-last-name").placeholder = contact["LastName"];
-	document.getElementById("edit-phone-number").placeholder = contact["PhoneNumber"];
-	document.getElementById("edit-address").placeholder = contact["Address"];
-	document.getElementById("edit-zip").placeholder = contact["ZIP"];
-	document.getElementById("edit-city").placeholder = contact["City"];
-	document.getElementById("edit-state").value = contact["State"];
+	// document.getElementById("update-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
+	// document.getElementById("update-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
+	document.getElementById("update-first-name").placeholder = contact["FirstName"];
+	document.getElementById("update-last-name").placeholder = contact["LastName"];
+	document.getElementById("update-phone-number").placeholder = contact["PhoneNumber"];
+	document.getElementById("update-address").placeholder = contact["Address"];
+	document.getElementById("update-zip").placeholder = contact["ZIP"];
+	document.getElementById("update-city").placeholder = contact["City"];
+	document.getElementById("update-state").value = contact["State"];
 }
 
 /**
@@ -179,10 +204,4 @@ function appendContactLink(contact) {
 	contactLink.className = "contact-link";
 
 	contactLanding.appendChild(contactLink);
-}
-
-// Temporary service alert
-function editSelectedContact()
-{
-	alert("We don't support this feature yet, check back later!");
 }
