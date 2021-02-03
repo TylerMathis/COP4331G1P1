@@ -162,14 +162,14 @@ function appendContactLink(contact) {
 
 	// Set HTML
 	contactLink.innerHTML = `
-	<div class="list-group-item d-flex contact-card" style="min-height: 50px">
+	<div class="list-group-item d-flex contact-card" style="min-height: 50px;">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
 				<h3 class="profile-ab">${contactInitials}</h3>
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
-			<h5 style="text-align: center; margin: 0; width: 100%;">${contactFullName}</h5>
+			<h5 style="text-align: center; margin: 0; width: 100%; cursor: pointer">${contactFullName}</h5>
     	</div>
     </div>`
 

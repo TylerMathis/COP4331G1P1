@@ -54,6 +54,20 @@ body {
   overflow: hidden;
 }
 
+.form-control[type=text] {
+  height: 40px;
+  background-color: #e0e0e0;
+  border: none;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.form-control[type=text]:focus {
+  background-color: #e0e0e0;
+}
+
 h3.profile-ab{
   text-align: center;
   font-weight: bold;
@@ -87,6 +101,11 @@ h3.profile-ab{
   background-color: #00000055;
   border-radius: 25px;
   padding: 25px;
+}
+
+.btn.rounded {
+  height: 40px;
+  border-radius: 20px !important;
 }
 
 .box {
@@ -236,12 +255,6 @@ label {
   opacity: 50%;
 }
 
-a:link {
-  font-size: small;
-  color: rgb(74, 154, 246);
-  background-color: transparent;
-  text-decoration: none;
-}
 
 .createAccount {
   font-size: 10px;
