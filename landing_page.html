@@ -38,7 +38,7 @@
 
 	<!--Contacts-->
 	<div class="d-flex" style="justify-items: left; width: 100%">
-		<div class="p-3 beveledBox" style="margin-right: 20px; min-width: 350px">
+		<div class="p-3 beveledBox d-flex flex-column" style="margin-right: 20px; min-width: 350px; max-height: 650px;">
 			<div class="d-flex" style="justify-content: space-between; align-items: center;">
 				<h1 style="text-align: left">Contacts</h1>
 				<button data-bs-toggle="modal" data-bs-target="#newModal" type="button" class="btn btn-primary add-button">
@@ -62,12 +62,12 @@
 				<!--						<li><a class="dropdown-item" href="#">Address</a></li>-->
 				<!--					</ul>-->
 			</div>
-			<ul class="list-group contacts overflow-auto" id="contactLanding">
+			<ul class="list-group contacts" id="contactLanding" style="overflow: auto;">
 				<!--Contact Group-->
 			</ul>
 		</div>
 
-		<div class="p-3 beveledBox" id="notificationLanding" style="width: 100%; overflow: hidden">
+		<div class="p-3 beveledBox d-flex flex-column" id="notificationLanding" style="width: 100%; max-height: 700px; overflow: auto">
 			<!-- New -->
 			<div class="d-flex" style="align-items: center">
 				<!-- New Modal -->
@@ -339,8 +339,8 @@
 					</div>
 				</div>
 				<h1 id="info-full-name">First Last</h1>
-				<div style="display: flex; flex-direction: column; align-items: center; overflow: auto">
-					<div id="info-pane" class="info" style="display: flex; flex-direction: column; width: 600px;">
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<div id="info-pane" class="info" style="display: flex; flex-direction: column; width: 600px; overflow: auto">
 						<div data-contact-key="PhoneNumber">
 							<label class="contact-field" for="info-phone-number">Phone Number</label>
 							<p class="contact-field" id="info-phone-number">No Contacts</p>

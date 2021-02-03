@@ -26,7 +26,7 @@ body {
 }
 
 .contacts {
-  max-height: 60vh;
+  /*max-height: 100vh;*/
 }
 
 .contact-link {
@@ -135,7 +135,7 @@ h3.profile-ab.enlarged{
   background-color: #00000055;
   border-radius: 25px;
   padding: 25px;
-  max-height: 100%;
+  max-height: 1500px;
 }
 
 .btn.rounded {
