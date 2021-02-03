@@ -54,6 +54,15 @@ body {
   overflow: hidden;
 }
 
+.profile-icon.enlarged {
+  width: 80px;
+  height: 80px;
+  max-height: 80px;
+  min-width: 80px;
+  border-radius: 40px;
+  background-color: #c2c2c2;
+}
+
 .form-control[type=text] {
   height: 40px;
   background-color: #e0e0e0;
@@ -70,9 +79,16 @@ body {
 
 h3.profile-ab{
   text-align: center;
-  font-weight: bold;
+  font-weight: bold !important;
   font-size: 18px;
-  margin-bottom: 0
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+h3.profile-ab.enlarged{
+  text-align: center;
+  margin-bottom: 0;
+  font-size: 30px !important;
 }
 
 .loginHeader {
