@@ -34,7 +34,7 @@ body {
 }
 
 .contact-card:hover {
-  background-color: #0000aa22;
+  background-color: #e0e0e0;
 }
 
 .beveledBox {
@@ -43,13 +43,22 @@ body {
 }
 
 .profile-icon {
-  width: 30px;
-  height: 30px;
-  max-height: 30px;
-  min-width: 30px;
-  border-radius: 15px;
-  background-color: lightblue;
+  width: 40px;
+  height: 40px;
+  max-height: 40px;
+  min-width: 40px;
+  border-radius: 20px;
+  background-color: #c2c2c2;
+  color: white;
   margin: 5px;
+  overflow: hidden;
+}
+
+h3.profile-ab{
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 0
 }
 
 .loginHeader {
@@ -283,5 +292,9 @@ a:link {
   left: 0;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+}
+
+a.contact-link {
+  text-decoration: none;
 }
 /* CREATE ACCOUNT */

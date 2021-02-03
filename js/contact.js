@@ -1,6 +1,7 @@
 // Local store for all contacts
 let contacts = new Map;
 let selectedContact = undefined;
+let selectedLink = undefined;
 
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
@@ -15,6 +16,19 @@ function onClickContact(e) {
 
 	// Fetch contact from local cache.
 	const contact = contacts.get(contactID);
+
+	// Deselect old link
+	if (selectedLink !== undefined) {
+		deselect(selectedLink);
+	}
+
+	// Update selected index.
+	selectedContact = contact;
+
+	// Update selected link;
+	selectedLink = this;
+	select(selectedLink);
+
 	displayContact(contact);
 }
 
@@ -53,10 +67,15 @@ function onClickCreate(e) {
 	appendContactLink(contact);
 }
 
-function displayContact(contact) {
+function select(contactLink) {
+	contactLink.querySelector(".list-group-item").classList.add("active");
+}
 
-	// Update selected index.
-	selectedContact = contact;
+function deselect(contactLink) {
+	contactLink.querySelector(".list-group-item").classList.remove("active");
+}
+
+function displayContact(contact) {
 
 	document.getElementById("info-fullname").innerHTML = contact.FirstName + " " + contact.LastName;
 	document.getElementById("info-initials").innerHTML = contact.FirstName[0] + contact["LastName"][0];
@@ -146,7 +165,7 @@ function appendContactLink(contact) {
 	<div class="list-group-item d-flex contact-card" style="min-height: 50px">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
-				<h3 style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">${contactInitials}</h3>
+				<h3 class="profile-ab">${contactInitials}</h3>
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
