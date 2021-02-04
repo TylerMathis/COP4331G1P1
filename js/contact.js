@@ -50,13 +50,24 @@ function onClickCreate(e) {
 
 	// Fetch DOM and serialize
 	const form = document.getElementById("new-form");
+
+	// Validate all fields
+	if (form.checkValidity() === false) {
+		form.classList.add("was-validated");
+		return;
+	}
+
+	// Dismiss form
+	$("#newModal").modal("hide");
+
+	// Get form data
 	const data = new FormData(form);
 
-	// Get Form Data
+	// Populate contact
 	const contact = {};
 	data.forEach(function (value, key) {
 		if (value === "" || value === "Choose...")
-			contact[key] = "No " + key;
+			contact[key] = null;
 		else
 			contact[key] = value;
 	});
