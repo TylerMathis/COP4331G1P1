@@ -155,9 +155,10 @@ function populateContacts(displayFirst)
 
 	// Display first contact if requested.
 	if (displayFirst && contacts.size > 0) {
+		selectedContact = contacts.entries().next().value[1]
 		selectedLink = contactLanding.firstChild;
 		select(contactLanding.firstChild);
-		displayContact(contacts.entries().next().value[1]);
+		displayContact(selectedContact);
 	}
 
 }
