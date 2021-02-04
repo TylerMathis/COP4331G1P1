@@ -55,7 +55,10 @@ function onClickCreate(e) {
 	// Get Form Data
 	const contact = {};
 	data.forEach(function (value, key) {
-		contact[key] = value;
+		if (value === "" || value === "Choose...")
+			contact[key] = "No " + key;
+		else
+			contact[key] = value;
 	});
 
 	// Update DB and assign ID's
