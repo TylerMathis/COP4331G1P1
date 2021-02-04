@@ -18,6 +18,8 @@ function onClickContact(e) {
 	// Fetch contact from local cache.
 	const contact = contacts.get(contactID);
 
+	console.log(contact);
+
 	// Deselect old link
 	if (selectedLink !== undefined) {
 		deselect(selectedLink);
@@ -102,62 +104,56 @@ function deselect(contactLink) {
 	contactLink.querySelector(".list-group-item").classList.remove("active");
 }
 
-function displayContact(contact) {
+/**
+ * Displays the contact information for the given contact.
+ *
+ * @param contactRef The contact to display
+ */
+function displayContact(contactRef) {
+	// Create a copy of the pass-by-reference parameter.
+	const contact = Object.assign({}, contactRef);
 
-	const infoDiv = document.getElementById("info-pane");
+	// Add auxiliary information
+	contact.FullName = contact.FirstName + " " + contact.LastName;
+	contact.Initials = contact.FirstName[0] + contact.LastName[0];
 
-	// Update auxiliary views.
-	const contactProfile = document.getElementById("info-initials");
-	const fullNameHeader = document.getElementById("info-full-name");
-	const editModal = document.getElementById("edit-form");
+	// Create a functional parser object.
+	const parser = element =>
+		({
+			key: element.dataset.contactKey,
+			targetID: element.dataset.contactTarget
+		});
 
-	contactProfile.innerHTML = contact.FirstName[0] + contact.LastName[0];
-	fullNameHeader.innerHTML = contact.FirstName + " " + contact.LastName;
-
-	// Iterate over and update standard contact fields.
-	for (let i = 0; i < infoDiv.children.length; i++) {
-		const infoChild = infoDiv.children[i];
-
-		// Skip over not standard views.
-		if (!("contactKey" in infoChild.dataset)) {
-			continue;
-		}
-
-		const infoKey = infoChild.dataset.contactKey;
-
-		if (contact[infoKey] === "") {
-			infoChild.style.display = "none";
+	// Update info DOM
+	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
+		const data = parser(element);
+		console.log(element);
+		if (data.key === "") {
+			element.style.display = "none";
 		} else {
-			infoChild.style.removeProperty("display");
+			element.style.removeProperty("display");
 		}
 
-		const body = infoChild.querySelector("p");
+		$(data.targetID).text(contact[data.key]);
+	});
 
-		// Lookup the data attribute on the div an assign the associated value.
-		body.innerHTML = contact[infoChild.dataset.contactKey];
-	}
-
-	for (let i = 0; i < editModal.children.length; i++) {
-		const editChild = editModal.children[i];
-
-		// Skip over not standard views.
-		if (!("contactKey" in editChild.dataset)) {
-			continue;
-		}
+	// Update edit DOM
+	$("#edit-form [data-contact-key][data-contact-target]").each(function (i, element) {
+		const data = parser(element);
 
 		// Check if input or select
-		const input = editChild.querySelector("input");
-		const select = editChild.querySelector("select");
+		const input = element.querySelector("input");
+		const select = element.querySelector("select");
 
 		// Reset the fields
 		if (input) {
-			input.placeholder = contact[editChild.dataset.contactKey];
+			input.placeholder = contact[data.key];
 			input.value = "";
-		}
-		else if (select) {
+		} else if (select) {
 			select.selectedIndex = 0;
 		}
-	}
+
+	});
 }
 
 /**
