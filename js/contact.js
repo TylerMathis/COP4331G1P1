@@ -174,28 +174,32 @@ function displayContact(contactRef) {
  * Clears all fields in the create modal
  */
 function clearCreate() {
-	const newModal = document.getElementById("new-form");
 
-	for (let i = 0; i < newModal.children.length; i++) {
-		const editChild = newModal.children[i];
+	// Remove validation
+	document.getElementById("new-form").classList.remove("was-validated");
 
-		// Skip over not standard views.
-		if (!("contactKey" in editChild.dataset)) {
-			continue;
-		}
+	// Create a functional parser object.
+	const parser = element =>
+		({
+			key: element.dataset.contactKey,
+			targetID: element.dataset.contactTarget
+		});
+
+	// Update create DOM
+	$("#new-form [data-contact-key][data-contact-target]").each(function (i, element) {
+		const data = parser(element);
 
 		// Check if input or select
-		const input = editChild.querySelector("input");
-		const select = editChild.querySelector("select");
+		const input = element.querySelector("input");
+		const select = element.querySelector("select");
 
 		// Reset the fields
 		if (input) {
 			input.value = "";
-		}
-		else if (select) {
+		} else if (select) {
 			select.selectedIndex = 0;
 		}
-	}
+	});
 }
 
 /**
