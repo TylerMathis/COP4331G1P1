@@ -77,7 +77,8 @@ function onClickCreate(e) {
 	contact.ID = createContact(contact);
 
 	// Update DOM
-	deselect(selectedLink);
+	if (selectedLink)
+		deselect(selectedLink);
 	selectedLink = appendContactLink(contact);
 	select(selectedLink);
 	displayContact(contact);
