@@ -105,35 +105,37 @@
 			<div class="contact-data">
 				<div id="edit-modal-prop"></div>
 				<div id="delete-modal-prop"></div>
-				<div class="profile-icon enlarged d-flex justify-content-center align-self-center mt-5">
-					<div class="align-self-center" style="width: 100%;">
-						<h3 class="profile-ab enlarged" id="info-initials" style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">NC</h3>
-					</div>
-				</div>
-				<h1 id="info-full-name">First Last</h1>
 				<div class="info-pane">
 					<div id="info-pane" class="contact-info">
-						<div data-contact-key="PhoneNumber">
+						<div class="profile-icon enlarged d-flex justify-content-center align-self-center mt-5" data-contact-key="Initials" data-contact-target="#info-initials">
+							<div class="align-self-center" style="width: 100%;">
+								<h3 class="profile-ab enlarged" id="info-initials" style="text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">NC</h3>
+							</div>
+						</div>
+						<h1 id="info-full-name" data-contact-key="FullName" data-contact-target="#info-full-name">
+							First Last
+						</h1>
+						<div data-contact-key="PhoneNumber" data-contact-target="#info-phone-number">
 							<label class="contact-field" for="info-phone-number">Phone Number</label>
 							<p class="contact-field" id="info-phone-number">No Contacts</p>
 							<hr>
 						</div>
-						<div data-contact-key="Address">
+						<div data-contact-key="Address" data-contact-target="#info-address">
 							<label class="contact-field" for="info-address">Address</label>
 							<p class="contact-field" id="info-address">No Contacts</p>
 							<hr>
 						</div>
-						<div data-contact-key="ZIP">
+						<div data-contact-key="ZIP" data-contact-target="#info-zip">
 							<label class="contact-field" for="info-zip">ZIP</label>
 							<p class="contact-field" id="info-zip">No Contacts</p>
 							<hr>
 						</div>
-						<div data-contact-key="City">
+						<div data-contact-key="City" data-contact-target="#info-city">
 							<label class="contact-field" for="info-city">City</label>
 							<p class="contact-field" id="info-city">No Contacts</p>
 							<hr>
 						</div>
-						<div data-contact-key="State">
+						<div data-contact-key="State" data-contact-target="#info-state">
 							<label class="contact-field" for="info-state">State</label>
 							<p class="contact-field" id="info-state">No Contacts</p>
 						</div>
