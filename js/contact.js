@@ -61,7 +61,13 @@ function onClickCreate(e) {
 	contact.ID = createContact(contact);
 
 	// Update DOM
-	appendContactLink(contact);
+	deselect(selectedLink);
+	selectedLink = appendContactLink(contact);
+	select(selectedLink);
+	displayContact(contact);
+
+	// Clear the modal for next time
+	clearCreate();
 }
 
 function onClickEdit(e) {
@@ -72,7 +78,7 @@ function onClickEdit(e) {
 	const data = new FormData(form);
 
 	// Merge form data
-	let contact = selectedContact;
+	const contact = selectedContact;
 	data.forEach(function (value, key) {
 		if (!(value === "" || value === "Choose..."))
 			contact[key] = value;
@@ -83,7 +89,9 @@ function onClickEdit(e) {
 
 	// Update DOM
 	removeContactLink(contact.ID);
-	appendContactLink(contact);
+	selectedLink = appendContactLink(contact);
+	select(selectedLink);
+	displayContact(contact);
 }
 
 function select(contactLink) {
@@ -141,8 +149,37 @@ function displayContact(contact) {
 		const input = editChild.querySelector("input");
 		const select = editChild.querySelector("select");
 
+		// Reset the fields
 		if (input) {
 			input.placeholder = contact[editChild.dataset.contactKey];
+			input.value = "";
+		}
+		else if (select) {
+			select.selectedIndex = 0;
+		}
+	}
+}
+
+/**
+ * Clears all fields in the create modal
+ */
+function clearCreate() {
+	const newModal = document.getElementById("new-form");
+
+	for (let i = 0; i < newModal.children.length; i++) {
+		const editChild = newModal.children[i];
+
+		// Skip over not standard views.
+		if (!("contactKey" in editChild.dataset)) {
+			continue;
+		}
+
+		// Check if input or select
+		const input = editChild.querySelector("input");
+		const select = editChild.querySelector("select");
+
+		// Reset the fields
+		if (input) {
 			input.value = "";
 		}
 		else if (select) {
@@ -178,7 +215,6 @@ function populateContacts(displayFirst)
 		select(contactLanding.firstChild);
 		displayContact(selectedContact);
 	}
-
 }
 
 /**
@@ -201,6 +237,7 @@ function removeContactLink(id) {
  * Appends a contact to the contact list
  *
  * @param contact The contact to be appended
+ * @returns contactLink The contactLink created
  */
 function appendContactLink(contact) {
 
@@ -234,4 +271,6 @@ function appendContactLink(contact) {
 	contactLink.className = "contact-link";
 
 	contactLanding.appendChild(contactLink);
+
+	return contactLink;
 }
