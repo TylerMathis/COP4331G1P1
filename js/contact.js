@@ -82,35 +82,55 @@ function displayContact(contact) {
 	// Update auxiliary views.
 	const contactProfile = document.getElementById("info-initials");
 	const fullNameHeader = document.getElementById("info-full-name");
+	const editModal = document.getElementById("edit-form");
 
 	contactProfile.innerHTML = contact.FirstName[0] + contact.LastName[0];
 	fullNameHeader.innerHTML = contact.FirstName + " " + contact.LastName;
 
-	console.log(contact);
+	console.log(editModal.children);
 
 	// Iterate over and update standard contact fields.
 	for (let i = 0; i < infoDiv.children.length; i++) {
-		const child = infoDiv.children[i];
+		const infoChild = infoDiv.children[i];
 
 		// Skip over not standard views.
-		if (!("contactKey" in child.dataset)) {
+		if (!("contactKey" in infoChild.dataset)) {
 			continue;
 		}
 
-		const key = child.dataset.contactKey;
+		const infoKey = infoChild.dataset.contactKey;
 
-		if (contact[key] === "") {
-			console.log("OK");
-			child.style.display = "none";
+		if (contact[infoKey] === "") {
+			infoChild.style.display = "none";
 		} else {
-			child.style.removeProperty("display");
+			infoChild.style.removeProperty("display");
 		}
 
-		const body = child.querySelector("p");
+		const body = infoChild.querySelector("p");
 
 		// Lookup the data attribute on the div an assign the associated value.
-		body.innerHTML = contact[child.dataset.contactKey];
+		body.innerHTML = contact[infoChild.dataset.contactKey];
 	}
+
+	for (let i = 0; i < editModal.children.length; i++) {
+		const editChild = editModal.children[i];
+
+		console.log(i);
+
+		// Skip over not standard views.
+		if (!("contactKey" in editChild.dataset)) {
+			continue;
+		}
+
+		// Assign edit placeholders
+		const input = editChild.querySelector("input");
+		if (input == null) {
+			continue;
+		}
+
+		input.placeholder = contact[editChild.dataset.contactKey];
+	}
+
 }
 
 /**
@@ -135,6 +155,8 @@ function populateContacts(displayFirst)
 
 	// Display first contact if requested.
 	if (displayFirst && contacts.size > 0) {
+		selectedLink = contactLanding.firstChild;
+		select(contactLanding.firstChild);
 		displayContact(contacts.entries().next().value[1]);
 	}
 
