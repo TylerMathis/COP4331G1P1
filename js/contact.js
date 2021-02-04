@@ -77,26 +77,60 @@ function deselect(contactLink) {
 
 function displayContact(contact) {
 
-	document.getElementById("info-fullname").innerHTML = contact.FirstName + " " + contact.LastName;
-	document.getElementById("info-initials").innerHTML = contact.FirstName[0] + contact["LastName"][0];
-	document.getElementById("info-first-name").innerHTML = contact["FirstName"];
-	document.getElementById("info-last-name").innerHTML = contact["LastName"];
-	document.getElementById("info-phone-number").innerHTML = contact["PhoneNumber"];
-	document.getElementById("info-address").innerHTML = contact["Address"];
-	document.getElementById("info-zip").innerHTML = contact["ZIP"];
-	document.getElementById("info-city").innerHTML = contact["City"];
-	document.getElementById("info-state").innerHTML = contact["State"];
+	const infoDiv = document.getElementById("info-pane");
 
-	// Get editing ready
-	document.getElementById("edit-fullname").innerHTML = contact["FirstName"] + " " + contact["LastName"];
-	document.getElementById("edit-initials").innerHTML = contact["FirstName"][0] + contact["LastName"][0];
-	document.getElementById("edit-first-name").placeholder = contact["FirstName"];
-	document.getElementById("edit-last-name").placeholder = contact["LastName"];
-	document.getElementById("edit-phone-number").placeholder = contact["PhoneNumber"];
-	document.getElementById("edit-address").placeholder = contact["Address"];
-	document.getElementById("edit-zip").placeholder = contact["ZIP"];
-	document.getElementById("edit-city").placeholder = contact["City"];
-	document.getElementById("edit-state").value = contact["State"];
+	// Update auxiliary views.
+	const contactProfile = document.getElementById("info-initials");
+	const fullNameHeader = document.getElementById("info-full-name");
+	const editModal = document.getElementById("edit-form");
+
+	contactProfile.innerHTML = contact.FirstName[0] + contact.LastName[0];
+	fullNameHeader.innerHTML = contact.FirstName + " " + contact.LastName;
+
+	console.log(editModal.children);
+
+	// Iterate over and update standard contact fields.
+	for (let i = 0; i < infoDiv.children.length; i++) {
+		const infoChild = infoDiv.children[i];
+
+		// Skip over not standard views.
+		if (!("contactKey" in infoChild.dataset)) {
+			continue;
+		}
+
+		const infoKey = infoChild.dataset.contactKey;
+
+		if (contact[infoKey] === "") {
+			infoChild.style.display = "none";
+		} else {
+			infoChild.style.removeProperty("display");
+		}
+
+		const body = infoChild.querySelector("p");
+
+		// Lookup the data attribute on the div an assign the associated value.
+		body.innerHTML = contact[infoChild.dataset.contactKey];
+	}
+
+	for (let i = 0; i < editModal.children.length; i++) {
+		const editChild = editModal.children[i];
+
+		console.log(i);
+
+		// Skip over not standard views.
+		if (!("contactKey" in editChild.dataset)) {
+			continue;
+		}
+
+		// Assign edit placeholders
+		const input = editChild.querySelector("input");
+		if (input == null) {
+			continue;
+		}
+
+		input.placeholder = contact[editChild.dataset.contactKey];
+	}
+
 }
 
 /**
@@ -120,7 +154,9 @@ function populateContacts(displayFirst)
 	});
 
 	// Display first contact if requested.
-	if (displayFirst) {
+	if (displayFirst && contacts.size > 0) {
+		selectedLink = contactLanding.firstChild;
+		select(contactLanding.firstChild);
 		displayContact(contacts.entries().next().value[1]);
 	}
 
