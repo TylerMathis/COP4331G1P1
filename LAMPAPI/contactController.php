@@ -96,8 +96,6 @@ function updateContact() {
         ErrorHandler::generic_error(new Error("Contacts could not be updated", "Please try again later."));
     }
 
-    echo json_encode($result);
-
     http_response_code(200);
 }
 
