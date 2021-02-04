@@ -3,6 +3,13 @@ let contacts = new Map;
 let selectedContact = undefined;
 let selectedLink = undefined;
 
+// Create a functional parser object.
+const parser = element =>
+({
+	key: element.dataset.contactKey,
+	targetID: element.dataset.contactTarget
+});
+
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
@@ -132,13 +139,6 @@ function displayContact(contactRef) {
 	contact.FullName = contact.FirstName + " " + contact.LastName;
 	contact.Initials = contact.FirstName[0] + contact.LastName[0];
 
-	// Create a functional parser object.
-	const parser = element =>
-		({
-			key: element.dataset.contactKey,
-			targetID: element.dataset.contactTarget
-		});
-
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
 		const data = parser(element);
@@ -178,13 +178,6 @@ function clearCreate() {
 
 	// Remove validation
 	document.getElementById("new-form").classList.remove("was-validated");
-
-	// Create a functional parser object.
-	const parser = element =>
-		({
-			key: element.dataset.contactKey,
-			targetID: element.dataset.contactTarget
-		});
 
 	// Update create DOM
 	$("#new-form [data-contact-key][data-contact-target]").each(function (i, element) {
