@@ -7,7 +7,7 @@ let selectedLink = undefined;
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
-$(document).on("click", "#update-btn", onClickUpdate);
+$(document).on("click", "#edit-btn", onClickEdit);
 
 function onClickContact(e) {
 	e.preventDefault();
@@ -36,8 +36,6 @@ function onClickContact(e) {
 function onClickDelete(e) {
 	e.preventDefault();
 
-	console.log(selectedContact);
-
 	// Update remote DB
 	deleteContact(selectedContact);
 
@@ -58,8 +56,6 @@ function onClickCreate(e) {
 		contact[key] = value;
 	});
 
-	console.log(contact);
-
 	// Update DB and assign ID's
 	contact.UserID = id;
 	contact.ID = createContact(contact);
@@ -68,21 +64,19 @@ function onClickCreate(e) {
 	appendContactLink(contact);
 }
 
-function onClickUpdate(e) {
+function onClickEdit(e) {
 	e.preventDefault();
 
 	// Fetch DOM and serialize
-	const form = document.getElementById("update-form");
+	const form = document.getElementById("edit-form");
 	const data = new FormData(form);
 
 	// Merge form data
 	let contact = selectedContact;
 	data.forEach(function (value, key) {
-		if (value !== "")
+		if (!(value === "" || value === "Choose..."))
 			contact[key] = value;
 	});
-
-	console.log(contact);
 
 	// Update DB
 	updateContact(contact);
@@ -112,8 +106,6 @@ function displayContact(contact) {
 	contactProfile.innerHTML = contact.FirstName[0] + contact.LastName[0];
 	fullNameHeader.innerHTML = contact.FirstName + " " + contact.LastName;
 
-	console.log(editModal.children);
-
 	// Iterate over and update standard contact fields.
 	for (let i = 0; i < infoDiv.children.length; i++) {
 		const infoChild = infoDiv.children[i];
@@ -140,22 +132,23 @@ function displayContact(contact) {
 	for (let i = 0; i < editModal.children.length; i++) {
 		const editChild = editModal.children[i];
 
-		console.log(i);
-
 		// Skip over not standard views.
 		if (!("contactKey" in editChild.dataset)) {
 			continue;
 		}
 
-		// Assign edit placeholders
+		// Check if input or select
 		const input = editChild.querySelector("input");
-		if (input == null) {
-			continue;
+		const select = editChild.querySelector("select");
+
+		if (input) {
+			input.placeholder = contact[editChild.dataset.contactKey];
+			input.value = "";
 		}
-
-		input.placeholder = contact[editChild.dataset.contactKey];
+		else if (select) {
+			select.selectedIndex = 0;
+		}
 	}
-
 }
 
 /**
