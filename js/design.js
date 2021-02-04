@@ -23,14 +23,25 @@ function displayNotification(title, desc, type) {
 	}
 
 	let notiDiv = document.createElement("div");
-	notiDiv.className = "alert " + alertType;
+	notiDiv.className = "alert " + alertType + " alert-dismissable fade show";
 	notiDiv.style.width = "75%";
 	notiDiv.id = "notiDiv";
+
+	let notiHeaderDiv = document.createElement("div");
+	notiHeaderDiv.className = "d-flex";
+	notiHeaderDiv.style.justifyContent = "space-between";
+	notiDiv.appendChild(notiHeaderDiv);
 
 	let notiHeader = document.createElement("h5");
 	notiHeader.style.textAlign = "left";
 	notiHeader.innerHTML = title;
-	notiDiv.appendChild(notiHeader);
+	notiHeaderDiv.appendChild(notiHeader);
+
+	let notiClose = document.createElement("button");
+	notiClose.type = "button";
+	notiClose.className = "btn-close";
+	notiClose.dataset.bsDismiss = "alert";
+	notiHeaderDiv.appendChild(notiClose);
 
 	let notiDesc = document.createElement("p");
 	notiDesc.style.textAlign = "left";
@@ -39,23 +50,4 @@ function displayNotification(title, desc, type) {
 	notiDiv.appendChild(notiDesc);
 
 	notificationLanding.prepend(notiDiv);
-
-	setTimeout(removeNotification, 8000);
 }
-
-// Fades and removes a notification
-function removeNotification() {
-	if (document.getElementById("notiDiv") != null) {
-		let curNoti = document.getElementById("notiDiv");
-		let fade = setInterval(function () {
-			if (!curNoti.style.opacity)
-				curNoti.style.opacity = 1;
-			if (curNoti.style.opacity > 0)
-				curNoti.style.opacity -= 0.01;
-			else
-				clearInterval(fade);
-		}, 5);
-		setTimeout(function () {curNoti.parentNode.removeChild(curNoti)}, 500);
-	}
-}
-

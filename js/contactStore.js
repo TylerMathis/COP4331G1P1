@@ -73,3 +73,30 @@ function createContact(contact) {
 
     return -1;
 }
+
+/**
+ * Updates a contact in the database
+ *
+ * @param contact The new data in the contact
+ */
+function updateContact(contact) {
+    // Create JSON payload and api endpoint
+    let jsonPayload = JSON.stringify(contact);
+    let url = urlBase + "contactController" + extension;
+
+    // Send POST with our data to look up
+    let xhr = new XMLHttpRequest();
+    xhr.open("PUT", url, false);
+    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    xhr.send(jsonPayload);
+
+    // Valid update
+    if (xhr.status === 200) {
+        displayNotification("Success!", "Contact updated", "success");
+    } else { // Invalid Creation
+        let error = JSON.parse(xhr.responseText);
+        displayNotification(error.title, error.detail, "danger");
+    }
+
+    return -1;
+}

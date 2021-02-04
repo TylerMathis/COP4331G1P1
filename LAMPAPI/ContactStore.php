@@ -88,8 +88,17 @@ class ContactStore
      */
     public function updateContact($contact)
     {
-        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=? WHERE ID=?");
-        $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
+        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=?, City=?, State=?, ZIP=? WHERE ID=?");
+        $sql->bind_param("sssssssi",
+            $contact->firstName,
+            $contact->lastName,
+            $contact->phoneNumber,
+            $contact->address,
+            $contact->city,
+            $contact->state,
+            $contact->zip,
+            $contact->id
+        );
         $sql->execute();
 
         return $sql->get_result();

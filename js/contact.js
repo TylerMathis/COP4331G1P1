@@ -7,6 +7,7 @@ let selectedLink = undefined;
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
+$(document).on("click", "#edit-btn", onClickEdit);
 
 function onClickContact(e) {
 	e.preventDefault();
@@ -35,8 +36,6 @@ function onClickContact(e) {
 function onClickDelete(e) {
 	e.preventDefault();
 
-	console.log(selectedContact);
-
 	// Update remote DB
 	deleteContact(selectedContact);
 
@@ -48,7 +47,7 @@ function onClickCreate(e) {
 	e.preventDefault();
 
 	// Fetch DOM and serialize
-	const form = document.getElementById("editForm");
+	const form = document.getElementById("new-form");
 	const data = new FormData(form);
 
 	// Get Form Data
@@ -57,14 +56,42 @@ function onClickCreate(e) {
 		contact[key] = value;
 	});
 
-	console.log(contact);
-
 	// Update DB and assign ID's
 	contact.UserID = id;
 	contact.ID = createContact(contact);
 
 	// Update DOM
-	appendContactLink(contact);
+	deselect(selectedLink);
+	selectedLink = appendContactLink(contact);
+	select(selectedLink);
+	displayContact(contact);
+
+	// Clear the modal for next time
+	clearCreate();
+}
+
+function onClickEdit(e) {
+	e.preventDefault();
+
+	// Fetch DOM and serialize
+	const form = document.getElementById("edit-form");
+	const data = new FormData(form);
+
+	// Merge form data
+	const contact = selectedContact;
+	data.forEach(function (value, key) {
+		if (!(value === "" || value === "Choose..."))
+			contact[key] = value;
+	});
+
+	// Update DB
+	updateContact(contact);
+
+	// Update DOM
+	removeContactLink(contact.ID);
+	selectedLink = appendContactLink(contact);
+	select(selectedLink);
+	displayContact(contact);
 }
 
 function select(contactLink) {
@@ -86,8 +113,6 @@ function displayContact(contact) {
 
 	contactProfile.innerHTML = contact.FirstName[0] + contact.LastName[0];
 	fullNameHeader.innerHTML = contact.FirstName + " " + contact.LastName;
-
-	console.log(editModal.children);
 
 	// Iterate over and update standard contact fields.
 	for (let i = 0; i < infoDiv.children.length; i++) {
@@ -115,22 +140,52 @@ function displayContact(contact) {
 	for (let i = 0; i < editModal.children.length; i++) {
 		const editChild = editModal.children[i];
 
-		console.log(i);
+		// Skip over not standard views.
+		if (!("contactKey" in editChild.dataset)) {
+			continue;
+		}
+
+		// Check if input or select
+		const input = editChild.querySelector("input");
+		const select = editChild.querySelector("select");
+
+		// Reset the fields
+		if (input) {
+			input.placeholder = contact[editChild.dataset.contactKey];
+			input.value = "";
+		}
+		else if (select) {
+			select.selectedIndex = 0;
+		}
+	}
+}
+
+/**
+ * Clears all fields in the create modal
+ */
+function clearCreate() {
+	const newModal = document.getElementById("new-form");
+
+	for (let i = 0; i < newModal.children.length; i++) {
+		const editChild = newModal.children[i];
 
 		// Skip over not standard views.
 		if (!("contactKey" in editChild.dataset)) {
 			continue;
 		}
 
-		// Assign edit placeholders
+		// Check if input or select
 		const input = editChild.querySelector("input");
-		if (input == null) {
-			continue;
+		const select = editChild.querySelector("select");
+
+		// Reset the fields
+		if (input) {
+			input.value = "";
 		}
-
-		input.placeholder = contact[editChild.dataset.contactKey];
+		else if (select) {
+			select.selectedIndex = 0;
+		}
 	}
-
 }
 
 /**
@@ -160,7 +215,6 @@ function populateContacts(displayFirst)
 		select(contactLanding.firstChild);
 		displayContact(selectedContact);
 	}
-
 }
 
 /**
@@ -183,6 +237,7 @@ function removeContactLink(id) {
  * Appends a contact to the contact list
  *
  * @param contact The contact to be appended
+ * @returns contactLink The contactLink created
  */
 function appendContactLink(contact) {
 
@@ -216,10 +271,6 @@ function appendContactLink(contact) {
 	contactLink.className = "contact-link";
 
 	contactLanding.appendChild(contactLink);
-}
 
-// Temporary service alert
-function editSelectedContact()
-{
-	alert("We don't support this feature yet, check back later!");
+	return contactLink;
 }
