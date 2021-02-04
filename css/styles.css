@@ -82,6 +82,7 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  border-bottom: 1px solid var(--custom-light-gray);
 }
 
 .contact-list-display {
@@ -136,7 +137,7 @@ body {
   background-color: #c2c2c2;
 }
 
-.form-control[type=text] {
+.form-control.search-bar[type=text] {
   height: 40px;
   background-color: var(--custom-light-gray);
   border: none;
@@ -146,7 +147,7 @@ body {
   cursor: pointer;
 }
 
-.form-control[type=text]:focus {
+.form-control.search-bar[type=text]:focus {
   background-color: var(--custom-light-gray);
 }
 
@@ -223,6 +224,15 @@ h3.profile-ab.enlarged{
 .btn.rounded {
   height: 40px;
   border-radius: 20px !important;
+}
+
+.rounded.compact {
+  font-weight: bold;
+}
+
+.modal-footer.spaced {
+  display: flex;
+  justify-content: space-between;
 }
 
 .box {
