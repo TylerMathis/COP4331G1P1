@@ -59,7 +59,8 @@ function getContacts()
     $result = $store->getContactsForUser(getRequestInfo()["UserID"]);
 
     if (!$result) {
-        ErrorHandler::generic_error(new Error("Contacts could not be fetched", "Please try again later."));
+        echo json_encode(array());
+        return;
     }
 
     $retVal = array();

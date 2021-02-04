@@ -134,7 +134,7 @@ function populateContacts(displayFirst)
 	});
 
 	// Display first contact if requested.
-	if (displayFirst) {
+	if (displayFirst && contacts.size > 0) {
 		displayContact(contacts.entries().next().value[1]);
 	}
 
