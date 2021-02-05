@@ -107,12 +107,12 @@ function onClickEdit(e) {
 	});
 
 	updateContact(contact).then(() => {
-		// Update DB
-		updateContact(contact);
 		// Update DOM
 		removeContactLink(contact.ID);
 		// Sort new contact into list.
 		insertNewContact(contact);
+		// Display success
+		displayNotification("Success", "Contact Updated", "success")
 	})
 	.catch(handleError)
 	.finally(() => {

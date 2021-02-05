@@ -1,5 +1,8 @@
 const contactBase = "LAMPAPI/contactController.php"
 
+/**
+ * A class used to encapsulate JSON-style error responses.
+ */
 class APIError extends Error {
     constructor(title, detail) {
         super(title);
@@ -8,9 +11,10 @@ class APIError extends Error {
 }
 
 /**
+ * Handles reponse given from server.
  *
  * @param response
- * @return {{ok}|*}
+ * @return {Promise<Response>}
  */
 function handleResponse(response) {
     if (!response.ok) {
@@ -37,20 +41,6 @@ async function deleteContact(contact) {
         body: contact
     })
     .then(handleResponse);
-
-    // // Send DELETE with our contact to delete
-    // let xhr = new XMLHttpRequest();
-    // xhr.open("DELETE", url, false);
-    // xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    // xhr.send();
-    //
-    // if (xhr.status === 200) {
-    //     displayNotification("Success", "Contact deleted", "info");
-    // }
-    // else {
-    //     let error = JSON.parse(xhr.responseText);
-    //     displayNotification(error.title, error.detail, "danger");
-    // }
 }
 
 /**
@@ -64,15 +54,6 @@ async function getContacts() {
 
     return await fetch(url)
         .then((response) => response.json());
-}
-
-/**
- *
- * @return {Promise<*>}
- */
-async function foo() {
-    return await fetch("LAMPAPI/contactController.php")
-        .then(handleResponse);
 }
 
 /**
@@ -90,23 +71,18 @@ async function createContact(contact) {
     .then(handleResponse)
     .then(response => response.json())
     .then(json => json.ID);
-    // .catch(error => {
-    //     displayNotification(error.message, error.detail, "danger");
-    //     return -1;
-    // });
 }
 
 /**
- * Updates a contact in the database
+ * Updates the contact in the DB
  *
- * @param contact The new data in the contact
+ * @param contact
+ * @return {Promise<Response>}
  */
 async function updateContact(contact) {
     return await fetch(contactBase, {
         method: "PUT",
         headers:  {"Content-Type": "application/json; charset=UTF-8"},
         body: JSON.stringify(contact)
-    })
-    .then(handleResponse)
-    .then(() => displayNotification("Success", "Contact Updated", "success"));
+    }).then(handleResponse);
 }
