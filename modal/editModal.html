@@ -13,31 +13,31 @@
                 <!--Info-->
                 <div class="info">
                     <form id="edit-form" class="row g-3">
-                        <div class="col-md-4" data-contact-key="FirstName">
+                        <div class="col-md-4" data-contact-key="FirstName" data-contact-target="#edit-first-name">
                             <label for="edit-first-name" class="form-label">First Name</label>
-                            <input name="FirstName" type="name" class="form-control" id="edit-first-name">
+                            <input name="FirstName" type="text" class="form-control" id="edit-first-name" maxlength="50">
                         </div>
-                        <div class="col-md-4" data-contact-key="LastName">
+                        <div class="col-md-4" data-contact-key="LastName" data-contact-target="#edit-last-name">
                             <label for="edit-last-name" class="form-label">Last Name</label>
-                            <input name="LastName" type="name" class="form-control" id="edit-last-name">
+                            <input name="LastName" type="text" class="form-control" id="edit-last-name" maxlength="50">
                         </div>
-                        <div class="col-md-4" data-contact-key="PhoneNumber">
+                        <div class="col-md-4" data-contact-key="PhoneNumber" data-contact-target="#edit-phone-number">
                             <label for="edit-phone-number" class="form-label">Phone Number</label>
-                            <input name="PhoneNumber" type="phone-number" class="form-control" id="edit-phone-number">
+                            <input name="PhoneNumber" type="text" class="form-control" id="edit-phone-number" maxlength="50">
                         </div>
-                        <div class="col-8" data-contact-key="Address">
+                        <div class="col-8" data-contact-key="Address" data-contact-target="#edit-address">
                             <label for="edit-address" class="form-label">Address</label>
-                            <input name="Address" type="text" class="form-control" id="edit-address" placeholder="1234 Main St">
+                            <input name="Address" type="text" class="form-control" id="edit-address"  maxlength="75">
                         </div>
-                        <div class="col-md-4" data-contact-key="ZIP">
+                        <div class="col-md-4" data-contact-key="ZIP" data-contact-target="#edit-zip">
                             <label for="edit-zip" class="form-label">Zip</label>
-                            <input name="ZIP" type="text" class="form-control" id="edit-zip">
+                            <input name="ZIP" type="text" class="form-control" id="edit-zip" maxlength="10">
                         </div>
-                        <div class="col-md-8" data-contact-key="City">
+                        <div class="col-md-8" data-contact-key="City" data-contact-target="#edit-city">
                             <label for="edit-city" class="form-label">City</label>
-                            <input name="City" type="text" class="form-control" id="edit-city">
+                            <input name="City" type="text" class="form-control" id="edit-city" maxlength="50">
                         </div>
-                        <div class="col-md-4" data-contact-key="State">
+                        <div class="col-md-4" data-contact-key="State" data-contact-target="#edit-state">
                             <label for="edit-state" class="form-label">State</label>
                             <select name="State" id="edit-state" class="form-select">
                                 <option selected>Choose...</option>
@@ -99,7 +99,7 @@
             </div>
             <div class="modal-footer spaced">
                 <button type="button" class="btn btn-secondary rounded compact" data-bs-dismiss="modal">Cancel</button>
-                <button id="edit-btn" type="button" class="btn btn-primary rounded compact" data-bs-dismiss="modal">Create</button>
+                <button id="edit-btn" type="button" class="btn btn-primary rounded compact" data-bs-dismiss="modal">Save Changes</button>
             </div>
         </div>
     </div>

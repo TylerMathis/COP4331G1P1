@@ -219,6 +219,8 @@ h3.profile-ab.enlarged{
   padding: 25px;
   height: 90%;
   max-height: 1000px;
+  min-height: 400px;
+  min-width: 800px;
 }
 
 .btn.rounded {
