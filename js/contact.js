@@ -35,10 +35,14 @@ function onClickDelete(e) {
 	e.preventDefault();
 
 	// Update remote DB
-	deleteContact(selectedContact);
+	deleteContact(selectedContact).then(() => {
+		// Remove from DOM
+		removeContactLink(selectedContact.ID);
+		displayNotification("Success", "Contact deleted", "info");
+	})
+	.catch(handleError)
+	.finally(() => $("#deleteModal").modal("hide"));
 
-	// Remove from DOM
-	removeContactLink(selectedContact.ID);
 }
 
 function onClickCreate(e) {
@@ -70,20 +74,22 @@ function onClickCreate(e) {
 
 	// Update DB and assign ID's
 	contact.UserID = id;
-	createContact(contact).then(ID => {
-		console.log(ID);
-
-		// Update ID
-		contact.ID = ID;
-		// Dismiss modal
-		$("#newModal").modal("hide");
-
-	// Insert and update the DOM.
-	insertNewContact(contact);
-
-		// Clear the modal for next time
-		//clearCreate();
-	});
+	createContact(contact)
+		.then(ID => {
+			// Update ID
+			contact.ID = ID;
+			// Insert and update the DOM.
+			insertNewContact(contact);
+			// Display notification
+			displayNotification("Success!", "Contact created", "success");
+		})
+		.catch(handleError)
+		.finally(() => {
+			// Dismiss modal
+			$("#newModal").modal("hide");
+			// Clear the modal for next time
+			clearCreate();
+		});
 }
 
 function onClickEdit(e) {
@@ -100,14 +106,23 @@ function onClickEdit(e) {
 			contact[key] = value;
 	});
 
-	// Update DB
-	updateContact(contact);
+	updateContact(contact).then(() => {
+		// Update DB
+		updateContact(contact);
+		// Update DOM
+		removeContactLink(contact.ID);
+		// Sort new contact into list.
+		insertNewContact(contact);
+	})
+	.catch(handleError)
+	.finally(() => {
+		// Hide modal
+		$("#editModal").modal("hide");
+	});
+}
 
-	// Update DOM
-	removeContactLink(contact.ID);
-
-	// Sort new contact into list.
-	insertNewContact(contact);
+function handleError(error) {
+	displayNotification(error.message, error.detail, "danger");
 }
 
 /**

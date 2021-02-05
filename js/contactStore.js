@@ -12,7 +12,7 @@ class APIError extends Error {
  * @param response
  * @return {{ok}|*}
  */
-function errorHandler(response) {
+function handleResponse(response) {
     if (!response.ok) {
         return response.json().then(json => {throw new APIError(json.title, json.detail)});
     }
@@ -21,50 +21,49 @@ function errorHandler(response) {
 }
 
 /**
- * Deletes the given contact from the database.
+ * Delete the given contact from the database.
+ * @param contact The contact to delete
  *
- * @param contact Contact to delete.
+ * @return {Promise<Response>}
  */
-function deleteContact(contact) {
+async function deleteContact(contact) {
+
     // Create api endpoint with userID encoded
-    let url = urlBase + "contactController" + extension;
-    url += "?ID=" + contact.ID;
+    let url = contactBase + "?ID=" + contact.ID;
 
-    // Send DELETE with our contact to delete
-    let xhr = new XMLHttpRequest();
-    xhr.open("DELETE", url, false);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    xhr.send();
+    return await fetch(url, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json; charset=UTF-8"},
+        body: contact
+    })
+    .then(handleResponse);
 
-    if (xhr.status === 200) {
-        displayNotification("Success", "Contact deleted", "info");
-    }
-    else {
-        let error = JSON.parse(xhr.responseText);
-        displayNotification(error.title, error.detail, "danger");
-    }
+    // // Send DELETE with our contact to delete
+    // let xhr = new XMLHttpRequest();
+    // xhr.open("DELETE", url, false);
+    // xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    // xhr.send();
+    //
+    // if (xhr.status === 200) {
+    //     displayNotification("Success", "Contact deleted", "info");
+    // }
+    // else {
+    //     let error = JSON.parse(xhr.responseText);
+    //     displayNotification(error.title, error.detail, "danger");
+    // }
 }
 
 /**
- * Retrieves all contacts from database
+ * Fetches all the contacts for the given user.
  *
- * @returns {any|undefined}
+ * @return {Promise<any>}
  */
-function getContacts() {
+async function getContacts() {
     // Create api endpoint with userID encoded
-    let url = urlBase + "contactController" + extension;
-    url += "?UserID=" + id;
+    let url = contactBase + "?UserID=" + id;
 
-    // Send POST with our data to look up
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", url, false);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    xhr.send();
-
-    let result = JSON.parse(xhr.responseText);
-    if (result.length === undefined) return undefined;
-
-    return result;
+    return await fetch(url)
+        .then((response) => response.json());
 }
 
 /**
@@ -73,8 +72,7 @@ function getContacts() {
  */
 async function foo() {
     return await fetch("LAMPAPI/contactController.php")
-        .then(errorHandler)
-        .catch((error) => console.log(error));
+        .then(handleResponse);
 }
 
 /**
@@ -84,29 +82,18 @@ async function foo() {
  * @return {Promise<number>}
  */
 async function createContact(contact) {
-
     return await fetch(contactBase, {
         method: "POST",
         body: JSON.stringify(contact),
         headers: {"Content-Type": "application/json; charset=UTF-8"}
     })
-    .then(errorHandler)
+    .then(handleResponse)
     .then(response => response.json())
-    .then(json => json.ID)
-    .catch(error => {
-        displayNotification(error.message, error.detail, "danger");
-        return -1;
-    });
-
-
-    // // Valid creation
-    // if (xhr.status === 201) {
-    //     displayNotification("Success!", "Contact created", "success");
-    //     return JSON.parse(xhr.responseText).ID;
-    // } else { // Invalid Creation
-    //     let error = JSON.parse(xhr.responseText);
-    //     displayNotification(error.title, error.detail, "danger");
-    // }
+    .then(json => json.ID);
+    // .catch(error => {
+    //     displayNotification(error.message, error.detail, "danger");
+    //     return -1;
+    // });
 }
 
 /**
@@ -114,24 +101,12 @@ async function createContact(contact) {
  *
  * @param contact The new data in the contact
  */
-function updateContact(contact) {
-    // Create JSON payload and api endpoint
-    let jsonPayload = JSON.stringify(contact);
-    let url = urlBase + "contactController" + extension;
-
-    // Send POST with our data to look up
-    let xhr = new XMLHttpRequest();
-    xhr.open("PUT", url, false);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    xhr.send(jsonPayload);
-
-    // Valid update
-    if (xhr.status === 200) {
-        displayNotification("Success!", "Contact updated", "success");
-    } else { // Invalid Creation
-        let error = JSON.parse(xhr.responseText);
-        displayNotification(error.title, error.detail, "danger");
-    }
-
-    return -1;
+async function updateContact(contact) {
+    return await fetch(contactBase, {
+        method: "PUT",
+        headers:  {"Content-Type": "application/json; charset=UTF-8"},
+        body: JSON.stringify(contact)
+    })
+    .then(handleResponse)
+    .then(() => displayNotification("Success", "Contact Updated", "success"));
 }
