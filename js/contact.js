@@ -85,10 +85,8 @@ function onClickCreate(e) {
 	if (selectedLink)
 		deselect(selectedLink);
 	selectedLink = appendContactLink(contact);
-	select(selectedLink);
-	displayContact(contact);
 
-	sortAndDisplayContacts();
+	sortAndDisplayContacts(contact.ID);
 
 	// Clear the modal for next time
 	clearCreate();
@@ -114,10 +112,8 @@ function onClickEdit(e) {
 	// Update DOM
 	removeContactLink(contact.ID);
 	selectedLink = appendContactLink(contact);
-	select(selectedLink);
-	displayContact(contact);
 
-	sortAndDisplayContacts();
+	sortAndDisplayContacts(contact.ID);
 }
 
 function select(contactLink) {
@@ -202,7 +198,7 @@ function clearCreate() {
  */
 function populateContacts()
 {
-	sortAndDisplayContacts(getContacts());
+	sortAndDisplayContacts(-1, getContacts());
 }
 
 /**
@@ -266,9 +262,10 @@ function appendContactLink(contact) {
 /**
  * Sorts all contacts by first name
  * 
+ * @param displayedID The ID of the contact to be displayed
  * @param fetchedContacts Will contain array of fetched contacts
  */
-function sortAndDisplayContacts(fetchedContacts) {
+function sortAndDisplayContacts(displayedID, fetchedContacts) {
 
 	let contactArray = fetchedContacts;
 	let displayFirst = true;
@@ -280,17 +277,23 @@ function sortAndDisplayContacts(fetchedContacts) {
 	}
 
 	// Sort the contacts
-	contactArray.sort((con1, con2) => (con1.FirstName > con2.FirstName) ? 1 : -1);
+	contactArray.sort((con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1);
 
 	// Clear all children of the contact holder
 	let contactLanding = document.getElementById("contactLanding");
 	while (contactLanding.firstChild)
 		contactLanding.removeChild(contactLanding.firstChild);
 
-	// Hash values into map
+	// Hash values into map, and store the link of the desired contact to display
+	let displayedLink = null;
+	let displayedContact = null;
 	contactArray.forEach(function (contact) {
 		contacts.set(contact.ID, contact);
-		appendContactLink(contact);
+		let currentLink = appendContactLink(contact);
+		if (contact.ID === displayedID) {
+			displayedLink = currentLink;
+			displayedContact = contact;
+		}
 	});
 
 	// Display first contact if requested.
@@ -299,6 +302,10 @@ function sortAndDisplayContacts(fetchedContacts) {
 		selectedLink = contactLanding.firstChild;
 		select(contactLanding.firstChild);
 		displayContact(selectedContact);
+	}
+	else {
+		select(displayedLink);
+		displayContact(displayedContact);
 	}
 
 	return;
