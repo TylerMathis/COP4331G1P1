@@ -3,6 +3,13 @@ let contacts = new Map;
 let selectedContact = undefined;
 let selectedLink = undefined;
 
+// Create a functional parser object.
+const parser = element =>
+({
+	key: element.dataset.contactKey,
+	targetID: element.dataset.contactTarget
+});
+
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
@@ -50,12 +57,26 @@ function onClickCreate(e) {
 
 	// Fetch DOM and serialize
 	const form = document.getElementById("new-form");
+
+	// Validate all fields
+	if (form.checkValidity() === false) {
+		form.classList.add("was-validated");
+		return;
+	}
+
+	// Dismiss form
+	$("#newModal").modal("hide");
+
+	// Get form data
 	const data = new FormData(form);
 
-	// Get Form Data
+	// Populate contact
 	const contact = {};
 	data.forEach(function (value, key) {
-		contact[key] = value;
+		if (value === "" || value === "Choose...")
+			contact[key] = null;
+		else
+			contact[key] = value;
 	});
 
 	// Update DB and assign ID's
@@ -63,7 +84,8 @@ function onClickCreate(e) {
 	contact.ID = createContact(contact);
 
 	// Update DOM
-	deselect(selectedLink);
+	if (selectedLink)
+		deselect(selectedLink);
 	selectedLink = appendContactLink(contact);
 	select(selectedLink);
 	displayContact(contact);
@@ -117,13 +139,6 @@ function displayContact(contactRef) {
 	contact.FullName = contact.FirstName + " " + contact.LastName;
 	contact.Initials = contact.FirstName[0] + contact.LastName[0];
 
-	// Create a functional parser object.
-	const parser = element =>
-		({
-			key: element.dataset.contactKey,
-			targetID: element.dataset.contactTarget
-		});
-
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
 		const data = parser(element);
@@ -160,28 +175,25 @@ function displayContact(contactRef) {
  * Clears all fields in the create modal
  */
 function clearCreate() {
-	const newModal = document.getElementById("new-form");
 
-	for (let i = 0; i < newModal.children.length; i++) {
-		const editChild = newModal.children[i];
+	// Remove validation
+	document.getElementById("new-form").classList.remove("was-validated");
 
-		// Skip over not standard views.
-		if (!("contactKey" in editChild.dataset)) {
-			continue;
-		}
+	// Update create DOM
+	$("#new-form [data-contact-key][data-contact-target]").each(function (i, element) {
+		const data = parser(element);
 
 		// Check if input or select
-		const input = editChild.querySelector("input");
-		const select = editChild.querySelector("select");
+		const input = element.querySelector("input");
+		const select = element.querySelector("select");
 
 		// Reset the fields
 		if (input) {
 			input.value = "";
-		}
-		else if (select) {
+		} else if (select) {
 			select.selectedIndex = 0;
 		}
-	}
+	});
 }
 
 /**
