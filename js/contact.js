@@ -1,5 +1,3 @@
-//
-
 /**
  * Local store for all contacts
  * @type {Map<any, any>}
