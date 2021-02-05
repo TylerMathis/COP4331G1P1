@@ -88,6 +88,7 @@ function onClickCreate(e) {
 		deselect(selectedLink);
 	selectedLink = appendContactLink(contact);
 	select(selectedLink);
+	selectedContact = contact;
 	displayContact(contact);
 
 	// Clear the modal for next time
