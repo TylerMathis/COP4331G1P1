@@ -1,18 +1,43 @@
-// Local store for all contacts
+/**
+ * Local store for all contacts
+ * @type {Map<any, any>}
+ */
 let contacts = new Map;
+
+/**
+ * The currently select contact object.
+ * @type {Object}
+ */
 let selectedContact = undefined;
+
+/**
+ * The currently selected contact link.
+ * @type {HTMLElement}
+ */
 let selectedLink = undefined;
 
-// Create and store comparators
+/**
+ * Stores comparators for sorting contacts.
+ * @type {{firstName: (function(*, *): number), lastName: (function(*, *): number)}}
+ */
 const comparators = {
 	firstName: (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
 	lastName: (con1, con2) => (con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
 };
 
-// Assign the default selected comparator
+/**
+ * The currently selected sorting method.
+ * @type {function(*, *): number}
+ */
 let selectedComparator = comparators.firstName;
 
 // Create a functional parser object.
+/**
+ * Parses the data-contact-* dataset for a given element.
+ *
+ * @param {HTMLElement} element The element to parse
+ * @return {{targetID: string, key: string}}
+ */
 const parser = element => ({
 	key: element.dataset.contactKey,
 	targetID: element.dataset.contactTarget
