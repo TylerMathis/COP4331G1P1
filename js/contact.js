@@ -3,18 +3,17 @@ let contacts = new Map;
 let selectedContact = undefined;
 let selectedLink = undefined;
 
-// Create comparator map for all sort types.
-// There is probably a loop oriented way to achieve this.
-let comparators = new Map;
-comparators["firstName"] = (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1;
-comparators["lastName"] = (con1, con2) => (con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1;
+// Create and store comparators
+const comparators = {
+	firstName: (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
+	lastName: (con1, con2) => (con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
+};
 
 // Assign the default selected comparator
-let selectedComparator = "firstName";
+let selectedComparator = comparators.firstName;
 
 // Create a functional parser object.
-const parser = element =>
-({
+const parser = element => ({
 	key: element.dataset.contactKey,
 	targetID: element.dataset.contactTarget
 });
@@ -236,12 +235,12 @@ function clearCreate() {
  * 
  * @param contactsArr An array of contacts to be populated.
  */
-function populateContacts(contactsArr)
-{
+function populateContacts(contactsArr) {
 	// Clear all children of the contact holder
 	const contactLanding = document.getElementById("contactLanding");
-	while (contactLanding.firstChild)
+	while (contactLanding.firstChild) {
 		contactLanding.removeChild(contactLanding.firstChild);
+	}
 
 	// Clear contacts map
 	contacts.clear();
@@ -266,7 +265,7 @@ function insertNewContact(contact) {
 	contactArr.push(contact);
 
 	// Sort!
-	contactArr.sort(comparators[selectedComparator]);
+	contactArr.sort(selectedComparator);
 
 	// Populate new contact order.
 	populateContacts(contactArr);

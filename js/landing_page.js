@@ -23,14 +23,14 @@ function populateModals() {
  */
 function retrieveContacts() {
     // Fetch the contacts array.
-    const contactsArr = getContacts(id);
+    const contactsArr = getContacts();
 
     // If there are no contacts to be sorted, then terminate early
     if (contactsArr.length === 0)
         return;
 
     // Sort by first name (default).
-    const sorted = contactsArr.sort(comparators[selectedComparator]);
+    const sorted = contactsArr.sort(selectedComparator);
 
     // Send the sorted array to populate contacts.
     populateContacts(sorted);
