@@ -31,5 +31,12 @@ if (!$result) {
     die(1);
 }
 
-echo json_encode($result);
+$retVal = array();
+
+/** @var Contact $contactData */
+foreach ($result as $contactData) {
+    array_push($retVal, $contactData->toArray());
+}
+
+echo json_encode($retVal);
 
