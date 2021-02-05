@@ -3,9 +3,17 @@ let contacts = new Map;
 let selectedContact = undefined;
 let selectedLink = undefined;
 
+// Create and store comparators
+const comparators = {
+	firstName: (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
+	lastName: (con1, con2) => (con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
+};
+
+// Assign the default selected comparator
+let selectedComparator = comparators.firstName;
+
 // Create a functional parser object.
-const parser = element =>
-({
+const parser = element => ({
 	key: element.dataset.contactKey,
 	targetID: element.dataset.contactTarget
 });
@@ -19,27 +27,8 @@ $(document).on("click", "#edit-btn", onClickEdit);
 function onClickContact(e) {
 	e.preventDefault();
 
-	// Capture contact ID from DOM
-	const contactID = $(this).data("contact-id");
-
-	// Fetch contact from local cache.
-	const contact = contacts.get(contactID);
-
-	console.log(contact);
-
-	// Deselect old link
-	if (selectedLink !== undefined) {
-		deselect(selectedLink);
-	}
-
-	// Update selected index.
-	selectedContact = contact;
-
-	// Update selected link;
-	selectedLink = this;
-	select(selectedLink);
-
-	displayContact(contact);
+	// Select self.
+	changeSelectedTo(this);
 }
 
 function onClickDelete(e) {
@@ -83,12 +72,8 @@ function onClickCreate(e) {
 	contact.UserID = id;
 	contact.ID = createContact(contact);
 
-	// Update DOM
-	if (selectedLink)
-		deselect(selectedLink);
-	selectedLink = appendContactLink(contact);
-	select(selectedLink);
-	displayContact(contact);
+	// Insert and update the DOM.
+	insertNewContact(contact);
 
 	// Clear the modal for next time
 	clearCreate();
@@ -113,8 +98,61 @@ function onClickEdit(e) {
 
 	// Update DOM
 	removeContactLink(contact.ID);
-	selectedLink = appendContactLink(contact);
+
+	// Sort new contact into list.
+	insertNewContact(contact);
+}
+
+/**
+ * Selects a contact by it's index in the DOM
+ * 
+ * @param index The index of the contact to be selected 
+ */
+function selectByIndex(index) {
+	let contactLanding = document.getElementById("contactLanding");
+	let contactLinks = contactLanding.children;
+	changeSelectedTo(contactLinks[index]);
+}
+
+/**
+ * Selects a contact in the DOM by it's id
+ * 
+ * @param id The ID to be selected. 
+ */
+function selectById(id) {
+	$(".list-group").children().each(function (index, link) {
+		if ($(link).data("contact-id") === id) {
+			changeSelectedTo(link);
+			return;
+		}
+	});
+}
+
+/**
+ * Removes previous selection, and selects the current link.
+ * 
+ * @param contactLink The link to be selected.
+ */
+function changeSelectedTo(contactLink) {
+	// Capture contact ID from DOM.
+	const contactID = $(contactLink).data("contact-id");
+
+	// Fetch contact from local cache.
+	const contact = contacts.get(contactID);
+
+	// Deselect old link.
+	if (selectedLink !== undefined) {
+		deselect(selectedLink);
+	}
+
+	// Update selected contact.
+	selectedContact = contact;
+
+	// Update selected link.
+	selectedLink = contactLink;
 	select(selectedLink);
+
+	// Display our chosen contact.
 	displayContact(contact);
 }
 
@@ -142,7 +180,6 @@ function displayContact(contactRef) {
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
 		const data = parser(element);
-		console.log(element);
 		if (data.key === "") {
 			element.style.display = "none";
 		} else {
@@ -175,14 +212,11 @@ function displayContact(contactRef) {
  * Clears all fields in the create modal
  */
 function clearCreate() {
-
 	// Remove validation
 	document.getElementById("new-form").classList.remove("was-validated");
 
 	// Update create DOM
 	$("#new-form [data-contact-key][data-contact-target]").each(function (i, element) {
-		const data = parser(element);
-
 		// Check if input or select
 		const input = element.querySelector("input");
 		const select = element.querySelector("select");
@@ -197,32 +231,47 @@ function clearCreate() {
 }
 
 /**
- * Requests all of a user's contacts, and pushes them onto the contacts list
- *
- * @param displayFirst whether or not we should automatically display the first user
+ * Pushes list of contacts to the DOM and contacts map.
+ * 
+ * @param contactsArr An array of contacts to be populated.
  */
-function populateContacts(displayFirst)
-{
+function populateContacts(contactsArr) {
 	// Clear all children of the contact holder
-	let contactLanding = document.getElementById("contactLanding");
-	while (contactLanding.firstChild)
+	const contactLanding = document.getElementById("contactLanding");
+	while (contactLanding.firstChild) {
 		contactLanding.removeChild(contactLanding.firstChild);
+	}
 
-	const fetchedContacts = getContacts();
+	// Clear contacts map
+	contacts.clear();
 
-	// Hash values into map
-	fetchedContacts.forEach(function (contact) {
+	// Append all contact links, and populate map
+	contactsArr.forEach(function (contact) {
 		contacts.set(contact.ID, contact);
 		appendContactLink(contact);
 	});
+}
 
-	// Display first contact if requested.
-	if (displayFirst && contacts.size > 0) {
-		selectedContact = contacts.entries().next().value[1]
-		selectedLink = contactLanding.firstChild;
-		select(contactLanding.firstChild);
-		displayContact(selectedContact);
-	}
+/**
+ * Inserts and sorts the new contact into the contact list.
+ * 
+ * @param contact The contact to be inserted.
+ */
+function insertNewContact(contact) {
+	// Turn contact map into array for sorting.
+	let contactArr = [...contacts].map(([id, content]) => (content));
+
+	// Add new contact onto array.
+	contactArr.push(contact);
+
+	// Sort!
+	contactArr.sort(selectedComparator);
+
+	// Populate new contact order.
+	populateContacts(contactArr);
+
+	// Select the newly created contact.
+	selectById(contact.ID);
 }
 
 /**
@@ -231,21 +280,21 @@ function populateContacts(displayFirst)
  * @param id ID of the contact.
  */
 function removeContactLink(id) {
+	// Delete from local cache.
+	contacts.delete(id);
+
 	$(".list-group").children().each(function (index, link) {
 		if ($(link).data("contact-id") === id) {
 			$(link).remove();
+			return;
 		}
 	});
-
-	// Delete from local cache.
-	contacts.delete(id);
 }
 
 /**
- * Appends a contact to the contact list
+ * Appends a contact to the contact list, and selects it.
  *
  * @param contact The contact to be appended
- * @returns contactLink The contactLink created
  */
 function appendContactLink(contact) {
 
@@ -269,7 +318,7 @@ function appendContactLink(contact) {
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
-			<h5 style="text-align: center; margin: 0; width: 100%; cursor: pointer">${contactFullName}</h5>
+			<h5 class="contact-name" style="text-align: center; margin: 0; width: 100%; cursor: pointer">${contactFullName}</h5>
     	</div>
     </div>`
 
@@ -280,5 +329,6 @@ function appendContactLink(contact) {
 
 	contactLanding.appendChild(contactLink);
 
-	return contactLink;
+	// Select the contact.
+	changeSelectedTo(contactLink);
 }
