@@ -25,8 +25,6 @@ function onClickContact(e) {
 	// Fetch contact from local cache.
 	const contact = contacts.get(contactID);
 
-	console.log(contact);
-
 	// Deselect old link
 	if (selectedLink !== undefined) {
 		deselect(selectedLink);
@@ -90,6 +88,8 @@ function onClickCreate(e) {
 	select(selectedLink);
 	displayContact(contact);
 
+	sortContacts();
+
 	// Clear the modal for next time
 	clearCreate();
 }
@@ -116,6 +116,8 @@ function onClickEdit(e) {
 	selectedLink = appendContactLink(contact);
 	select(selectedLink);
 	displayContact(contact);
+
+	sortContacts();
 }
 
 function select(contactLink) {
@@ -142,7 +144,6 @@ function displayContact(contactRef) {
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
 		const data = parser(element);
-		console.log(element);
 		if (data.key === "") {
 			element.style.display = "none";
 		} else {
@@ -223,6 +224,8 @@ function populateContacts(displayFirst)
 		select(contactLanding.firstChild);
 		displayContact(selectedContact);
 	}
+
+	sortContacts();
 }
 
 /**
@@ -269,7 +272,7 @@ function appendContactLink(contact) {
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
-			<h5 style="text-align: center; margin: 0; width: 100%; cursor: pointer">${contactFullName}</h5>
+			<h5 class="contact-name" style="text-align: center; margin: 0; width: 100%; cursor: pointer">${contactFullName}</h5>
     	</div>
     </div>`
 
@@ -281,4 +284,31 @@ function appendContactLink(contact) {
 	contactLanding.appendChild(contactLink);
 
 	return contactLink;
+}
+
+/**
+ * Sorts all contacts by first name
+ */
+function sortContacts() {
+	let contacts = document.getElementById("contactLanding");
+	
+	// Sorting algo is slow on first pass, but very quick for all subsequent calls
+	let sorting = true;
+	while (sorting) {
+		sorting = false;
+		let switchIndex = -1;
+		// Must update after every pass
+		let elements = contacts.children;
+		for (let i = 0; i < elements.length - 1; i++) {
+			if (elements[i].getElementsByClassName("contact-name")[0].innerHTML.toLowerCase() > elements[i + 1].getElementsByClassName("contact-name")[0].innerHTML.toLowerCase()) {
+				switchIndex = i;
+				break;
+			}
+
+		}
+		if (switchIndex !== -1) {
+			elements[switchIndex].parentNode.insertBefore(elements[switchIndex + 1], elements[switchIndex]);
+			sorting = true;
+		}
+	}
 }
