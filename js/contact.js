@@ -88,7 +88,7 @@ function onClickCreate(e) {
 	select(selectedLink);
 	displayContact(contact);
 
-	sortContacts();
+	sortAndDisplayContacts();
 
 	// Clear the modal for next time
 	clearCreate();
@@ -117,7 +117,7 @@ function onClickEdit(e) {
 	select(selectedLink);
 	displayContact(contact);
 
-	sortContacts();
+	sortAndDisplayContacts();
 }
 
 function select(contactLink) {
@@ -199,33 +199,10 @@ function clearCreate() {
 
 /**
  * Requests all of a user's contacts, and pushes them onto the contacts list
- *
- * @param displayFirst whether or not we should automatically display the first user
  */
-function populateContacts(displayFirst)
+function populateContacts()
 {
-	// Clear all children of the contact holder
-	let contactLanding = document.getElementById("contactLanding");
-	while (contactLanding.firstChild)
-		contactLanding.removeChild(contactLanding.firstChild);
-
-	const fetchedContacts = getContacts();
-
-	// Hash values into map
-	fetchedContacts.forEach(function (contact) {
-		contacts.set(contact.ID, contact);
-		appendContactLink(contact);
-	});
-
-	// Display first contact if requested.
-	if (displayFirst && contacts.size > 0) {
-		selectedContact = contacts.entries().next().value[1]
-		selectedLink = contactLanding.firstChild;
-		select(contactLanding.firstChild);
-		displayContact(selectedContact);
-	}
-
-	sortContacts();
+	sortAndDisplayContacts(getContacts());
 }
 
 /**
@@ -288,27 +265,41 @@ function appendContactLink(contact) {
 
 /**
  * Sorts all contacts by first name
+ * 
+ * @param fetchedContacts Will contain array of fetched contacts
  */
-function sortContacts() {
-	let contacts = document.getElementById("contactLanding");
-	
-	// Sorting algo is slow on first pass, but very quick for all subsequent calls
-	let sorting = true;
-	while (sorting) {
-		sorting = false;
-		let switchIndex = -1;
-		// Must update after every pass
-		let elements = contacts.children;
-		for (let i = 0; i < elements.length - 1; i++) {
-			if (elements[i].getElementsByClassName("contact-name")[0].innerHTML.toLowerCase() > elements[i + 1].getElementsByClassName("contact-name")[0].innerHTML.toLowerCase()) {
-				switchIndex = i;
-				break;
-			}
+function sortAndDisplayContacts(fetchedContacts) {
 
-		}
-		if (switchIndex !== -1) {
-			elements[switchIndex].parentNode.insertBefore(elements[switchIndex + 1], elements[switchIndex]);
-			sorting = true;
-		}
+	let contactArray = fetchedContacts;
+	let displayFirst = true;
+
+	// If there were no fetched contacts, then grab from contacts map.
+	if (contactArray === undefined) {
+		displayFirst = false;
+		contactArray = Array.from(contacts, ([id, content]) => (content));
 	}
+
+	// Sort the contacts
+	contactArray.sort((con1, con2) => (con1.FirstName > con2.FirstName) ? 1 : -1);
+
+	// Clear all children of the contact holder
+	let contactLanding = document.getElementById("contactLanding");
+	while (contactLanding.firstChild)
+		contactLanding.removeChild(contactLanding.firstChild);
+
+	// Hash values into map
+	contactArray.forEach(function (contact) {
+		contacts.set(contact.ID, contact);
+		appendContactLink(contact);
+	});
+
+	// Display first contact if requested.
+	if (displayFirst && contacts.size > 0) {
+		selectedContact = contacts.entries().next().value[1]
+		selectedLink = contactLanding.firstChild;
+		select(contactLanding.firstChild);
+		displayContact(selectedContact);
+	}
+
+	return;
 }

@@ -15,7 +15,7 @@ function populateModals() {
     $("#edit-modal-prop").load("../modal/editModal.html", () => {
         $("#delete-modal-prop").load("../modal/deleteModal.html", () => {
             $("#new-modal-prop").load("../modal/createModal.html", () => {
-                populateContacts(true);
+                populateContacts();
             })
         })
     })
