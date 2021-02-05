@@ -1,3 +1,25 @@
+const contactBase = "LAMPAPI/contactController.php"
+
+class APIError extends Error {
+    constructor(title, detail) {
+        super(title);
+        this.detail = detail;
+    }
+}
+
+/**
+ *
+ * @param response
+ * @return {{ok}|*}
+ */
+function errorHandler(response) {
+    if (!response.ok) {
+        return response.json().then(json => {throw new APIError(json.title, json.detail)});
+    }
+
+    return response;
+}
+
 /**
  * Deletes the given contact from the database.
  *
@@ -46,32 +68,45 @@ function getContacts() {
 }
 
 /**
- * Creates a new contact in the DB
  *
- * @param contact The contact to add.
- * @return The ID of the newly created contact.
+ * @return {Promise<*>}
  */
-function createContact(contact) {
-    // Create JSON payload and api endpoint
-    let jsonPayload = JSON.stringify(contact);
-    let url = urlBase + "contactController" + extension;
+async function foo() {
+    return await fetch("LAMPAPI/contactController.php")
+        .then(errorHandler)
+        .catch((error) => console.log(error));
+}
 
-    // Send POST with our data to look up
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, false);
-    xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-    xhr.send(jsonPayload);
+/**
+ * Creates a new user in the database.
+ *
+ * @param contact
+ * @return {Promise<number>}
+ */
+async function createContact(contact) {
 
-    // Valid creation
-    if (xhr.status === 201) {
-        displayNotification("Success!", "Contact created", "success");
-        return JSON.parse(xhr.responseText).ID;
-    } else { // Invalid Creation
-        let error = JSON.parse(xhr.responseText);
-        displayNotification(error.title, error.detail, "danger");
-    }
+    return await fetch(contactBase, {
+        method: "POST",
+        body: JSON.stringify(contact),
+        headers: {"Content-Type": "application/json; charset=UTF-8"}
+    })
+    .then(errorHandler)
+    .then(response => response.json())
+    .then(json => json.ID)
+    .catch(error => {
+        displayNotification(error.message, error.detail, "danger");
+        return -1;
+    });
 
-    return -1;
+
+    // // Valid creation
+    // if (xhr.status === 201) {
+    //     displayNotification("Success!", "Contact created", "success");
+    //     return JSON.parse(xhr.responseText).ID;
+    // } else { // Invalid Creation
+    //     let error = JSON.parse(xhr.responseText);
+    //     displayNotification(error.title, error.detail, "danger");
+    // }
 }
 
 /**

@@ -58,16 +58,23 @@ function onClickCreate(e) {
 
 	// Update DB and assign ID's
 	contact.UserID = id;
-	contact.ID = createContact(contact);
+	createContact(contact).then(ID => {
+		console.log(ID);
 
-	// Update DOM
-	deselect(selectedLink);
-	selectedLink = appendContactLink(contact);
-	select(selectedLink);
-	displayContact(contact);
+		// Update ID
+		contact.ID = ID;
+		// Dismiss modal
+		$("#newModal").modal("hide");
 
-	// Clear the modal for next time
-	clearCreate();
+		// Update DOM
+		deselect(selectedLink);
+		selectedLink = appendContactLink(contact);
+		select(selectedLink);
+		displayContact(contact);
+
+		// Clear the modal for next time
+		//clearCreate();
+	});
 }
 
 function onClickEdit(e) {
