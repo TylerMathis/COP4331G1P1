@@ -35,10 +35,14 @@ function onClickDelete(e) {
 	e.preventDefault();
 
 	// Update remote DB
-	deleteContact(selectedContact);
+	deleteContact(selectedContact).then(() => {
+		// Remove from DOM
+		removeContactLink(selectedContact.ID);
+		displayNotification("Success", "Contact deleted", "info");
+	})
+	.catch(handleError)
+	.finally(() => $("#deleteModal").modal("hide"));
 
-	// Remove from DOM
-	removeContactLink(selectedContact.ID);
 }
 
 function onClickCreate(e) {
@@ -70,13 +74,22 @@ function onClickCreate(e) {
 
 	// Update DB and assign ID's
 	contact.UserID = id;
-	contact.ID = createContact(contact);
-
-	// Insert and update the DOM.
-	insertNewContact(contact);
-
-	// Clear the modal for next time
-	clearCreate();
+	createContact(contact)
+		.then(ID => {
+			// Update ID
+			contact.ID = ID;
+			// Insert and update the DOM.
+			insertNewContact(contact);
+			// Display notification
+			displayNotification("Success!", "Contact created", "success");
+		})
+		.catch(handleError)
+		.finally(() => {
+			// Dismiss modal
+			$("#newModal").modal("hide");
+			// Clear the modal for next time
+			clearCreate();
+		});
 }
 
 function onClickEdit(e) {
@@ -93,20 +106,29 @@ function onClickEdit(e) {
 			contact[key] = value;
 	});
 
-	// Update DB
-	updateContact(contact);
+	updateContact(contact).then(() => {
+		// Update DOM
+		removeContactLink(contact.ID);
+		// Sort new contact into list.
+		insertNewContact(contact);
+		// Display success
+		displayNotification("Success", "Contact Updated", "success")
+	})
+	.catch(handleError)
+	.finally(() => {
+		// Hide modal
+		$("#editModal").modal("hide");
+	});
+}
 
-	// Update DOM
-	removeContactLink(contact.ID);
-
-	// Sort new contact into list.
-	insertNewContact(contact);
+function handleError(error) {
+	displayNotification(error.message, error.detail, "danger");
 }
 
 /**
  * Selects a contact by it's index in the DOM
- * 
- * @param index The index of the contact to be selected 
+ *
+ * @param index The index of the contact to be selected
  */
 function selectByIndex(index) {
 	let contactLanding = document.getElementById("contactLanding");
@@ -116,8 +138,8 @@ function selectByIndex(index) {
 
 /**
  * Selects a contact in the DOM by it's id
- * 
- * @param id The ID to be selected. 
+ *
+ * @param id The ID to be selected.
  */
 function selectById(id) {
 	$(".list-group").children().each(function (index, link) {
@@ -130,7 +152,7 @@ function selectById(id) {
 
 /**
  * Removes previous selection, and selects the current link.
- * 
+ *
  * @param contactLink The link to be selected.
  */
 function changeSelectedTo(contactLink) {
@@ -232,7 +254,7 @@ function clearCreate() {
 
 /**
  * Pushes list of contacts to the DOM and contacts map.
- * 
+ *
  * @param contactsArr An array of contacts to be populated.
  */
 function populateContacts(contactsArr) {
@@ -254,7 +276,7 @@ function populateContacts(contactsArr) {
 
 /**
  * Inserts and sorts the new contact into the contact list.
- * 
+ *
  * @param contact The contact to be inserted.
  */
 function insertNewContact(contact) {

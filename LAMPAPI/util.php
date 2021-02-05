@@ -61,7 +61,7 @@ function verifyFields($fields)
     
     if ($request == $_GET) {
         foreach ($fields as $field) {
-            if (!$request[$field]) {
+            if (!array_key_exists($field, $request)) {
                 ErrorHandler::generic_error($error);
             }
         }
