@@ -32,14 +32,12 @@ const comparators = {
 let selectedComparator = comparators.firstName;
 
 /**
- * Debounce for keystroke management
+ * Stores the current search timeout
  * @type {Function}
  */
-const onSearch = (e) => debounce(function () {
-	console.log(e.target.value);
-	searchAndPopulate(e.target.value);
-}, 300);
+let searchTimeout = undefined;
 
+// Create a functional parser object.
 /**
  * Parses the data-contact-* dataset for a given element.
  *
@@ -57,6 +55,15 @@ $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
 $(document).on("keydown", "#search", onSearch);
+
+function onSearch(e) {
+	// Clear timeout if it is already queued
+	if (searchTimeout !== undefined)
+		clearTimeout(searchTimeout);
+
+	// Begin timeout
+	searchTimeout = setTimeout(function() { searchAndPopulate(e.target.value) }, 300);
+}
 
 function onClickContact(e) {
 	e.preventDefault();
