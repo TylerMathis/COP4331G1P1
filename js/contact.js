@@ -341,7 +341,6 @@ function getAllContacts() {
  * @param keyword The keyword to search on.
  */
 function searchAndPopulate(keyword) {
-	console.log(keyword);
 	// If the field is empty, then grab all contacts.
 	if (keyword === "") {
 		getAllContacts();
@@ -350,8 +349,6 @@ function searchAndPopulate(keyword) {
 
 	// Otherwise, search.
 	searchContacts(keyword).then(contacts => {
-		console.log(contacts);
-
 		// Sort
 		const sorted = contacts.sort(selectedComparator);
 		

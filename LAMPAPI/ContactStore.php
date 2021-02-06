@@ -129,13 +129,13 @@ class ContactStore
     public function searchContact($userID, $keyword) {
         $keyword = "%".$keyword."%";
         $userID = intval($userID);
-        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE (UserID=? AND (FirstName LIKE ? OR 
-                                                                                                   LastName LIKE ? OR 
-                                                                                                   PhoneNumber LIKE ? OR
-                                                                                                   Address LIKE ? OR
-                                                                                                   City LIKE ? OR
-                                                                                                   State LIKE ? OR
-                                                                                                   ZIP LIKE ?))");
+        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE (UserID=? AND (FirstName    LIKE ? OR 
+                                                                                                   LastName     LIKE ? OR 
+                                                                                                   PhoneNumber  LIKE ? OR
+                                                                                                   Address      LIKE ? OR
+                                                                                                   City         LIKE ? OR
+                                                                                                   State        LIKE ? OR
+                                                                                                   ZIP          LIKE ?))");
         $sql->bind_param("isssssss", $userID, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword);
         $sql->execute();
 
