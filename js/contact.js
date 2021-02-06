@@ -31,7 +31,15 @@ const comparators = {
  */
 let selectedComparator = comparators.firstName;
 
-// Create a functional parser object.
+/**
+ * Debounce for keystroke management
+ * @type {Function}
+ */
+const onSearch = (e) => debounce(function () {
+	console.log(e.target.value);
+	searchAndPopulate(e.target.value);
+}, 300);
+
 /**
  * Parses the data-contact-* dataset for a given element.
  *
@@ -48,6 +56,7 @@ $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
+$(document).on("keydown", "#search", onSearch);
 
 function onClickContact(e) {
 	e.preventDefault();
@@ -158,7 +167,8 @@ function handleError(error) {
 function selectByIndex(index) {
 	let contactLanding = document.getElementById("contactLanding");
 	let contactLinks = contactLanding.children;
-	changeSelectedTo(contactLinks[index]);
+	if (contactLinks[index] !== undefined)
+		changeSelectedTo(contactLinks[index]);
 }
 
 /**
@@ -296,6 +306,53 @@ function populateContacts(contactsArr) {
 	contactsArr.forEach(function (contact) {
 		contacts.set(contact.ID, contact);
 		appendContactLink(contact);
+	});
+}
+
+/**
+ * Gets all contacts and sends them to populateContacts
+ */
+function getAllContacts() {
+	// Fetch the contacts array.
+	getContacts().then(contacts => {
+		// If there are no contacts to be sorted, then terminate early
+		if (contacts.length === 0) {
+			return;
+		}
+		// Sort by first name (default).
+		const sorted = contacts.sort(selectedComparator);
+		// Send the sorted array to populate contacts.
+		populateContacts(sorted);
+		// Select the first contact by default
+		selectByIndex(0);
+	});
+}
+
+/**
+ * Searches contacts and repopulates the DOM
+ * 
+ * @param keyword The keyword to search on.
+ */
+function searchAndPopulate(keyword) {
+	console.log(keyword);
+	// If the field is empty, then grab all contacts.
+	if (keyword === "") {
+		getAllContacts();
+		return;
+	}
+
+	// Otherwise, search.
+	searchContacts(keyword).then(contacts => {
+		console.log(contacts);
+
+		// Sort
+		const sorted = contacts.sort(selectedComparator);
+		
+		// Send the sorted array to populate contacts.
+		populateContacts(sorted);
+
+		// Select the first contact by default
+		selectByIndex(0);
 	});
 }
 

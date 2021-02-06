@@ -24,20 +24,7 @@ function initialize() {
     // Get user data and welcome them
     populateUserCache();
     welcomeUser();
-
-    // Fetch the contacts array.
-    getContacts().then(contacts => {
-        // If there are no contacts to be sorted, then terminate early
-        if (contacts.length === 0) {
-            return;
-        }
-        // Sort by first name (default).
-        const sorted = contacts.sort(selectedComparator);
-        // Send the sorted array to populate contacts.
-        populateContacts(sorted);
-        // Select the first contact by default
-        selectByIndex(0);
-    });
+    getAllContacts();
 }
 
 /**
