@@ -54,15 +54,14 @@ $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
-$(document).on("keydown", "#search", onSearch);
+$(document).on("keyup", "#search", onSearch);
 
-function onSearch(e) {
-	// Clear timeout if it is already queued
-	if (searchTimeout !== undefined)
-		clearTimeout(searchTimeout);
+const debouncedSearch = debounce(searchAndPopulate, 500);
 
-	// Begin timeout
-	searchTimeout = setTimeout(function() { searchAndPopulate(e.target.value) }, 300);
+function onSearch() {
+	console.log("loading...");
+	const query = $(this).val();
+	debouncedSearch(query);
 }
 
 function onClickContact(e) {
@@ -351,12 +350,15 @@ function searchAndPopulate(keyword) {
 	searchContacts(keyword).then(contacts => {
 		// Sort
 		const sorted = contacts.sort(selectedComparator);
+		console.log(contacts);
 		
 		// Send the sorted array to populate contacts.
 		populateContacts(sorted);
 
 		// Select the first contact by default
 		selectByIndex(0);
+
+		console.log("done loading");
 	});
 }
 
