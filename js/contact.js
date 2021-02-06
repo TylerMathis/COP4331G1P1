@@ -31,12 +31,6 @@ const comparators = {
  */
 let selectedComparator = comparators.firstName;
 
-/**
- * Stores the current search timeout
- * @type {Function}
- */
-let searchTimeout = undefined;
-
 // Create a functional parser object.
 /**
  * Parses the data-contact-* dataset for a given element.
