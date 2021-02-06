@@ -43,11 +43,26 @@ const parser = element => ({
 	targetID: element.dataset.contactTarget
 });
 
+/**
+ * The debounced contact search funcion.
+ *
+ * @type {function(...string): void}
+ */
+const debouncedSearch = debounce(searchAndPopulate, 300);
+
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
+$(document).on("input", "#search", onSearch);
+
+function onSearch() {
+	// Run query.
+	debouncedSearch($(this).val());
+	// Show loading indicator
+	displaySpinner();
+}
 
 function onClickContact(e) {
 	e.preventDefault();
@@ -158,7 +173,8 @@ function handleError(error) {
 function selectByIndex(index) {
 	let contactLanding = document.getElementById("contactLanding");
 	let contactLinks = contactLanding.children;
-	changeSelectedTo(contactLinks[index]);
+	if (contactLinks[index] !== undefined)
+		changeSelectedTo(contactLinks[index]);
 }
 
 /**
@@ -300,6 +316,52 @@ function populateContacts(contactsArr) {
 }
 
 /**
+ * Gets all contacts and sends them to populateContacts
+ */
+function getAllContacts() {
+	// Fetch the contacts array.
+	getContacts().then(contacts => {
+		// If there are no contacts to be sorted, then terminate early
+		if (contacts.length === 0) {
+			return;
+		}
+		// Sort by first name (default).
+		const sorted = contacts.sort(selectedComparator);
+		// Send the sorted array to populate contacts.
+		populateContacts(sorted);
+		// Select the first contact by default
+		selectByIndex(0);
+	});
+}
+
+/**
+ * Searches contacts and repopulates the DOM
+ * 
+ * @param keyword The keyword to search on.
+ */
+function searchAndPopulate(keyword) {
+	// If the field is empty, then grab all contacts and remove loader.
+	if (keyword === "") {
+		getAllContacts();
+		hideSpinner();
+		return;
+	}
+
+	// Otherwise, search.
+	searchContacts(keyword).then(contacts => {
+		// Sort
+		const sorted = contacts.sort(selectedComparator);
+		console.log(contacts);
+		// Send the sorted array to populate contacts.
+		populateContacts(sorted);
+		// Select the first contact by default
+		selectByIndex(0);
+		// Remove loading indicator on completion.
+		hideSpinner();
+	});
+}
+
+/**
  * Inserts and sorts the new contact into the contact list.
  *
  * @param contact The contact to be inserted.
@@ -378,4 +440,21 @@ function appendContactLink(contact) {
 
 	// Select the contact.
 	changeSelectedTo(contactLink);
+}
+
+function displaySpinner() {
+	// Hide list
+	$("#contactLanding").hide();
+
+	// Show load overlay
+	$("#load-overlay").show()
+}
+
+function hideSpinner() {
+	// Show list
+	$("#contactLanding").show();
+
+	// Hide load overlay
+	$("#load-overlay").hide();
+
 }
