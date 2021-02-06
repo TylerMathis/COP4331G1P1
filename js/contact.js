@@ -49,19 +49,25 @@ const parser = element => ({
 	targetID: element.dataset.contactTarget
 });
 
+/**
+ * The debounced contact search funcion.
+ *
+ * @type {function(...string): void}
+ */
+const debouncedSearch = debounce(searchAndPopulate, 300);
+
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
-$(document).on("keyup", "#search", onSearch);
-
-const debouncedSearch = debounce(searchAndPopulate, 500);
+$(document).on("input", "#search", onSearch);
 
 function onSearch() {
-	console.log("loading...");
-	const query = $(this).val();
-	debouncedSearch(query);
+	// Run query.
+	debouncedSearch($(this).val());
+	// Show loading indicator
+	displaySpinner();
 }
 
 function onClickContact(e) {
@@ -340,9 +346,10 @@ function getAllContacts() {
  * @param keyword The keyword to search on.
  */
 function searchAndPopulate(keyword) {
-	// If the field is empty, then grab all contacts.
+	// If the field is empty, then grab all contacts and remove loader.
 	if (keyword === "") {
 		getAllContacts();
+		hideSpinner();
 		return;
 	}
 
@@ -351,14 +358,12 @@ function searchAndPopulate(keyword) {
 		// Sort
 		const sorted = contacts.sort(selectedComparator);
 		console.log(contacts);
-		
 		// Send the sorted array to populate contacts.
 		populateContacts(sorted);
-
 		// Select the first contact by default
 		selectByIndex(0);
-
-		console.log("done loading");
+		// Remove loading indicator on completion.
+		hideSpinner();
 	});
 }
 
@@ -441,4 +446,21 @@ function appendContactLink(contact) {
 
 	// Select the contact.
 	changeSelectedTo(contactLink);
+}
+
+function displaySpinner() {
+	// Hide list
+	$("#contactLanding").hide();
+
+	// Show load overlay
+	$("#load-overlay").show()
+}
+
+function hideSpinner() {
+	// Show list
+	$("#contactLanding").show();
+
+	// Hide load overlay
+	$("#load-overlay").hide();
+
 }
