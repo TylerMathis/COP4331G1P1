@@ -51,3 +51,8 @@ function displayNotification(title, desc, type) {
 
 	notificationLanding.prepend(notiDiv);
 }
+
+function displayError(error) {
+	console.log(error);
+	displayNotification(error.message, error.detail, "danger");
+}

@@ -1,11 +1,29 @@
-const urlBase = 'LAMPAPI/';
-const extension = '.php';
-
 let firstName = "";
 let lastName = "";
 let fullName = "";
 let id = -1;
 
+const formToJSON = formData => {
+	const data = {};
+	formData.forEach((value, key) => data[key] = value);
+	return data;
+}
+
+function submitLoginClicked(e) {
+	// Prevent refreshing
+	e.preventDefault()
+	doLogin();
+}
+
+function submitCreateClicked(e) {
+	// Prevent refreshing
+	e.preventDefault();
+	doCreateAccount();
+}
+
+/**
+ * Populates the user data from the stored cookie.
+ */
 function populateUserCache() {
 	let cookie = getCookie();
 	firstName = cookie["FirstName"];
@@ -14,82 +32,46 @@ function populateUserCache() {
 	id = cookie["ID"];
 }
 
-function goToLogin() { window.location.href = "index.html"; }
-function doLogin(login, password)
+/**
+ * Verifies and logs user with the given credentials in.
+ *
+ * @return {boolean} true on success, false otherwise.
+ */
+function doLogin()
 {
 	// Retrieve login and password
-	if (login === undefined)
-		login = document.getElementById("user").value;
-	if (password === undefined)
-		password = document.getElementById("pass").value;
-	
-	// Create jsonPayload and api endpoint
-	let jsonPayload = JSON.stringify({
-	     "Login" : login,
-		 "Password" : password
-	});
+	const form = document.getElementById("login-form");
+	const formData = new FormData(form);
 
-	let url = urlBase + "login" + extension;
+	// Serialize data
+	const loginData = formToJSON(formData);
+	const remember = formData.Remember !== undefined;
 
-	// Send POST with our data to look up
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	xhr.send(jsonPayload);
+	console.log(loginData);
 
-	// Valid request
-	if (xhr.status === 200) {
-		let response = JSON.parse(xhr.responseText);
-		let remember = document.getElementById("remember-me").checked;
-		// Always save a cookie, but store whether or not they want to be remembered
-        saveCookie(response.FirstName, response.LastName, response.ID, remember);
+	// Make request.
+	loginUser(loginData).then(json => {
+		// Update cookie
+		saveCookie(json.FirstName, json.LastName, json.ID, remember);
+		// Move to landing page.
 		window.location.href = "landing_page.html";
-	}
-	// Invalid request
-    else {
-		let error = JSON.parse(xhr.responseText);
-        displayNotification(error.title, error.detail, "danger");
-    }
-
-	return false;
+	}).catch(displayError);
 }
 
-function goToCreateAccount() { window.location.href = "create_account.html"; }
-function doCreateAccount()
-{
-    // Get all document elements
-	let first = document.getElementById("first-name").value;
-	let last = document.getElementById("last-name").value;
-	let login = document.getElementById("user").value;
-	let password = document.getElementById("pass").value;
+/**
+ * Creates a new user.
+ */
+function doCreateAccount() {
+	// Parse necessary data
+	const formData = new FormData(document.getElementById("create-form"));
+	const userData = formToJSON(formData);
 
-	// Create jsonPayload and api endpoint
-    let jsonPayload = JSON.stringify({
-        "FirstName" : first,
-        "LastName" : last,
-        "Login" : login,
-        "Password" : password
-    });
-	let url = urlBase + "createUser" + extension;
-
-	// Send POST with our data to look up
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, false);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	xhr.send(jsonPayload);
-
-	// Valid creation
-    if (xhr.status === 201) {
-		displayNotification("Success!", "Login you in...", "success");
-		setTimeout(doLogin(login, password), 2000);
-	}
-	// Invalid creation
-    else {
-		let error = JSON.parse(xhr.responseText);
-		displayNotification(error.title, error.detail, "danger");
-	}
-	
-	return false;
+	// Send request
+	createUser(userData).then(() => {
+		displayNotification("Success!", "Returning you back to login...", "success");
+		// Migrate to login after 2 seconds.
+		setTimeout(() => window.location.href = "index.html", 2000);
+	}).catch(displayError);
 }
 
 function welcomeUser() {
