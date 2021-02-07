@@ -48,6 +48,14 @@ $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
+$(document).on("drop", "#img-upload", onImgDrop);
+$(document).on("dropover", "#img-upload", onImgDrop);
+
+function onImgDrop(e) {
+	e.preventDefault();
+	var data = e.dataTransfer.getData("image");
+	console.log(data);
+}
 
 function onClickContact(e) {
 	e.preventDefault();
