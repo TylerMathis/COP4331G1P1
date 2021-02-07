@@ -37,27 +37,13 @@ body {
 
 .overlay {
   background-color: rgba(255, 255, 255, 0.85);
+  position: relative;
   width: 100%;
   height: 100%;
   align-items: center;
   justify-items: center;
   justify-content: center;
   display: flex;
-  overflow: auto;
-}
-
-.contact-list-card {
-  display: flex;
-  justify-items: left;
-  width: 100%;
-  flex: 1 1 auto;
-  overflow: auto;
-  /*
-    Safari Scroll Bar Bug workaround
-   */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translateZ(0px);
 }
 
 .contacts {
