@@ -55,14 +55,13 @@ class ContactStore
      * Creates a new contact and adds it to the database.
      *
      * @param Contact $contact
-     * @return bool
+     * @return false|int
      */
     public function createContact($contact)
     {
-        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (UserID, FirstName, LastName, PhoneNumber, Address, City, State, ZIP, ID) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $sql = $this->db->prepare("INSERT INTO ".ContactStore::TABLE_NAME." (FirstName, LastName, PhoneNumber, Address, City, State, ZIP, UserID) values (?, ?, ?, ?, ?, ?, ?, ?)");
         echo $this->db->getError();
-        $sql->bind_param("isssssssi",
-            $contact->userID,
+        $sql->bind_param("sssssssi",
             $contact->firstName,
             $contact->lastName,
             $contact->phoneNumber,
@@ -70,7 +69,7 @@ class ContactStore
             $contact->city,
             $contact->state,
             $contact->zip,
-            $contact->id
+            $contact->userID
         );
         $sql->execute();
 
@@ -78,7 +77,7 @@ class ContactStore
             return false;
         }
 
-        return true;
+        return $sql->insert_id;
     }
 
     /**
@@ -89,8 +88,17 @@ class ContactStore
      */
     public function updateContact($contact)
     {
-        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=? WHERE ID=?");
-        $sql->bind_param("ssssi", $contact->firstName, $contact->lastName, $contact->phoneNumber, $contact->address, $contact->id);
+        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET FirstName=?, LastName=?, PhoneNumber=?, Address=?, City=?, State=?, ZIP=? WHERE ID=?");
+        $sql->bind_param("sssssssi",
+            $contact->firstName,
+            $contact->lastName,
+            $contact->phoneNumber,
+            $contact->address,
+            $contact->city,
+            $contact->state,
+            $contact->zip,
+            $contact->id
+        );
         $sql->execute();
 
         return $sql->get_result();

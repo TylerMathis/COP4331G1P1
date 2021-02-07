@@ -1,5 +1,181 @@
+:root {
+  --custom-BR: 25px;
+  --custom-light-gray: #e0e0e0
+}
+
 body {
   background-color: cadetblue;
+}
+
+.modal-content {
+  border-radius: var(--custom-BR) !important;
+  overflow: hidden !important;
+}
+
+html, body {
+  width: 100%;
+  height:100%;
+}
+
+body {
+    background: linear-gradient(-45deg, #FF6C32, #4b8bf2, #FF6C32);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.contacts {
+  overflow: auto;
+  border-bottom: 1px solid var(--custom-light-gray);
+}
+
+.contact-data {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: auto;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  overflow: auto
+}
+
+.contact-display {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 350px;
+  overflow: auto;
+  flex: 1 1 auto;
+}
+
+.info-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.contact-info-header {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--custom-light-gray);
+}
+
+.contact-list-display {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  min-width: 350px;
+}
+
+.list-group-item {
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.contact-link {
+  color: inherit;
+}
+
+.contact-card:hover {
+  background-color: var(--custom-light-gray);
+  transition: 0.3s;
+}
+
+.list-group-item.active {
+  transition: 0.3s;
+}
+
+.beveledBox {
+  background-color: white;
+  border-radius: var(--custom-BR);
+}
+
+.profile-icon {
+  width: 40px;
+  height: 40px;
+  max-height: 40px;
+  min-width: 40px;
+  border-radius: 20px;
+  background-color: #c2c2c2;
+  color: white;
+  margin: 5px;
+  overflow: hidden;
+}
+
+.profile-icon.enlarged {
+  width: 80px;
+  height: 80px;
+  min-height: 80px;
+  min-width: 80px;
+  border-radius: 40px;
+  background-color: #c2c2c2;
+}
+
+.form-control.search-bar[type=text] {
+  height: 40px;
+  background-color: var(--custom-light-gray);
+  border: none;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.form-control.search-bar[type=text]:focus {
+  background-color: var(--custom-light-gray);
+}
+
+h3.profile-ab{
+  text-align: center;
+  font-weight: bold !important;
+  font-size: 18px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+label.contact-field {
+  width: 100%;
+  font-size: 15px;
+  text-align: left;
+  color: gray;
+}
+
+p.contact-field {
+  font-size: 25px;
+  text-align: left;
+  margin-bottom: 0;
+}
+
+h3.profile-ab.enlarged{
+  text-align: center;
+  margin-bottom: 0;
+  font-size: 30px !important;
 }
 
 .loginHeader {
@@ -14,13 +190,51 @@ body {
   z-index: 0;
 }
 
+.landing-body {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: cornflowerblue;
+  height: 100%;
+}
+
 .container.loginContainer {
   max-width: 500px;
   /*min-height: 400px;*/
   background-color: white;
-  border-radius: 25px;
+  border-radius: var(--custom-BR);
   padding: 25px;
   z-index: 1;
+}
+
+.container.backgroundContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1500px;
+  width: 90%;
+  background-color: #00000055;
+  border-radius: var(--custom-BR);
+  padding: 25px;
+  height: 90%;
+  max-height: 1000px;
+  min-height: 400px;
+  min-width: 800px;
+}
+
+.btn.rounded {
+  height: 40px;
+  border-radius: 20px !important;
+}
+
+.rounded.compact {
+  font-weight: bold;
+}
+
+.modal-footer.spaced {
+  display: flex;
+  justify-content: space-between;
 }
 
 .box {
@@ -78,6 +292,8 @@ label {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  z-index: -1;
 }
 
 .login {
@@ -93,8 +309,8 @@ label {
   left: 0;
   margin-left: 20vw;
   margin-top: 10vh;
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
+  border-top-left-radius: var(--custom-BR);
+  border-bottom-left-radius: var(--custom-BR);
 }
 
 .title {
@@ -122,7 +338,6 @@ label {
 }
 
 .loginData {
-  display: inline-block;
   grid-row: 4;
   display: grid;
   font-family: "Roboto", sans-serif;
@@ -156,7 +371,7 @@ label {
 .buttons {
   grid-row: 6;
   font-size: 1vw;
-  border-radius: 25px;
+  border-radius: var(--custom-BR);
   width: 25%;
   margin: auto;
   font-family: "Roboto", sans-serif;
@@ -168,19 +383,23 @@ label {
   opacity: 50%;
 }
 
-a:link {
-  font-size: small;
-  color: rgb(74, 154, 246);
-  background-color: transparent;
-  text-decoration: none;
-}
 
 .createAccount {
   font-size: 10px;
-  border-radius: 25px;
+  border-radius: var(--custom-BR);
   width: 90%;
   margin: auto;
   font-family: "Roboto", sans-serif;
+}
+
+.btn.btn-primary.add-button {
+  display: flex;
+  min-height: 40px;
+  border-radius: 20px;
+  min-width: 40px;
+  padding: 0 10px 0 0;
+  align-items: center;
+  justify-content: space-between
 }
 
 .phoneImage {
@@ -200,8 +419,8 @@ a:link {
   z-index: -1;
   position: relative;
   left: 0;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-top-right-radius: var(--custom-BR);
+  border-bottom-right-radius: var(--custom-BR);
 }
 
 .contacticalHand {
@@ -214,5 +433,9 @@ a:link {
   left: 0;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+}
+
+a.contact-link {
+  text-decoration: none;
 }
 /* CREATE ACCOUNT */

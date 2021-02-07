@@ -58,6 +58,15 @@ function verifyFields($fields)
     $error = new Error("Missing fields in request.", "One or more required fields are missing");
 
     $request = getRequestInfo();
+    
+    if ($request == $_GET) {
+        foreach ($fields as $field) {
+            if (!array_key_exists($field, $request)) {
+                ErrorHandler::generic_error($error);
+            }
+        }
+    }
+
     if ($fields == null || count($request) < count($fields)) {
         ErrorHandler::generic_error($error);
     }

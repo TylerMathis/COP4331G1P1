@@ -15,7 +15,7 @@ function loadHiRes() {
 // Displays a notification to the user
 function displayNotification(title, desc, type) {
 	let alertType = "alert-" + type;
-	let loginView = document.getElementById("loginView");
+	let notificationLanding = document.getElementById("notificationLanding");
 
 	if (document.getElementById("notiDiv") != null) {
 		let curNoti = document.getElementById("notiDiv");
@@ -23,14 +23,25 @@ function displayNotification(title, desc, type) {
 	}
 
 	let notiDiv = document.createElement("div");
-	notiDiv.className = "alert " + alertType;
+	notiDiv.className = "alert " + alertType + " alert-dismissable fade show";
 	notiDiv.style.width = "75%";
 	notiDiv.id = "notiDiv";
+
+	let notiHeaderDiv = document.createElement("div");
+	notiHeaderDiv.className = "d-flex";
+	notiHeaderDiv.style.justifyContent = "space-between";
+	notiDiv.appendChild(notiHeaderDiv);
 
 	let notiHeader = document.createElement("h5");
 	notiHeader.style.textAlign = "left";
 	notiHeader.innerHTML = title;
-	notiDiv.appendChild(notiHeader);
+	notiHeaderDiv.appendChild(notiHeader);
+
+	let notiClose = document.createElement("button");
+	notiClose.type = "button";
+	notiClose.className = "btn-close";
+	notiClose.dataset.bsDismiss = "alert";
+	notiHeaderDiv.appendChild(notiClose);
 
 	let notiDesc = document.createElement("p");
 	notiDesc.style.textAlign = "left";
@@ -38,5 +49,5 @@ function displayNotification(title, desc, type) {
 	notiDesc.style.marginBottom = "0px";
 	notiDiv.appendChild(notiDesc);
 
-	loginView.prepend(notiDiv);
+	notificationLanding.prepend(notiDiv);
 }

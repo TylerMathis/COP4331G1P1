@@ -34,7 +34,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 function createContact()
 {
     // Precondition
-    verifyFields(array("FirstName", "LastName", "Email", "Address", "PhoneNumber", "UserID"));
+    verifyFields(array("FirstName", "LastName", "PhoneNumber", "Address", "City", "State", "ZIP", "UserID"));
 
     global $store;
     $result = $store->createContact(Contact::fromArray(getRequestInfo()));
@@ -46,6 +46,9 @@ function createContact()
 
     // Indicate success response
     http_response_code(201);
+
+    // Then provide the ID
+    echo json_encode(array("ID" => $result));
 }
 
 function getContacts()
@@ -56,7 +59,8 @@ function getContacts()
     $result = $store->getContactsForUser(getRequestInfo()["UserID"]);
 
     if (!$result) {
-        ErrorHandler::generic_error(new Error("Contacts could not be fetched", "Please try again later."));
+        echo json_encode(array());
+        return;
     }
 
     $retVal = array();
