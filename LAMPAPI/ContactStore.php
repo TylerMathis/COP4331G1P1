@@ -135,8 +135,9 @@ class ContactStore
                                                                                                    Address      LIKE ? OR
                                                                                                    City         LIKE ? OR
                                                                                                    State        LIKE ? OR
-                                                                                                   ZIP          LIKE ?))");
-        $sql->bind_param("isssssss", $userID, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword);
+                                                                                                   ZIP          LIKE ? OR
+                                                                                                   CONCAT(FirstName, ' ', LastName) LIKE ?))");
+        $sql->bind_param("issssssss", $userID, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword);
         $sql->execute();
 
         $result = $sql->get_result();
