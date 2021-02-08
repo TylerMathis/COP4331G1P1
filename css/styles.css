@@ -7,6 +7,11 @@ body {
   background-color: cadetblue;
 }
 
+.alert {
+  border-radius: var(--custom-BR) !important;
+  overflow: hidden;
+}
+
 .modal-content {
   border-radius: var(--custom-BR) !important;
   overflow: hidden !important;
