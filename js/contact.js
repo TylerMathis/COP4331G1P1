@@ -416,7 +416,7 @@ function appendContactLink(contact) {
 
 	// Set HTML
 	contactLink.innerHTML = `
-	<div class="list-group-item d-flex contact-card" style="min-height: 50px;">
+	<div class="list-group-item d-flex contact-card">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
 				<h3 class="profile-ab">${contactInitials}</h3>
