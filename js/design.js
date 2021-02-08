@@ -22,32 +22,20 @@ function displayNotification(title, desc, type) {
 		curNoti.parentNode.removeChild(curNoti);
 	}
 
+	const innerHTML = `
+	<div class="d-flex" style="justify-content: space-between">
+		<div>
+			<strong>${title}</strong> ${desc}
+		</div>
+		<button class="btn-close" data-bs-dismiss="alert" type="button"></button>	
+	</div>
+	`
+
 	let notiDiv = document.createElement("div");
 	notiDiv.className = "alert " + alertType + " alert-dismissable fade show";
 	notiDiv.style.width = "75%";
 	notiDiv.id = "notiDiv";
-
-	let notiHeaderDiv = document.createElement("div");
-	notiHeaderDiv.className = "d-flex";
-	notiHeaderDiv.style.justifyContent = "space-between";
-	notiDiv.appendChild(notiHeaderDiv);
-
-	let notiHeader = document.createElement("h5");
-	notiHeader.style.textAlign = "left";
-	notiHeader.innerHTML = title;
-	notiHeaderDiv.appendChild(notiHeader);
-
-	let notiClose = document.createElement("button");
-	notiClose.type = "button";
-	notiClose.className = "btn-close";
-	notiClose.dataset.bsDismiss = "alert";
-	notiHeaderDiv.appendChild(notiClose);
-
-	let notiDesc = document.createElement("p");
-	notiDesc.style.textAlign = "left";
-	notiDesc.innerHTML = desc;
-	notiDesc.style.marginBottom = "0px";
-	notiDiv.appendChild(notiDesc);
+	notiDiv.innerHTML = innerHTML;
 
 	notificationLanding.prepend(notiDiv);
 }
