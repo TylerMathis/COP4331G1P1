@@ -80,7 +80,7 @@ function onClickDelete(e) {
 		removeContactLink(selectedContact.ID);
 		displayNotification("Success", "Contact deleted", "info");
 	})
-	.catch(handleError)
+	.catch(displayError)
 	.finally(() => $("#deleteModal").modal("hide"));
 
 }
@@ -123,7 +123,7 @@ function onClickCreate(e) {
 			// Display notification
 			displayNotification("Success!", "Contact created", "success");
 		})
-		.catch(handleError)
+		.catch(displayError)
 		.finally(() => {
 			// Dismiss modal
 			$("#newModal").modal("hide");
@@ -154,15 +154,11 @@ function onClickEdit(e) {
 		// Display success
 		displayNotification("Success", "Contact Updated", "success")
 	})
-	.catch(handleError)
+	.catch(displayError)
 	.finally(() => {
 		// Hide modal
 		$("#editModal").modal("hide");
 	});
-}
-
-function handleError(error) {
-	displayNotification(error.message, error.detail, "danger");
 }
 
 /**
