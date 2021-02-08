@@ -47,15 +47,12 @@ body {
 }
 
 .contacts {
-  display: flex;
-  flex: 1;
   overflow: auto;
   border-bottom: 1px solid var(--custom-light-gray);
 }
 
 .contact-data {
   display: flex;
-  flex: 1;
   flex-direction: column;
   width: 100%;
   overflow: auto;
@@ -66,6 +63,7 @@ body {
   flex-direction: column;
   width: 100%;
   max-width: 500px;
+  overflow: auto
 }
 
 .contact-display {
