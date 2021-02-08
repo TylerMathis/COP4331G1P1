@@ -1,0 +1,2 @@
+# Allows php tags to be executed in html files.
+AddType application/x-httpd-php .htm .html
