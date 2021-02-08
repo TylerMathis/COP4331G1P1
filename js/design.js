@@ -39,11 +39,11 @@ function displayNotification(title, desc, type) {
 	const innerHTML = `
     <div class="d-flex" style="justify-content: flex-start; align-items: center;">
         ${icon}
-		<div class="d-flex" style="flex-wrap: wrap;">
+        <div class="d-flex" style="flex-wrap: wrap;">
             <strong style="padding-right: 10px;">${title}</strong>
             ${desc}
-		</div>
-		<button style="margin-left: auto;" class="btn-close" data-bs-dismiss="alert" type="button"></button>	
+        </div>
+        <button style="margin-left: auto;" class="btn-close" data-bs-dismiss="alert" type="button"></button>	
 	</div>
 	`
 
