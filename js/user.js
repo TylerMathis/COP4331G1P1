@@ -66,10 +66,26 @@ function doCreateAccount() {
 
 	// Send request
 	createUser(userData).then(() => {
-		displayNotification("Success!", "Returning you back to login...", "success");
+        displayNotification("Success!", "Returning you back to login...", "success");
+        
+        const login = userData.Login;
+        const url = "index.html?loginPlaceholder=" + login;
 		// Migrate to login after 2 seconds.
-		setTimeout(() => window.location.href = "index.html", 2000);
+		setTimeout(() => window.location.href = url, 2000);
 	}).catch(displayError);
+}
+
+/**
+ * Parses the URL and tries to fill the login
+ */
+function autoFillLogin() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    if (urlParams.has("loginPlaceholder")) {
+        const login = document.getElementById("user");
+        login.value = urlParams.get("loginPlaceholder");
+    }
 }
 
 function welcomeUser() {
