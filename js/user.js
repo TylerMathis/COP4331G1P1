@@ -10,13 +10,13 @@ const formToJSON = formData => {
 }
 
 function submitLoginClicked(e) {
-	// Prevent refreshing
+	// Prevent url encoding
 	e.preventDefault()
 	doLogin();
 }
 
 function submitCreateClicked(e) {
-	// Prevent refreshing
+	// Prevent url encoding
 	e.preventDefault();
 	doCreateAccount();
 }
@@ -45,9 +45,7 @@ function doLogin()
 
 	// Serialize data
 	const loginData = formToJSON(formData);
-	const remember = formData.Remember !== undefined;
-
-	console.log(loginData);
+	const remember = "Remember" in loginData;
 
 	// Make request.
 	loginUser(loginData).then(json => {
