@@ -100,7 +100,6 @@ body {
 
 .contact-list-display {
   display: flex;
-  flex: 1;
   flex-direction: column;
   margin-right: 20px;
   min-width: 350px;
