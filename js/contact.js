@@ -78,7 +78,7 @@ function onClickDelete(e) {
 	deleteContact(selectedContact).then(() => {
 		// Remove from DOM
 		removeContactLink(selectedContact.ID);
-		displayNotification("Success!", "Contact deleted", "info");
+		displayNotification("Success!", "Contact deleted", "success");
 	})
 	.catch(displayError)
 	.finally(() => $("#deleteModal").modal("hide"));
