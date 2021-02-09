@@ -32,7 +32,10 @@ class Contact
     /** @var int $id */
     public $id;
 
-    private static $fieldNames = array("UserID", "FirstName", "LastName", "PhoneNumber", "Address", "City", "State", "ZIP", "ID");
+    /** @var int $id */
+    public $profileImage;
+
+    private static $fieldNames = array("UserID", "FirstName", "LastName", "PhoneNumber", "Address", "City", "State", "ZIP", "ID", "ProfileImage");
 
     /**
      * Contact constructor.
@@ -47,7 +50,7 @@ class Contact
      * @param $zip
      * @param $id
      */
-    function __construct($userID, $firstName, $lastName, $phoneNumber, $address, $city, $state, $zip, $id)
+    function __construct($userID, $firstName, $lastName, $phoneNumber, $address, $city, $state, $zip, $id, $profileImage)
     {
         $this->userID = $userID;
         $this->firstName = $firstName;
@@ -58,6 +61,7 @@ class Contact
         $this->state = $state;
         $this->city = $city;
         $this->id = $id;
+        $this->profileImage = $profileImage;
     }
 
     /**
@@ -75,7 +79,7 @@ class Contact
         
         return new self($arr["UserID"], $arr["FirstName"],
             $arr["LastName"], $arr["PhoneNumber"], $arr["Address"],
-            $arr["City"], $arr["State"], $arr["ZIP"], $arr["ID"]);
+            $arr["City"], $arr["State"], $arr["ZIP"], $arr["ID"], $arr["ProfileImage"]);
     }
 
     /**
@@ -85,6 +89,6 @@ class Contact
     {
         return array("UserID" => $this->userID, "FirstName" => $this->firstName, "LastName" => $this->lastName,
             "PhoneNumber" => $this->phoneNumber, "Address" => $this->address, "City" => $this->city,
-            "State" => $this->state, "ZIP" => $this->zip, "ID" => $this->id);
+            "State" => $this->state, "ZIP" => $this->zip, "ID" => $this->id, "ProfileImage" => $this->profileImage);
     }
 }

@@ -179,6 +179,8 @@ function onClickEdit(e) {
 	const form = document.getElementById("edit-form");
 	const data = new FormData(form);
 
+	console.log(...data.entries());
+
 	// Merge form data
 	const contact = selectedContact;
 	data.forEach(function (value, key) {
@@ -276,6 +278,8 @@ function displayContact(contactRef) {
 	contact.FullName = contact.FirstName + " " + contact.LastName;
 	contact.Initials = contact.FirstName[0] + contact.LastName[0];
 
+	console.log(contact);
+
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
 		const data = parser(element);
@@ -285,7 +289,7 @@ function displayContact(contactRef) {
 			element.style.removeProperty("display");
 		}
 
-		$(data.targetID).text(contact[data.key]);
+		$(data.targetID).html(contact[data.key]);
 	});
 
 	// Update edit DOM
@@ -349,6 +353,8 @@ function populateContacts(contactsArr) {
 		contacts.set(contact.ID, contact);
 		appendContactLink(contact);
 	});
+
+	//populateContactImages();
 }
 
 /**
@@ -454,12 +460,20 @@ function appendContactLink(contact) {
 	let contactLanding = document.getElementById("contactLanding");
 	let contactLink = document.createElement("a");
 
+	let profileContent = `<h3 class="profile-ab">${contactInitials}</h3>`;
+	let hasImg = false
+
+	if (contact.ProfileImage != null) {
+		profileContent = `<img data-contact-img="${contact.ProfileImage}" class="profile-img">`;
+		hasImg = true;
+	}
+
 	// Set HTML
 	contactLink.innerHTML = `
 	<div class="list-group-item d-flex contact-card">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
-				<h3 class="profile-ab">${contactInitials}</h3>
+					${profileContent}
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
@@ -476,6 +490,12 @@ function appendContactLink(contact) {
 
 	// Select the contact.
 	changeSelectedTo(contactLink);
+}
+
+function populateContactImages() {
+	$("img[data-contact-img]").each(function() {
+		$(this).attr("src", "contact-imgs/" + $(this).attr("data-contact-img"));
+	})
 }
 
 function displaySpinner() {
