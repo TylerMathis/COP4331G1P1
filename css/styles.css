@@ -163,6 +163,18 @@ body {
   background-color: #c2c2c2;
 }
 
+.profile-img.enlarged {
+  display: flex;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  min-height: 80px;
+  min-width: 80px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .form-control.search-bar[type=text] {
   height: 40px;
   background-color: var(--custom-light-gray);

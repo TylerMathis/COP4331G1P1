@@ -278,8 +278,6 @@ function displayContact(contactRef) {
 	contact.FullName = contact.FirstName + " " + contact.LastName;
 	contact.Initials = contact.FirstName[0] + contact.LastName[0];
 
-	console.log(contact);
-
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
 		const data = parser(element);
@@ -299,16 +297,43 @@ function displayContact(contactRef) {
 		// Check if input or select
 		const input = element.querySelector("input");
 		const select = element.querySelector("select");
+		const initials = element.querySelector("h3");
 
 		// Reset the fields
-		if (input) {
+		if (input && !initials) {
 			input.placeholder = contact[data.key];
 			input.value = "";
 		} else if (select) {
 			select.selectedIndex = 0;
+		} else {
+			initials.innerHTML= contact[data.key];
 		}
 
 	});
+
+	const container = $("#contact-profile-container");
+	const editContainer = $("#drop-area");
+
+	// Populate image
+	if (contact.ProfileImage) {
+		// Clean container
+		container.empty();
+		editContainer.find("h3").remove();
+		editContainer.find("img").remove();
+
+		container.append(`<img class="profile-img enlarged align-self-center" src="contact-imgs/${contact.ProfileImage}">`);
+		editContainer.append(`<img class="profile-img enlarged align-self-center" src="contact-imgs/${contact.ProfileImage}">`);
+	} else { // No contact image
+		if (container.find("h3").length == 0) {
+			// Clean
+			container.empty();
+			editContainer.find("img").remove();
+			editContainer.find("h3").remove();
+			// Add initials back.
+			container.append(`<h3 class="profile-ab enlarged" id="info-initials" style="align-self: center; text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">${contact.Initials}</h3>`)
+			editContainer.append(`<h3 class="profile-ab enlarged" id="info-initials" style="align-self: center; text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">${contact.Initials}</h3>`)
+		}
+	}
 }
 
 /**
@@ -354,7 +379,7 @@ function populateContacts(contactsArr) {
 		appendContactLink(contact);
 	});
 
-	//populateContactImages();
+	populateContactImages();
 }
 
 /**
