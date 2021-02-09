@@ -1,17 +1,10 @@
 <html>
 <head>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
 	<title>Contactical</title>
-	<link href="css/styles.css" rel="stylesheet">
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-	<script type="text/javascript" src="js/cookies.js"></script>
-	<script type="text/javascript" src="js/design.js"></script>
+	<?php include 'head.html'; ?>
 	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript" src="js/APIUtil.js"></script>
+	<script type="text/javascript" src="js/userStore.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
 </head>
 
@@ -32,18 +25,18 @@
 				<path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
 			</svg>
 			<h3 class="mb-3">Login</h3>
-			<form class="loginForm" onsubmit="return doLogin()">
+			<form id="login-form" class="loginForm">
 				<div class="form-group">
-					<input required class="form-control" id="user" aria-describedby="emailHelp" placeholder="Login" style="border-radius: 7px 7px 0 0; font-size: 18px; margin-bottom: -1px; position: relative;" maxlength="50">
+					<input name="Login" required class="form-control" id="user" aria-describedby="emailHelp" placeholder="Login" style="border-radius: 7px 7px 0 0; font-size: 18px; margin-bottom: -1px; position: relative;" maxlength="50">
 				</div>
 				<div class="form-group mb-3">
-					<input required type="password" class="form-control" id="pass" placeholder="Password" style="border-radius: 0 0 7px 7px; font-size: 18px; position: relative">
+					<input name="Password" required type="password" class="form-control" id="pass" placeholder="Password" style="border-radius: 0 0 7px 7px; font-size: 18px; position: relative">
 				</div>
 				<div class="form-group mb-1">
 					<button type="submit" style="width: 75%; border-radius: 24px;" class="btn btn-primary btn-lg">Login</button>
 				</div>
 				<div class="form-group mb-3">
-					<input type="checkbox" class="form-check-input" id="remember-me">
+					<input name="Remember" type="checkbox" class="form-check-input" id="remember-me">
 					<label class="form-check-label" for="remember-me" style="font-size: small">Remember me</label>
 				</div>
 			</form>

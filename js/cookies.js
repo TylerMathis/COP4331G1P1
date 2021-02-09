@@ -1,9 +1,15 @@
 // The duration of each cookie
 const duration = 20;
 
-// Save a cookie
-function saveCookie(firstName, lastName, ID, remember)
-{
+/**
+ * Saves a cookie.
+ *
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {Number} ID
+ * @param {Boolean} remember
+ */
+function saveCookie(firstName, lastName, ID, remember) {
 	let data = JSON.stringify({
         "FirstName" : firstName,
         "LastName" : lastName,
@@ -14,14 +20,12 @@ function saveCookie(firstName, lastName, ID, remember)
 }
 
 // Clears a cookie
-function clearCookie()
-{
+function clearCookie() {
     Cookies.remove("user");
 }
 
 // Returns cookie in JSON format
-function getCookie()
-{
+function getCookie() {
     let cookie = Cookies.get("user");
     if (cookie === undefined)
         return undefined;
@@ -29,15 +33,13 @@ function getCookie()
 }
 
 // Returns the validity of a cookie
-function validCookie()
-{
+function validCookie() {
     let cookie = getCookie();
     return !(cookie === undefined || !cookie["Remember"]);
 }
 
 // Automates login if possible
-function autoLogin()
-{
+function autoLogin() {
     if (!validCookie())
         return false;
         

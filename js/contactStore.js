@@ -1,4 +1,5 @@
-const contactBase = "LAMPAPI/contactController.php"
+const contactBase = "LAMPAPI/contactController.php";
+const searchBase = "LAMPAPI/searchContacts.php";
 
 /**
  * A class used to encapsulate JSON-style error responses.
@@ -85,4 +86,18 @@ async function updateContact(contact) {
         headers:  {"Content-Type": "application/json; charset=UTF-8"},
         body: JSON.stringify(contact)
     }).then(handleResponse);
+}
+
+/**
+ * Fetches all contacts that match a keyword
+ * 
+ * @param keyword
+ * @return {Promise<any>}
+ */
+async function searchContacts(keyword) {
+    // Create api endpoint with userID encoded
+    let url = searchBase + "?UserID=" + id + "&Keyword=" + keyword;
+
+    return await fetch(url)
+        .then((response) => response.json());
 }

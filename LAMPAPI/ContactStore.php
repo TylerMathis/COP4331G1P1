@@ -127,12 +127,18 @@ class ContactStore
      * @return array|false
      */
     public function searchContact($userID, $keyword) {
-        $keyword = $keyword."%";
+        $keyword = "%".$keyword."%";
         $userID = intval($userID);
-        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE (UserID=? AND (FirstName LIKE ? OR LastName LIKE ? OR PhoneNumber LIKE ?))");
-        $sql->bind_param("isss", $userID, $keyword, $keyword, $keyword);
+        $sql = $this->db->prepare("SELECT * FROM ".ContactStore::TABLE_NAME." WHERE (UserID=? AND (FirstName    LIKE ? OR 
+                                                                                                   LastName     LIKE ? OR 
+                                                                                                   PhoneNumber  LIKE ? OR
+                                                                                                   Address      LIKE ? OR
+                                                                                                   City         LIKE ? OR
+                                                                                                   State        LIKE ? OR
+                                                                                                   ZIP          LIKE ? OR
+                                                                                                   CONCAT(FirstName, ' ', LastName) LIKE ?))");
+        $sql->bind_param("issssssss", $userID, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword);
         $sql->execute();
-
 
         $result = $sql->get_result();
         if (!$result) {

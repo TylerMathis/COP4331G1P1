@@ -43,13 +43,29 @@ const parser = element => ({
 	targetID: element.dataset.contactTarget
 });
 
+/**
+ * The debounced contact search funcion.
+ *
+ * @type {function(...string): void}
+ */
+const debouncedSearch = debounce(searchAndPopulate, 300);
+
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
 $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
+$(document).on("input", "#search", onSearch);
 $(document).on("drop", "#img-upload", onImgDrop);
 $(document).on("dropover", "#img-upload", onImgDrop);
+
+function onSearch() {
+	// Run query.
+	debouncedSearch($(this).val());
+	// Show loading indicator
+	displaySpinner();
+}
+
 
 function onImgDrop(e) {
 	e.preventDefault();
@@ -71,9 +87,9 @@ function onClickDelete(e) {
 	deleteContact(selectedContact).then(() => {
 		// Remove from DOM
 		removeContactLink(selectedContact.ID);
-		displayNotification("Success", "Contact deleted", "info");
+		displayNotification("Success!", "Contact deleted", "success");
 	})
-	.catch(handleError)
+	.catch(displayError)
 	.finally(() => $("#deleteModal").modal("hide"));
 
 }
@@ -116,7 +132,7 @@ function onClickCreate(e) {
 			// Display notification
 			displayNotification("Success!", "Contact created", "success");
 		})
-		.catch(handleError)
+		.catch(displayError)
 		.finally(() => {
 			// Dismiss modal
 			$("#newModal").modal("hide");
@@ -145,17 +161,13 @@ function onClickEdit(e) {
 		// Sort new contact into list.
 		insertNewContact(contact);
 		// Display success
-		displayNotification("Success", "Contact Updated", "success")
+		displayNotification("Success!", "Contact Updated", "success")
 	})
-	.catch(handleError)
+	.catch(displayError)
 	.finally(() => {
 		// Hide modal
 		$("#editModal").modal("hide");
 	});
-}
-
-function handleError(error) {
-	displayNotification(error.message, error.detail, "danger");
 }
 
 /**
@@ -166,7 +178,8 @@ function handleError(error) {
 function selectByIndex(index) {
 	let contactLanding = document.getElementById("contactLanding");
 	let contactLinks = contactLanding.children;
-	changeSelectedTo(contactLinks[index]);
+	if (contactLinks[index] !== undefined)
+		changeSelectedTo(contactLinks[index]);
 }
 
 /**
@@ -308,6 +321,52 @@ function populateContacts(contactsArr) {
 }
 
 /**
+ * Gets all contacts and sends them to populateContacts
+ */
+function getAllContacts() {
+	// Fetch the contacts array.
+	getContacts().then(contacts => {
+		// If there are no contacts to be sorted, then terminate early
+		if (contacts.length === 0) {
+			return;
+		}
+		// Sort by first name (default).
+		const sorted = contacts.sort(selectedComparator);
+		// Send the sorted array to populate contacts.
+		populateContacts(sorted);
+		// Select the first contact by default
+		selectByIndex(0);
+	});
+}
+
+/**
+ * Searches contacts and repopulates the DOM
+ *
+ * @param keyword The keyword to search on.
+ */
+function searchAndPopulate(keyword) {
+	// If the field is empty, then grab all contacts and remove loader.
+	if (keyword === "") {
+		getAllContacts();
+		hideSpinner();
+		return;
+	}
+
+	// Otherwise, search.
+	searchContacts(keyword).then(contacts => {
+		// Sort
+		const sorted = contacts.sort(selectedComparator);
+		console.log(contacts);
+		// Send the sorted array to populate contacts.
+		populateContacts(sorted);
+		// Select the first contact by default
+		selectByIndex(0);
+		// Remove loading indicator on completion.
+		hideSpinner();
+	});
+}
+
+/**
  * Inserts and sorts the new contact into the contact list.
  *
  * @param contact The contact to be inserted.
@@ -366,7 +425,7 @@ function appendContactLink(contact) {
 
 	// Set HTML
 	contactLink.innerHTML = `
-	<div class="list-group-item d-flex contact-card" style="min-height: 50px;">
+	<div class="list-group-item d-flex contact-card">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
 				<h3 class="profile-ab">${contactInitials}</h3>
@@ -386,4 +445,21 @@ function appendContactLink(contact) {
 
 	// Select the contact.
 	changeSelectedTo(contactLink);
+}
+
+function displaySpinner() {
+	// Hide list
+	$("#contactLanding").hide();
+
+	// Show load overlay
+	$("#load-overlay").show()
+}
+
+function hideSpinner() {
+	// Show list
+	$("#contactLanding").show();
+
+	// Hide load overlay
+	$("#load-overlay").hide();
+
 }
