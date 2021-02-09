@@ -148,5 +148,19 @@ class ContactStore
         return $this->serializeContacts($result);
     }
 
+    /**
+     * Save profile image for contact
+     *
+     * @param $imageFilename string The contact image filename
+     * @param $userID string The id of the contact.
+     * @return false|mysqli_result
+     */
+    public function saveProfileImg($imageFilename, $userID) {
+        $sql = $this->db->prepare("UPDATE ".ContactStore::TABLE_NAME." SET ProfileImage=? WHERE ID=?");
+        $sql->bind_param("si", $imageFilename, $userID);
+        $sql->execute();
+
+        return $sql->get_result();
+    }
 
 }

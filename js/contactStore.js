@@ -101,3 +101,22 @@ async function searchContacts(keyword) {
     return await fetch(url)
         .then((response) => response.json());
 }
+
+/**
+ * Uploads a profile image for the given contact
+ *
+ * @param imageFile The image to use as a profile picture.
+ * @param contactID The ID of the contact.
+ * @return {Promise<Response>}
+ */
+async function uploadProfileImg(imageFile, contactID) {
+    let formData = new FormData();
+    formData.append("img", imageFile);
+    formData.append("id", contactID);
+
+    return await fetch("/LAMPAPI/profileImgUpload.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(handleResponse);
+}

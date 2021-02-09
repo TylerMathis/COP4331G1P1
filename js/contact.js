@@ -56,8 +56,16 @@ $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
 $(document).on("input", "#search", onSearch);
-$(document).on("drop", "#img-upload", onImgDrop);
-$(document).on("dropover", "#img-upload", onImgDrop);
+$(document).on("drop", "#drop-area", onImgDrop);
+$(document).on("dropover", "#drop-area", onImgDragOver);
+$(document).on("dragleave", "#drop-area", onImgDragLeave);
+$(document).on("dragover", "#drop-area", onImgDragOver);
+
+function preventDefaults (e) {
+	e.preventDefault()
+	e.stopPropagation()
+}
+
 
 function onSearch() {
 	// Run query.
@@ -66,11 +74,34 @@ function onSearch() {
 	displaySpinner();
 }
 
+function onImgDragLeave(e) {
+	preventDefaults(e);
+}
+
+function onImgHover(e) {
+	preventDefaults(e);
+}
+
+function onImgDragOver(e) {
+	preventDefaults(e);
+}
+
+function onImgDropOver(e) {
+	preventDefaults(e);
+}
 
 function onImgDrop(e) {
+	preventDefaults(e);
+	e.dataTransfer = e.originalEvent.dataTransfer;
+	var data = e.dataTransfer;
+	const file = data.files[0];
+	uploadProfileImg(file, selectedContact.ID).then(response => response.text())
+		.then(text => console.log(text));
+}
+
+function onImgDropOver(e) {
 	e.preventDefault();
-	var data = e.dataTransfer.getData("image");
-	console.log(data);
+	e.stopPropagation()
 }
 
 function onClickContact(e) {
