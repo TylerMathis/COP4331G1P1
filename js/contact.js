@@ -43,6 +43,13 @@ const parser = element => ({
 	targetID: element.dataset.contactTarget
 });
 
+/**
+ * Takes a profile container and updates it appropriately
+ * for the given contect
+ *
+ * @param contact
+ * @param profileContainer
+ */
 function adaptProfileContainer(contact, profileContainer) {
 	const imgHTML = $(profileContainer).find("img")[0];
 	const h3HTML = $(profileContainer).find("h3")[0];
@@ -60,12 +67,21 @@ function adaptProfileContainer(contact, profileContainer) {
 		$(h3HTML).show();
 	}
 }
+
 /**
  * The debounced contact search funcion.
  *
  * @type {function(...string): void}
  */
 const debouncedSearch = debounce(searchAndPopulate, 300);
+
+/**
+ * Simply prevents any defualt actions.
+ *
+ * @param e
+ * @return {void|void|*}
+ */
+const preventer = e => e.preventDefault();
 
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
@@ -74,15 +90,9 @@ $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
 $(document).on("input", "#search", onSearch);
 $(document).on("drop", "#drop-area", onImgDrop);
-$(document).on("dropover", "#drop-area", onImgDragOver);
-$(document).on("dragleave", "#drop-area", onImgDragLeave);
-$(document).on("dragover", "#drop-area", onImgDragOver);
-
-function preventDefaults (e) {
-	e.preventDefault()
-	e.stopPropagation()
-}
-
+$(document).on("dropover", "#drop-area", preventer());
+$(document).on("dragleave", "#drop-area", preventer());
+$(document).on("dragover", "#drop-area", preventer());
 
 function onSearch() {
 	// Run query.
@@ -91,37 +101,24 @@ function onSearch() {
 	displaySpinner();
 }
 
-function onImgDragLeave(e) {
-	preventDefaults(e);
-}
-
-function onImgHover(e) {
-	preventDefaults(e);
-}
-
-function onImgDragOver(e) {
-	preventDefaults(e);
-}
-
-function onImgDropOver(e) {
-	preventDefaults(e);
-}
-
 function onImgDrop(e) {
-	preventDefaults(e);
+	e.preventDefault();
+
+	// Get data transfer
 	e.dataTransfer = e.originalEvent.dataTransfer;
 	var data = e.dataTransfer.getData("text/plain");
 	const file =  e.dataTransfer.files[0];
 
+	// Upload profile picture.
 	uploadProfileImg(file, selectedContact.ID).then(json => {
+		// Head intials html
+		$(this).find("h3").hide();
+		// Set the new image and show it
 		$("#edit-profile-img").attr("src", "contact-imgs/" + json.image);
+		$("#edit-profile-img").show();
+		// Update selected contact.
 		selectedContact.ProfileImage = json.image;
 	});
-}
-
-function onImgDropOver(e) {
-	e.preventDefault();
-	e.stopPropagation()
 }
 
 function onClickContact(e) {

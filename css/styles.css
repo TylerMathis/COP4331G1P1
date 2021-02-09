@@ -153,6 +153,10 @@ body {
   max-height: 40px;
   min-width: 40px;
   align-self: center;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .profile-icon.enlarged {
@@ -174,6 +178,7 @@ body {
   min-width: 80px;
   max-width: 80px;
   max-height: 80px;
+  object-fit: cover;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
