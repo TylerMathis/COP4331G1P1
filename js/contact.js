@@ -43,6 +43,23 @@ const parser = element => ({
 	targetID: element.dataset.contactTarget
 });
 
+function adaptProfileContainer(contact, profileContainer) {
+	const imgHTML = $(profileContainer).find("img")[0];
+	const h3HTML = $(profileContainer).find("h3")[0];
+
+	if (contact.ProfileImage != null) {
+		// Remove the text
+		$(h3HTML).hide();
+		// Add the image in
+		$(imgHTML).show();
+		$(imgHTML).attr("src", "contact-imgs/" + contact.ProfileImage);
+	} else { // Image is not available.
+		// Remove the image
+		$(imgHTML).hide();
+		// Add the text back
+		$(h3HTML).show();
+	}
+}
 /**
  * The debounced contact search funcion.
  *
@@ -93,10 +110,13 @@ function onImgDropOver(e) {
 function onImgDrop(e) {
 	preventDefaults(e);
 	e.dataTransfer = e.originalEvent.dataTransfer;
-	var data = e.dataTransfer;
-	const file = data.files[0];
-	uploadProfileImg(file, selectedContact.ID).then(response => response.text())
-		.then(text => console.log(text));
+	var data = e.dataTransfer.getData("text/plain");
+	const file =  e.dataTransfer.files[0];
+
+	uploadProfileImg(file, selectedContact.ID).then(json => {
+		$("#edit-profile-img").attr("src", "contact-imgs/" + json.image);
+		selectedContact.ProfileImage = json.image;
+	});
 }
 
 function onImgDropOver(e) {
@@ -315,25 +335,8 @@ function displayContact(contactRef) {
 	const editContainer = $("#drop-area");
 
 	// Populate image
-	if (contact.ProfileImage) {
-		// Clean container
-		container.empty();
-		editContainer.find("h3").remove();
-		editContainer.find("img").remove();
-
-		container.append(`<img class="profile-img enlarged align-self-center" src="contact-imgs/${contact.ProfileImage}">`);
-		editContainer.append(`<img class="profile-img enlarged align-self-center" src="contact-imgs/${contact.ProfileImage}">`);
-	} else { // No contact image
-		if (container.find("h3").length == 0) {
-			// Clean
-			container.empty();
-			editContainer.find("img").remove();
-			editContainer.find("h3").remove();
-			// Add initials back.
-			container.append(`<h3 class="profile-ab enlarged" id="info-initials" style="align-self: center; text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">${contact.Initials}</h3>`)
-			editContainer.append(`<h3 class="profile-ab enlarged" id="info-initials" style="align-self: center; text-align: center; font-weight: 300; font-size: 18px; margin-bottom: 0">${contact.Initials}</h3>`)
-		}
-	}
+	adaptProfileContainer(contact, container);
+	adaptProfileContainer(contact, editContainer);
 }
 
 /**
@@ -489,7 +492,7 @@ function appendContactLink(contact) {
 	let hasImg = false
 
 	if (contact.ProfileImage != null) {
-		profileContent = `<img data-contact-img="${contact.ProfileImage}" class="profile-img">`;
+		profileContent = `<img data-contact-img="contact-imgs/${contact.ProfileImage}" class="profile-img">`;
 		hasImg = true;
 	}
 
@@ -519,7 +522,7 @@ function appendContactLink(contact) {
 
 function populateContactImages() {
 	$("img[data-contact-img]").each(function() {
-		$(this).attr("src", "contact-imgs/" + $(this).attr("data-contact-img"));
+		$(this).attr("src", $(this).attr("data-contact-img"));
 	})
 }
 

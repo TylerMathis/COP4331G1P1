@@ -152,6 +152,7 @@ body {
   height: 40px;
   max-height: 40px;
   min-width: 40px;
+  align-self: center;
 }
 
 .profile-icon.enlarged {
@@ -166,10 +167,13 @@ body {
 .profile-img.enlarged {
   display: flex;
   justify-content: center;
+  align-self: center;
   width: 80px;
   height: 80px;
   min-height: 80px;
   min-width: 80px;
+  max-width: 80px;
+  max-height: 80px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -214,6 +218,8 @@ h3.profile-ab.enlarged{
   text-align: center;
   margin-bottom: 0;
   font-size: 30px !important;
+  align-self: center;
+  text-transform: uppercase;
 }
 
 .loginHeader {

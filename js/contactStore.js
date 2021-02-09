@@ -107,7 +107,7 @@ async function searchContacts(keyword) {
  *
  * @param imageFile The image to use as a profile picture.
  * @param contactID The ID of the contact.
- * @return {Promise<Response>}
+ * @return {Promise<any>}
  */
 async function uploadProfileImg(imageFile, contactID) {
     let formData = new FormData();
@@ -118,5 +118,6 @@ async function uploadProfileImg(imageFile, contactID) {
         method: "POST",
         body: formData
     })
-    .then(handleResponse);
+    .then(handleResponse)
+    .then(response => response.json());
 }

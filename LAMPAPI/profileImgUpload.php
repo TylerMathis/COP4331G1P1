@@ -21,3 +21,5 @@ $savePath = "../contact-imgs/".$saveFilename;
 move_uploaded_file($_FILES["img"]["tmp_name"], $savePath);
 
 $store->saveProfileImg($saveFilename, $_POST["id"]);
+
+echo json_encode(array("image" => $saveFilename));
