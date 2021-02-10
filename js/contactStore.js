@@ -2,33 +2,21 @@ const contactBase = "LAMPAPI/contactController.php";
 const searchBase = "LAMPAPI/searchContacts.php";
 
 /**
- * A class used to encapsulate JSON-style error responses.
+ * @typedef {object} Contact
+ * @property {string} FirstName
+ * @property {string} LastName
+ * @property {string} Email
+ * @property {string} PhoneNumber
+ * @property {string} State
+ * @property {string} City
+ * @property {int} ID
+ * @property {int} UserID
  */
-class APIError extends Error {
-    constructor(title, detail) {
-        super(title);
-        this.detail = detail;
-    }
-}
-
-/**
- * Handles reponse given from server.
- *
- * @param response
- * @return {Promise<Response>}
- */
-function handleResponse(response) {
-    if (!response.ok) {
-        return response.json().then(json => {throw new APIError(json.title, json.detail)});
-    }
-
-    return response;
-}
 
 /**
  * Delete the given contact from the database.
- * @param contact The contact to delete
  *
+ * @param {Contact} contact The contact to delete
  * @return {Promise<Response>}
  */
 async function deleteContact(contact) {
@@ -60,7 +48,7 @@ async function getContacts() {
 /**
  * Creates a new user in the database.
  *
- * @param contact
+ * @param {Contact} contact
  * @return {Promise<number>}
  */
 async function createContact(contact) {
@@ -77,7 +65,7 @@ async function createContact(contact) {
 /**
  * Updates the contact in the DB
  *
- * @param contact
+ * @param {Contact} contact
  * @return {Promise<Response>}
  */
 async function updateContact(contact) {
@@ -91,7 +79,7 @@ async function updateContact(contact) {
 /**
  * Fetches all contacts that match a keyword
  * 
- * @param keyword
+ * @param {string} keyword
  * @return {Promise<any>}
  */
 async function searchContacts(keyword) {

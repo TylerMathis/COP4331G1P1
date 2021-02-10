@@ -2,6 +2,10 @@
  * A class used to encapsulate JSON-style error responses.
  */
 class APIError extends Error {
+    /**
+     * @param {string} title
+     * @param {string} detail
+     */
     constructor(title, detail) {
         super(title);
         this.detail = detail;
@@ -9,10 +13,10 @@ class APIError extends Error {
 }
 
 /**
- * Handles reponse given from server.
+ * Handles response given from server.
  *
- * @param response
- * @return {Promise<Response>}
+ * @param {Response} response
+ * @return {Response}
  */
 function handleResponse(response) {
     if (!response.ok) {
