@@ -264,6 +264,7 @@ h3.profile-ab.enlarged{
   justify-content: space-between;
   font-weight: 500;
   justify-items: center;
+  overflow: hidden;
 }
 
 .btn.rounded {
