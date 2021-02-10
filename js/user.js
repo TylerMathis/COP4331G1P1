@@ -3,6 +3,11 @@ let lastName = "";
 let fullName = "";
 let id = -1;
 
+/**
+ * Converts a form to JSON.
+ * @param {FormData} formData
+ * @return {Object}
+ */
 const formToJSON = formData => {
 	const data = {};
 	formData.forEach((value, key) => data[key] = value);
