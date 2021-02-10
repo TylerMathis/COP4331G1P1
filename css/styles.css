@@ -40,6 +40,12 @@ body {
     }
 }
 
+.standard-icon {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.rounded.ico
 .overlay {
   background-color: rgba(255, 255, 255, 0.85);
   position: relative;
@@ -240,6 +246,24 @@ h3.profile-ab.enlarged{
   max-height: 1000px;
   min-height: 400px;
   min-width: 800px;
+}
+
+.btn-group.rounded {
+  max-height: 40px;
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+.rounded.icon-btn {
+  display: flex;
+  min-height: 40px;
+  border-radius: 20px !important;
+  padding-left: 0;
+  min-width: 40px;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  justify-items: center;
 }
 
 .btn.rounded {
