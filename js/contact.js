@@ -409,6 +409,10 @@ function getAllContacts() {
 	getContacts().then(contacts => {
 		// If there are no contacts to be sorted, then terminate early
 		if (contacts.length === 0) {
+			$(".loading-overlay").fadeOut({
+				speed: "slow",
+				easing: "linear"
+			});
 			return;
 		}
 		// Sort by first name (default).
