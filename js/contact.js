@@ -319,6 +319,11 @@ function populateContacts(contactsArr) {
 		contacts.set(contact.ID, contact);
 		appendContactLink(contact);
 	});
+
+	$(".loading-overlay").fadeOut({
+		speed: "slow",
+		easing: "linear"
+	});
 }
 
 /**
