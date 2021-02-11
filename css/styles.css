@@ -119,6 +119,32 @@ body {
   .backgroundBlurImg {
     background-image: url("../images/lores-city.png") !important;
   }
+
+  .modal-content {
+    background-color: var(--custom-dark) !important;
+  }
+
+  label {
+    color: white;
+  }
+
+  select {
+    background-color: #4d4d4d !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  .modal-header {
+    border-bottom: 1px solid #4d4d4d !important;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #4d4d4d !important;
+  }
+
+  .btn-close {
+    background-color: white !important;
+  }
 }
 
 
