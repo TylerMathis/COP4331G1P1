@@ -1,6 +1,7 @@
 :root {
   --custom-BR: 25px;
-  --custom-light-gray: #e0e0e0
+  --custom-light-gray: #e0e0e0;
+  --custom-dark: #292929;
 }
 
 body {
@@ -42,7 +43,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   .beveledBox {
-    background-color: black !important;
+    background-color: var(--custom-dark) !important;
   }
 
   h5 {
@@ -54,7 +55,7 @@ body {
   }
 
   .list-group-item {
-    background-color: black !important;
+    background-color: var(--custom-dark) !important;
   }
 
   a.contact-link {
@@ -70,7 +71,7 @@ body {
   }
 
   .overlay {
-    background-color: black !important;
+    background-color: var(--custom-dark) !important;
   }
 
   hr {
@@ -90,7 +91,7 @@ body {
   }
 
   .loginContainer {
-    background-color: black !important;
+    background-color: var(--custom-dark) !important;
   }
 
   .loginCard {
