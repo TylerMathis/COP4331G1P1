@@ -92,9 +92,9 @@ $(document).on("input", "#search", onSearch);
 
 // Drop events
 $(document).on("drop", "#drop-area", onImgDrop);
-$(document).on("dropover", "#drop-area", preventer());
-$(document).on("dragleave", "#drop-area", preventer());
-$(document).on("dragover", "#drop-area", preventer());
+$(document).on("dropover", "#drop-area", preventer);
+$(document).on("dragleave", "#drop-area", preventer);
+$(document).on("dragover", "#drop-area", preventer);
 
 function onSearch() {
 	// Run query.
