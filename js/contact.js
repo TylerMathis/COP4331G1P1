@@ -390,6 +390,11 @@ function populateContacts(contactsArr) {
 	});
 
 	populateContactImages();
+
+	$(".loading-overlay").fadeOut({
+		speed: "slow",
+		easing: "linear"
+	});
 }
 
 /**

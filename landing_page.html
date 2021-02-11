@@ -2,6 +2,7 @@
 <head>
 	<title>Contactical</title>
 	<?php include "head.html" ?>
+	<script type="text/javascript" src="js/APIUtil.js"></script>
 	<script type="text/javascript" src="js/debounce.js"></script>
 	<script type="text/javascript" src="js/landing_page.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
@@ -10,7 +11,9 @@
 </head>
 
 <body class="landing-body">
-
+<div class="loading-overlay">
+	<div class="spinner-border text-primary align-self-center"></div>
+</div>
 <div class="container backgroundContainer">
 	<div class="p-1 beveledBox mb-3" style="width: 100%; min-width: 60px;">
 		<nav class="navbar navbar-expand-lg navbar-light">
