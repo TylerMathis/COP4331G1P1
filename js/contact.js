@@ -332,7 +332,7 @@ function displayContact(contactRef) {
 
 		// Reset the fields
 		if (input && !initials) {
-			input.placeholder = contact[data.key];
+			input.placeholder = (contact[data.key] != null) ? contact[data.key] : "";
 			input.value = "";
 		} else if (select) {
 			select.selectedIndex = 0;
