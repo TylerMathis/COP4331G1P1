@@ -1,6 +1,7 @@
 :root {
   --custom-BR: 25px;
-  --custom-light-gray: #e0e0e0
+  --custom-light-gray: #e0e0e0;
+  --custom-dark: #292929;
 }
 
 body {
@@ -39,6 +40,99 @@ body {
         background-position: 0 50%;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+  .beveledBox {
+    background-color: var(--custom-dark) !important;
+  }
+
+  h5 {
+    color: white;
+  }
+
+  h1 {
+    color: white;
+  }
+
+  .list-group-item {
+    background-color: var(--custom-dark) !important;
+  }
+
+  a.contact-link {
+    border-bottom: 1px solid  #4d4d4d;
+  }
+
+  .list-group-item.active {
+    background-color: #0b5ed7 !important;
+  }
+
+  .contact-field{
+    color: #e0e0e0;
+  }
+
+  .overlay {
+    background-color: var(--custom-dark) !important;
+  }
+
+  hr {
+    background-color: #c2c2c2 !important;
+  }
+
+  .contact-info-header {
+    border-bottom: 1px solid  #4d4d4d !important;
+  }
+
+  .logo {
+    color: white;
+  }
+
+  p {
+    color: white;
+  }
+
+  .loginContainer {
+    background-color: var(--custom-dark) !important;
+  }
+
+  .loginCard {
+    color: white;
+  }
+
+  .input {
+    background-color: #e0e0e0 !important;
+  }
+
+  .form-control {
+    background-color: #4d4d4d !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  .form-control:active {
+    color: #e0e0e0 !important;
+  }
+
+  ::placeholder {
+    color: white !important;
+  }
+
+  .backgroundBlurImg {
+    background-image: url("../images/lores-city.png") !important;
+  }
+}
+
+
+
+.btn-group {
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+.standard-icon {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
 
 .overlay {
   background-color: rgba(255, 255, 255, 0.85);
@@ -270,6 +364,25 @@ h3.profile-ab.enlarged{
   max-height: 1000px;
   min-height: 400px;
   min-width: 800px;
+}
+
+.btn-group.rounded {
+  max-height: 40px;
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+.rounded.icon-btn {
+  display: flex;
+  min-height: 40px;
+  border-radius: 20px !important;
+  padding-left: 0;
+  min-width: 40px;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  justify-items: center;
+  overflow: hidden;
 }
 
 .btn.rounded {

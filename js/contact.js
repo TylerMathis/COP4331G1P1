@@ -18,7 +18,7 @@ let selectedLink = undefined;
 
 /**
  * Stores comparators for sorting contacts.
- * @type {{firstName: (function(*, *): number), lastName: (function(*, *): number)}}
+ * @type {{firstName: (function(Contact, Contact): number), lastName: (function(Contact, Contact): number)}}
  */
 const comparators = {
 	firstName: (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
@@ -27,7 +27,7 @@ const comparators = {
 
 /**
  * The currently selected sorting method.
- * @type {function(*, *): number}
+ * @type {function(Contact, Contact): number}
  */
 let selectedComparator = comparators.firstName;
 
@@ -223,7 +223,7 @@ function onClickEdit(e) {
 /**
  * Selects a contact by it's index in the DOM
  *
- * @param index The index of the contact to be selected
+ * @param {int} index The index of the contact to be selected
  */
 function selectByIndex(index) {
 	let contactLanding = document.getElementById("contactLanding");
@@ -235,7 +235,7 @@ function selectByIndex(index) {
 /**
  * Selects a contact in the DOM by it's id
  *
- * @param id The ID to be selected.
+ * @param {int} id The ID to be selected.
  */
 function selectById(id) {
 	$(".list-group").children().each(function (index, link) {
@@ -249,7 +249,7 @@ function selectById(id) {
 /**
  * Removes previous selection, and selects the current link.
  *
- * @param contactLink The link to be selected.
+ * @param {HTMLElement} contactLink The link to be selected.
  */
 function changeSelectedTo(contactLink) {
 	// Capture contact ID from DOM.
@@ -274,10 +274,20 @@ function changeSelectedTo(contactLink) {
 	displayContact(contact);
 }
 
+/**
+ * Selects the link
+ *
+ * @param {HTMLElement} contactLink
+ */
 function select(contactLink) {
 	contactLink.querySelector(".list-group-item").classList.add("active");
 }
 
+/**
+ * Deselects the link
+ *
+ * @param {HTMLElement} contactLink
+ */
 function deselect(contactLink) {
 	contactLink.querySelector(".list-group-item").classList.remove("active");
 }
@@ -285,7 +295,7 @@ function deselect(contactLink) {
 /**
  * Displays the contact information for the given contact.
  *
- * @param contactRef The contact to display
+ * @param {Contact} contactRef The contact to display
  */
 function displayContact(contactRef) {
 	// Create a copy of the pass-by-reference parameter.
@@ -361,7 +371,7 @@ function clearCreate() {
 /**
  * Pushes list of contacts to the DOM and contacts map.
  *
- * @param contactsArr An array of contacts to be populated.
+ * @param {Contact[]} contactsArr An array of contacts to be populated.
  */
 function populateContacts(contactsArr) {
 	// Clear all children of the contact holder
@@ -404,7 +414,7 @@ function getAllContacts() {
 /**
  * Searches contacts and repopulates the DOM
  *
- * @param keyword The keyword to search on.
+ * @param {string} keyword The keyword to search on.
  */
 function searchAndPopulate(keyword) {
 	// If the field is empty, then grab all contacts and remove loader.
@@ -431,7 +441,7 @@ function searchAndPopulate(keyword) {
 /**
  * Inserts and sorts the new contact into the contact list.
  *
- * @param contact The contact to be inserted.
+ * @param {Contact} contact The contact to be inserted.
  */
 function insertNewContact(contact) {
 	// Turn contact map into array for sorting.
@@ -453,7 +463,7 @@ function insertNewContact(contact) {
 /**
  * Removes contact like from DOM.
  *
- * @param id ID of the contact.
+ * @param {id} id ID of the contact.
  */
 function removeContactLink(id) {
 	// Delete from local cache.
@@ -470,7 +480,7 @@ function removeContactLink(id) {
 /**
  * Appends a contact to the contact list, and selects it.
  *
- * @param contact The contact to be appended
+ * @param {Contact} contact The contact to be appended
  */
 function appendContactLink(contact) {
 
@@ -523,6 +533,9 @@ function populateContactImages() {
 	})
 }
 
+/**
+ * Displays loading spinner.
+ */
 function displaySpinner() {
 	// Hide list
 	$("#contactLanding").hide();
@@ -531,6 +544,9 @@ function displaySpinner() {
 	$("#load-overlay").show()
 }
 
+/**
+ * Hides loading spinner.
+ */
 function hideSpinner() {
 	// Show list
 	$("#contactLanding").show();

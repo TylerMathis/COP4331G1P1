@@ -1,3 +1,4 @@
+
 function loadHiRes() {
 	const image = new Image();
 
@@ -9,7 +10,12 @@ function loadHiRes() {
 		document.getElementById("background").appendChild(this);
 		document.getElementById("background").style.removeProperty("filter");
 	};
-	image.src = "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
+
+	if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		image.src = "https://images.unsplash.com/photo-1573295233175-efaf0f5251b1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2378&q=80";
+	} else {
+		image.src = "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
+	}
 }
 
 // Displays a notification to the user
@@ -24,7 +30,6 @@ function displayNotification(title, desc, type) {
 
 	let icon;
 
-	console.log(type);
 	switch (type) {
 		case "success":
 			icon = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style="margin-right: 10px;">
@@ -38,12 +43,13 @@ function displayNotification(title, desc, type) {
 	}
 
 	const innerHTML = `
-	<div class="d-flex" style="justify-content: space-between">
-		<div class="d-flex" style="justify-items: center; align-items: center">
-			${icon}
-			<strong style="padding-right: 10px;">${title}</strong> ${desc}
-		</div>
-		<button class="btn-close" data-bs-dismiss="alert" type="button"></button>	
+    <div class="d-flex" style="justify-content: flex-start; align-items: center;">
+        ${icon}
+        <div class="d-flex" style="flex-wrap: wrap;">
+            <strong style="padding-right: 10px;">${title}</strong>
+            ${desc}
+        </div>
+        <button style="margin-left: auto;" class="btn-close" data-bs-dismiss="alert" type="button"></button>	
 	</div>
 	`
 
