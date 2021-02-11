@@ -1,3 +1,4 @@
+
 function loadHiRes() {
 	const image = new Image();
 
@@ -9,7 +10,12 @@ function loadHiRes() {
 		document.getElementById("background").appendChild(this);
 		document.getElementById("background").style.removeProperty("filter");
 	};
-	image.src = "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
+
+	if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		image.src = "https://images.unsplash.com/photo-1573295233175-efaf0f5251b1?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2378&q=80";
+	} else {
+		image.src = "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw=&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
+	}
 }
 
 // Displays a notification to the user
