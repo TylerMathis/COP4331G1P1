@@ -89,6 +89,8 @@ $(document).on("click", "#delete-btn", onClickDelete);
 $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
 $(document).on("input", "#search", onSearch);
+
+// Drop events
 $(document).on("drop", "#drop-area", onImgDrop);
 $(document).on("dropover", "#drop-area", preventer());
 $(document).on("dragleave", "#drop-area", preventer());
@@ -159,6 +161,8 @@ function onClickCreate(e) {
 
 	// Get form data
 	const data = new FormData(form);
+	data.append("image", $('input[type=file]')[0].files[0]);
+	console.log(...data.entries());
 
 	// Populate contact
 	const contact = {};
