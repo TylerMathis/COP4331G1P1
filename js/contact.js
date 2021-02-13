@@ -44,11 +44,44 @@ const parser = element => ({
 });
 
 /**
+ * Takes a profile container and updates it appropriately
+ * for the given contect
+ *
+ * @param contact
+ * @param profileContainer
+ */
+function adaptProfileContainer(contact, profileContainer) {
+	const imgHTML = $(profileContainer).find("img")[0];
+	const h3HTML = $(profileContainer).find("h3")[0];
+
+	if (contact.ProfileImage != null) {
+		// Remove the text
+		$(h3HTML).hide();
+		// Add the image in
+		$(imgHTML).show();
+		$(imgHTML).attr("src", "contact-imgs/" + contact.ProfileImage);
+	} else { // Image is not available.
+		// Remove the image
+		$(imgHTML).hide();
+		// Add the text back
+		$(h3HTML).show();
+	}
+}
+
+/**
  * The debounced contact search funcion.
  *
  * @type {function(...string): void}
  */
 const debouncedSearch = debounce(searchAndPopulate, 300);
+
+/**
+ * Simply prevents any defualt actions.
+ *
+ * @param e
+ * @return {void|void|*}
+ */
+const preventer = e => e.preventDefault();
 
 // Assign event handlers.
 $(document).on("click", ".contact-link", onClickContact);
@@ -57,11 +90,37 @@ $(document).on("click", "#create-btn", onClickCreate);
 $(document).on("click", "#edit-btn", onClickEdit);
 $(document).on("input", "#search", onSearch);
 
+// Drop events
+$(document).on("drop", "#drop-area", onImgDrop);
+$(document).on("dropover", "#drop-area", preventer);
+$(document).on("dragleave", "#drop-area", preventer);
+$(document).on("dragover", "#drop-area", preventer);
+
 function onSearch() {
 	// Run query.
 	debouncedSearch($(this).val());
 	// Show loading indicator
 	displaySpinner();
+}
+
+function onImgDrop(e) {
+	e.preventDefault();
+
+	// Get data transfer
+	e.dataTransfer = e.originalEvent.dataTransfer;
+	var data = e.dataTransfer.getData("text/plain");
+	const file =  e.dataTransfer.files[0];
+
+	// Upload profile picture.
+	uploadProfileImg(file, selectedContact.ID).then(json => {
+		// Head intials html
+		$(this).find("h3").hide();
+		// Set the new image and show it
+		$("#edit-profile-img").attr("src", "contact-imgs/" + json.image);
+		$("#edit-profile-img").show();
+		// Update selected contact.
+		selectedContact.ProfileImage = json.image;
+	});
 }
 
 function onClickContact(e) {
@@ -102,6 +161,8 @@ function onClickCreate(e) {
 
 	// Get form data
 	const data = new FormData(form);
+	data.append("image", $('input[type=file]')[0].files[0]);
+	console.log(...data.entries());
 
 	// Populate contact
 	const contact = {};
@@ -138,6 +199,8 @@ function onClickEdit(e) {
 	// Fetch DOM and serialize
 	const form = document.getElementById("edit-form");
 	const data = new FormData(form);
+
+	console.log(...data.entries());
 
 	// Merge form data
 	const contact = selectedContact;
@@ -255,7 +318,7 @@ function displayContact(contactRef) {
 			element.style.removeProperty("display");
 		}
 
-		$(data.targetID).text(contact[data.key]);
+		$(data.targetID).html(contact[data.key]);
 	});
 
 	// Update edit DOM
@@ -265,16 +328,26 @@ function displayContact(contactRef) {
 		// Check if input or select
 		const input = element.querySelector("input");
 		const select = element.querySelector("select");
+		const initials = element.querySelector("h3");
 
 		// Reset the fields
-		if (input) {
-			input.placeholder = contact[data.key];
+		if (input && !initials) {
+			input.placeholder = (contact[data.key] != null) ? contact[data.key] : "";
 			input.value = "";
 		} else if (select) {
 			select.selectedIndex = 0;
+		} else {
+			initials.innerHTML= contact[data.key];
 		}
 
 	});
+
+	const container = $("#contact-profile-container");
+	const editContainer = $("#drop-area");
+
+	// Populate image
+	adaptProfileContainer(contact, container);
+	adaptProfileContainer(contact, editContainer);
 }
 
 /**
@@ -320,6 +393,8 @@ function populateContacts(contactsArr) {
 		appendContactLink(contact);
 	});
 
+	populateContactImages();
+
 	$(".loading-overlay").fadeOut({
 		speed: "slow",
 		easing: "linear"
@@ -334,6 +409,10 @@ function getAllContacts() {
 	getContacts().then(contacts => {
 		// If there are no contacts to be sorted, then terminate early
 		if (contacts.length === 0) {
+			$(".loading-overlay").fadeOut({
+				speed: "slow",
+				easing: "linear"
+			});
 			return;
 		}
 		// Sort by first name (default).
@@ -347,7 +426,7 @@ function getAllContacts() {
 
 /**
  * Searches contacts and repopulates the DOM
- * 
+ *
  * @param {string} keyword The keyword to search on.
  */
 function searchAndPopulate(keyword) {
@@ -429,12 +508,20 @@ function appendContactLink(contact) {
 	let contactLanding = document.getElementById("contactLanding");
 	let contactLink = document.createElement("a");
 
+	let profileContent = `<h3 class="profile-ab">${contactInitials}</h3>`;
+	let hasImg = false
+
+	if (contact.ProfileImage != null) {
+		profileContent = `<img data-contact-img="contact-imgs/${contact.ProfileImage}" class="profile-img">`;
+		hasImg = true;
+	}
+
 	// Set HTML
 	contactLink.innerHTML = `
 	<div class="list-group-item d-flex contact-card">
 		<div class="profile-icon d-flex justify-content-center align-self-center">
 			<div class="align-self-center" style="width: 100%;">
-				<h3 class="profile-ab">${contactInitials}</h3>
+					${profileContent}
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center w-100" style="padding: 5px;">
@@ -451,6 +538,12 @@ function appendContactLink(contact) {
 
 	// Select the contact.
 	changeSelectedTo(contactLink);
+}
+
+function populateContactImages() {
+	$("img[data-contact-img]").each(function() {
+		$(this).attr("src", $(this).attr("data-contact-img"));
+	})
 }
 
 /**
