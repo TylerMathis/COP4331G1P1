@@ -1,4 +1,4 @@
-import { handleResponse } from "./APIUtil";
+import { handleResponse, jsonHeader } from "./APIUtil";
 import { id } from "./user";
 
 const contactBase = "LAMPAPI/contactController.php";
@@ -29,8 +29,8 @@ async function deleteContact(contact) {
 
     return await fetch(url, {
         method: "DELETE",
-        headers: {"Content-Type": "application/json; charset=UTF-8"},
-        body: contact
+        headers: jsonHeader,
+        body: JSON.stringify(contact)
     })
     .then(handleResponse);
 }
@@ -58,7 +58,7 @@ async function createContact(contact) {
     return await fetch(contactBase, {
         method: "POST",
         body: JSON.stringify(contact),
-        headers: {"Content-Type": "application/json; charset=UTF-8"}
+        headers: jsonHeader
     })
     .then(handleResponse)
     .then(response => response.json())
@@ -74,7 +74,7 @@ async function createContact(contact) {
 async function updateContact(contact) {
     return await fetch(contactBase, {
         method: "PUT",
-        headers:  {"Content-Type": "application/json; charset=UTF-8"},
+        headers:  jsonHeader,
         body: JSON.stringify(contact)
     }).then(handleResponse);
 }

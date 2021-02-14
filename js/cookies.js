@@ -1,6 +1,3 @@
-// The duration of each cookie
-const duration = 20;
-
 /**
  * Saves a cookie.
  *
@@ -24,7 +21,11 @@ function clearCookie() {
     Cookies.remove("user");
 }
 
-// Returns cookie in JSON format
+/**
+ * Gets the current cookie.
+ *
+ * @returns {Object|undefined}
+ */
 function getCookie() {
     let cookie = Cookies.get("user");
     if (cookie === undefined)
@@ -32,13 +33,21 @@ function getCookie() {
     return JSON.parse(cookie);
 }
 
-// Returns the validity of a cookie
+/**
+ * Checks where the cookie is valid or not.
+ *
+ * @returns {boolean}
+ */
 function validCookie() {
     let cookie = getCookie();
     return !(cookie === undefined || !cookie["Remember"]);
 }
 
-// Automates login if possible
+/**
+ * Checks whether the login can be automatic or not.
+ *
+ * @returns {boolean}
+ */
 function autoLogin() {
     if (!validCookie())
         return false;

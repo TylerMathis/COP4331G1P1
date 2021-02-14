@@ -1,4 +1,11 @@
 /**
+ * The JSON headers for each request.
+ *
+ * @type {Headers}
+ */
+const jsonHeader = new Headers({ "Content-Type": "application/json; charset=UTF-8" });
+
+/**
  * A class used to encapsulate JSON-style error responses.
  */
 class APIError extends Error {
@@ -27,4 +34,4 @@ function handleResponse(response) {
 }
 
 // Export relevant code
-export { APIError, handleResponse };
+export { APIError, handleResponse, jsonHeader };

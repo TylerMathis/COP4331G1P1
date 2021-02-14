@@ -1,4 +1,8 @@
+import { APIError } from "./APIUtil";
 
+/**
+ * Loads the high resolution variant of the background image.
+ */
 function loadHiRes() {
 	const image = new Image();
 
@@ -18,7 +22,13 @@ function loadHiRes() {
 	}
 }
 
-// Displays a notification to the user
+/**
+ * Displays a notification in the designated notification landing.
+ *
+ * @param title The title of the notification.
+ * @param desc The description of the notification.
+ * @param type The bootstrap-defined alert variant.
+ */
 function displayNotification(title, desc, type) {
 	let alertType = "alert-" + type;
 	let notificationLanding = document.getElementById("notificationLanding");
@@ -62,6 +72,11 @@ function displayNotification(title, desc, type) {
 	notificationLanding.prepend(notiDiv);
 }
 
+/**
+ * Displays an error to the notification landing.
+ *
+ * @param {APIError} error The error that was encountered
+ */
 function displayError(error) {
 	console.log(error);
 	displayNotification(error.message, error.detail, "danger");

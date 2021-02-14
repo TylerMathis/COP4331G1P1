@@ -6,13 +6,13 @@ import { displayError, displayNotification } from "./design";
 
 /**
  * Local store for all contacts
- * @type {Map<any, any>}
+ * @type {Map<number, Contact>}
  */
 let contacts = new Map;
 
 /**
  * The currently select contact object.
- * @type {Object}
+ * @type {Contact}
  */
 let selectedContact = undefined;
 
@@ -53,7 +53,7 @@ const parser = element => ({
  * Takes a profile container and updates it appropriately
  * for the given contect
  *
- * @param contact
+ * @param {Contact} contact
  * @param profileContainer
  */
 function adaptProfileContainer(contact, profileContainer) {
@@ -482,7 +482,7 @@ function insertNewContact(contact) {
 /**
  * Removes contact like from DOM.
  *
- * @param {id} id ID of the contact.
+ * @param {int} id ID of the contact.
  */
 function removeContactLink(id) {
 	// Delete from local cache.
@@ -546,6 +546,9 @@ function appendContactLink(contact) {
 	changeSelectedTo(contactLink);
 }
 
+/**
+ * Populates the images for all the contacts.
+ */
 function populateContactImages() {
 	$("img[data-contact-img]").each(function() {
 		$(this).attr("src", $(this).attr("data-contact-img"));

@@ -1,6 +1,6 @@
-import {clearCookie, getCookie, saveCookie} from "./cookies";
-import {displayError, displayNotification} from "./design";
-import {createUser, loginUser} from "./userStore";
+import { clearCookie, getCookie, saveCookie } from "./cookies";
+import { displayError, displayNotification } from "./design";
+import { createUser, loginUser } from "./userStore";
 
 let firstName = "";
 let lastName = "";
@@ -57,9 +57,9 @@ function doLogin()
 	const remember = "Remember" in loginData;
 
 	// Make request.
-	loginUser(loginData).then(json => {
+	loginUser(loginData).then(contact => {
 		// Update cookie
-		saveCookie(json.FirstName, json.LastName, json.ID, remember);
+		saveCookie(contact.FirstName, contact.LastName, contact.ID, remember);
 		// Move to landing page.
 		window.location.href = "landing_page.html";
 	}).catch(displayError);
@@ -107,4 +107,4 @@ function doLogout()
 	window.location.href = "index.html";
 }
 
-export {id, populateUserCache, welcomeUser, autoFillLogin, submitLoginClicked, submitCreateClicked, doLogout}
+export { id, populateUserCache, welcomeUser, autoFillLogin, submitLoginClicked, submitCreateClicked, doLogout }
