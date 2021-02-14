@@ -6,16 +6,27 @@
 const jsonHeader = new Headers({ "Content-Type": "application/json; charset=UTF-8" });
 
 /**
+ * @typedef {object} JSONError
+ * @property {string} title
+ * @property {string} detail
+ * @property {int} status
+ */
+
+/**
  * A class used to encapsulate JSON-style error responses.
  */
 class APIError extends Error {
     /**
-     * @param {string} title
-     * @param {string} detail
+     * @param {JSONError} jsonError
      */
-    constructor(title, detail) {
-        super(title);
-        this.detail = detail;
+    constructor(jsonError) {
+        super(jsonError.title);
+
+        /**
+         * The detail associated with the title error.
+         * @type {string}
+         */
+        this.detail = jsonError.detail;
     }
 }
 
@@ -25,9 +36,10 @@ class APIError extends Error {
  * @param {Response} response
  * @return {Response}
  */
-function handleResponse(response) {
+async function handleResponse(response) {
     if (!response.ok) {
-        return response.json().then(json => {throw new APIError(json.title, json.detail)});
+        const jsonError = await response.json();
+        throw new APIError(jsonError);
     }
 
     return response;

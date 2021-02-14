@@ -1,5 +1,11 @@
 import { handleResponse, jsonHeader } from "./APIUtil";
 
+/**
+ * Gets the expanded url for the given filename.
+ *
+ * @param fileBase The base to prepend.
+ * @returns {string} The expanded URL.
+ */
 const urlFor = (fileBase) => { return "LAMPAPI/" + fileBase + ".php"; }
 
 /**

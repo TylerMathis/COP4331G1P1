@@ -27,8 +27,10 @@ let selectedLink = undefined;
  * @type {{firstName: (function(Contact, Contact): number), lastName: (function(Contact, Contact): number)}}
  */
 const comparators = {
-	firstName: (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
-	lastName: (con1, con2) => (con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
+	firstName: (con1, con2) =>
+		(con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
+	lastName: (con1, con2) =>
+		(con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
 };
 
 /**

@@ -3,8 +3,8 @@
  *
  * @param {string} firstName
  * @param {string} lastName
- * @param {Number} ID
- * @param {Boolean} remember
+ * @param {int} ID
+ * @param {boolean} remember
  */
 function saveCookie(firstName, lastName, ID, remember) {
 	let data = JSON.stringify({
