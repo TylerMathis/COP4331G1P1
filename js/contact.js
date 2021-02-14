@@ -1,4 +1,4 @@
-import { handleResponse, APIError } from "./APIUtil";
+import { validateResponse, APIError } from "./APIUtil";
 import { getContacts, updateContact, deleteContact,
 	uploadProfileImg, createContact, searchContacts } from "./contactStore";
 import { id } from "./user";

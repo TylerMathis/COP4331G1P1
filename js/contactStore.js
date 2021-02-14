@@ -1,4 +1,4 @@
-import { handleResponse, jsonHeader } from "./APIUtil";
+import { validateResponse, jsonHeader } from "./APIUtil";
 import { id } from "./user";
 
 const contactBase = "LAMPAPI/contactController.php";
@@ -33,7 +33,7 @@ async function deleteContact(contact) {
         headers: jsonHeader,
         body: JSON.stringify(contact)
     })
-    .then(handleResponse);
+    .then(validateResponse);
 }
 
 /**
@@ -61,7 +61,7 @@ async function createContact(contact) {
         body: JSON.stringify(contact),
         headers: jsonHeader
     })
-    .then(handleResponse)
+    .then(validateResponse)
     .then(response => response.json())
     .then(json => json.ID);
 }
@@ -77,7 +77,7 @@ async function updateContact(contact) {
         method: "PUT",
         headers:  jsonHeader,
         body: JSON.stringify(contact)
-    }).then(handleResponse);
+    }).then(validateResponse);
 }
 
 /**
@@ -110,7 +110,7 @@ async function uploadProfileImg(imageFile, contactID) {
         method: "POST",
         body: formData
     })
-    .then(handleResponse)
+    .then(validateResponse)
     .then(response => response.json());
 }
 

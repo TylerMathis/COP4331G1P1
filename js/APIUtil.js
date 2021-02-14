@@ -36,7 +36,7 @@ class APIError extends Error {
  * @param {Response} response
  * @return {Response}
  */
-async function handleResponse(response) {
+async function validateResponse(response) {
     if (!response.ok) {
         const jsonError = await response.json();
         throw new APIError(jsonError);
@@ -46,4 +46,4 @@ async function handleResponse(response) {
 }
 
 // Export relevant code
-export { APIError, handleResponse, jsonHeader };
+export { APIError, validateResponse, jsonHeader };
