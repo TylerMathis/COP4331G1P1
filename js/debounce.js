@@ -10,7 +10,7 @@
  * @param delay The amount of time to wait before the method should execute again.
  * @returns {function(...[*]): void}
  */
-const debounce = (handler, delay) => {
+export const debounce = (handler, delay) => {
     let timeout;
 
     // Return a function that runs the handler.

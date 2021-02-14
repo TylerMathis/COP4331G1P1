@@ -1,3 +1,5 @@
+import { handleResponse } from "./APIUtil";
+
 const jsonHeader = { "Content-Type": "application/json; charset=UTF-8" };
 const urlFor = (fileBase) => { return "LAMPAPI/" + fileBase + ".php"; }
 
@@ -41,3 +43,4 @@ async function loginUser(loginData) {
     .then(response => response.json());
 }
 
+export { createUser, loginUser };

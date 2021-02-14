@@ -1,3 +1,6 @@
+import { handleResponse } from "./APIUtil";
+import { id } from "./user";
+
 const contactBase = "LAMPAPI/contactController.php";
 const searchBase = "LAMPAPI/searchContacts.php";
 
@@ -78,7 +81,7 @@ async function updateContact(contact) {
 
 /**
  * Fetches all contacts that match a keyword
- * 
+ *
  * @param {string} keyword
  * @return {Promise<any>}
  */
@@ -109,3 +112,6 @@ async function uploadProfileImg(imageFile, contactID) {
     .then(handleResponse)
     .then(response => response.json());
 }
+
+// Export functions
+export {createContact, deleteContact, getContacts, updateContact, uploadProfileImg, searchContacts};

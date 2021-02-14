@@ -42,7 +42,9 @@ function validCookie() {
 function autoLogin() {
     if (!validCookie())
         return false;
-        
+
     window.location.href = "landing_page.html";
     return true;
 }
+
+export { getCookie, validCookie, saveCookie, clearCookie, autoLogin };

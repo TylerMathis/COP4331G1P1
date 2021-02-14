@@ -66,3 +66,5 @@ function displayError(error) {
 	console.log(error);
 	displayNotification(error.message, error.detail, "danger");
 }
+
+export { displayNotification, displayError, loadHiRes };

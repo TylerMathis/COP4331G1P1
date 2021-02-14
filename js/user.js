@@ -1,3 +1,7 @@
+import {clearCookie, getCookie, saveCookie} from "./cookies";
+import {displayError, displayNotification} from "./design";
+import {createUser, loginUser} from "./userStore";
+
 let firstName = "";
 let lastName = "";
 let fullName = "";
@@ -72,7 +76,7 @@ function doCreateAccount() {
 	// Send request
 	createUser(userData).then(() => {
         displayNotification("Success!", "Returning you back to login...", "success");
-        
+
         const login = userData.Login;
         const url = "index.html?loginPlaceholder=" + login;
 		// Migrate to login after 2 seconds.
@@ -102,3 +106,5 @@ function doLogout()
 	clearCookie();
 	window.location.href = "index.html";
 }
+
+export {id, populateUserCache, welcomeUser, autoFillLogin, submitLoginClicked, submitCreateClicked, doLogout}
