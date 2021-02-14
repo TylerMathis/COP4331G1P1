@@ -25,3 +25,6 @@ function handleResponse(response) {
 
     return response;
 }
+
+// Export relevant code
+export { APIError, handleResponse };
