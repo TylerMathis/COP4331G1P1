@@ -6,18 +6,14 @@
 const jsonHeader = new Headers({ "Content-Type": "application/json; charset=UTF-8" });
 
 /**
- * @typedef {object} JSONError
- * @property {string} title
- * @property {string} detail
- * @property {int} status
- */
-
-/**
  * A class used to encapsulate JSON-style error responses.
  */
 class APIError extends Error {
     /**
-     * @param {JSONError} jsonError
+     * @param {object} jsonError
+     * @param {string} jsonError.title
+     * @param {string} jsonError.detail
+     * @param {int} jsonError.status
      */
     constructor(jsonError) {
         super(jsonError.title);
@@ -31,10 +27,11 @@ class APIError extends Error {
 }
 
 /**
- * Handles response given from server.
+ * Make sure that the response is ok and routes any possible errors.
  *
  * @param {Response} response
  * @return {Response}
+ * @throws {APIError} When response does not have a valid HTTP code.
  */
 async function validateResponse(response) {
     if (!response.ok) {
