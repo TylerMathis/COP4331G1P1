@@ -1,6 +1,5 @@
-import { handleResponse } from "./APIUtil";
+import { handleResponse, jsonHeader } from "./APIUtil";
 
-const jsonHeader = { "Content-Type": "application/json; charset=UTF-8" };
 const urlFor = (fileBase) => { return "LAMPAPI/" + fileBase + ".php"; }
 
 /**

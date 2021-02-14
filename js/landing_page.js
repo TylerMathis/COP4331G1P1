@@ -1,6 +1,6 @@
-import {populateUserCache, welcomeUser} from "./user";
-import {getAllContacts} from "./contact";
-import {doLogout} from "./user";
+import { populateUserCache, welcomeUser } from "./user";
+import { getAllContacts } from "./contact";
+import { doLogout } from "./user";
 
 // Populate local user data, and welcome them
 window.onload = () => {
