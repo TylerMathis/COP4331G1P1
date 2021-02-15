@@ -47,7 +47,7 @@ let selectedComparator = comparators.firstName;
  * @param {HTMLElement} element The element to parse
  * @return {{targetID: string, key: string}}
  */
-const parser = element => ({
+const contactDatasetParser = element => ({
 	key: element.dataset.contactKey,
 	targetID: element.dataset.contactTarget
 });
@@ -320,7 +320,7 @@ function displayContact(contactRef) {
 
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
-		const data = parser(element);
+		const data = contactDatasetParser(element);
 		if (data.key === "") {
 			element.style.display = "none";
 		} else {
@@ -332,7 +332,7 @@ function displayContact(contactRef) {
 
 	// Update edit DOM
 	$("#edit-form [data-contact-key][data-contact-target]").each(function (i, element) {
-		const data = parser(element);
+		const data = contactDatasetParser(element);
 
 		// Check if input or select
 		const input = element.querySelector("input");
