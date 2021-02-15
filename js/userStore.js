@@ -1,5 +1,11 @@
-import { handleResponse, jsonHeader } from "./APIUtil";
+import { validateResponse, jsonHeader } from "./APIUtil";
 
+/**
+ * Gets the expanded url for the given filename.
+ *
+ * @param fileBase The base to prepend.
+ * @returns {string} The expanded URL.
+ */
 const urlFor = (fileBase) => { return "LAMPAPI/" + fileBase + ".php"; }
 
 /**
@@ -23,7 +29,7 @@ async function createUser(user) {
         headers: jsonHeader,
         body: JSON.stringify(user)
     })
-    .then(handleResponse);
+    .then(validateResponse);
 }
 
 /**
@@ -38,7 +44,7 @@ async function loginUser(loginData) {
         headers: jsonHeader,
         body: JSON.stringify(loginData)
     })
-    .then(handleResponse)
+    .then(validateResponse)
     .then(response => response.json());
 }
 

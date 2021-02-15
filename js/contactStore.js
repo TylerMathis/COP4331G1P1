@@ -1,4 +1,4 @@
-import { handleResponse, jsonHeader } from "./APIUtil";
+import { validateResponse, jsonHeader } from "./APIUtil";
 import { id } from "./user";
 
 const contactBase = "LAMPAPI/contactController.php";
@@ -12,6 +12,7 @@ const searchBase = "LAMPAPI/searchContacts.php";
  * @property {string} PhoneNumber
  * @property {string} State
  * @property {string} City
+ * @property {string} ProfileImage
  * @property {int} ID
  * @property {int} UserID
  */
@@ -32,20 +33,20 @@ async function deleteContact(contact) {
         headers: jsonHeader,
         body: JSON.stringify(contact)
     })
-    .then(handleResponse);
+    .then(validateResponse);
 }
 
 /**
  * Fetches all the contacts for the given user.
  *
- * @return {Promise<any>}
+ * @return {Promise<Array.<Contact>>}
  */
 async function getContacts() {
     // Create api endpoint with userID encoded
     let url = contactBase + "?UserID=" + id;
 
     return await fetch(url)
-        .then((response) => response.json());
+        .then(response => response.json());
 }
 
 /**
@@ -60,7 +61,7 @@ async function createContact(contact) {
         body: JSON.stringify(contact),
         headers: jsonHeader
     })
-    .then(handleResponse)
+    .then(validateResponse)
     .then(response => response.json())
     .then(json => json.ID);
 }
@@ -76,21 +77,21 @@ async function updateContact(contact) {
         method: "PUT",
         headers:  jsonHeader,
         body: JSON.stringify(contact)
-    }).then(handleResponse);
+    }).then(validateResponse);
 }
 
 /**
  * Fetches all contacts that match a keyword
  *
  * @param {string} keyword
- * @return {Promise<any>}
+ * @return {Promise<Array.<Contact>>}
  */
 async function searchContacts(keyword) {
     // Create api endpoint with userID encoded
     let url = searchBase + "?UserID=" + id + "&Keyword=" + keyword;
 
     return await fetch(url)
-        .then((response) => response.json());
+        .then(response => response.json());
 }
 
 /**
@@ -109,7 +110,7 @@ async function uploadProfileImg(imageFile, contactID) {
         method: "POST",
         body: formData
     })
-    .then(handleResponse)
+    .then(validateResponse)
     .then(response => response.json());
 }
 

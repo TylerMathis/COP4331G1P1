@@ -10,28 +10,37 @@ const jsonHeader = new Headers({ "Content-Type": "application/json; charset=UTF-
  */
 class APIError extends Error {
     /**
-     * @param {string} title
-     * @param {string} detail
+     * @param {object} jsonError
+     * @param {string} jsonError.title
+     * @param {string} jsonError.detail
+     * @param {int} jsonError.status
      */
-    constructor(title, detail) {
-        super(title);
-        this.detail = detail;
+    constructor(jsonError) {
+        super(jsonError.title);
+
+        /**
+         * The detail associated with the title error.
+         * @type {string}
+         */
+        this.detail = jsonError.detail;
     }
 }
 
 /**
- * Handles response given from server.
+ * Make sure that the response is ok and routes any possible errors.
  *
  * @param {Response} response
  * @return {Response}
+ * @throws {APIError} When response does not have a valid HTTP code.
  */
-function handleResponse(response) {
+async function validateResponse(response) {
     if (!response.ok) {
-        return response.json().then(json => {throw new APIError(json.title, json.detail)});
+        const jsonError = await response.json();
+        throw new APIError(jsonError);
     }
 
     return response;
 }
 
 // Export relevant code
-export { APIError, handleResponse, jsonHeader };
+export { APIError, validateResponse, jsonHeader };

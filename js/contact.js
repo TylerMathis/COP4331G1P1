@@ -1,5 +1,6 @@
-import { handleResponse, APIError } from "./APIUtil";
-import { getContacts, updateContact, deleteContact, uploadProfileImg, createContact, searchContacts } from "./contactStore";
+import { validateResponse, APIError } from "./APIUtil";
+import { getContacts, updateContact, deleteContact,
+	uploadProfileImg, createContact, searchContacts } from "./contactStore";
 import { id } from "./user";
 import { debounce } from "./debounce";
 import { displayError, displayNotification } from "./design";
@@ -27,8 +28,10 @@ let selectedLink = undefined;
  * @type {{firstName: (function(Contact, Contact): number), lastName: (function(Contact, Contact): number)}}
  */
 const comparators = {
-	firstName: (con1, con2) => (con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
-	lastName: (con1, con2) => (con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
+	firstName: (con1, con2) =>
+		(con1.FirstName.toLowerCase() > con2.FirstName.toLowerCase()) ? 1 : -1,
+	lastName: (con1, con2) =>
+		(con1.LastName.toLowerCase() > con2.LastName.toLowerCase()) ? 1 : -1
 };
 
 /**
@@ -44,7 +47,7 @@ let selectedComparator = comparators.firstName;
  * @param {HTMLElement} element The element to parse
  * @return {{targetID: string, key: string}}
  */
-const parser = element => ({
+const contactDatasetParser = element => ({
 	key: element.dataset.contactKey,
 	targetID: element.dataset.contactTarget
 });
@@ -77,15 +80,15 @@ function adaptProfileContainer(contact, profileContainer) {
 /**
  * The debounced contact search funcion.
  *
- * @type {function(...string): void}
+ * @type {function(string): void}
  */
 const debouncedSearch = debounce(searchAndPopulate, 300);
 
 /**
  * Simply prevents any defualt actions.
  *
- * @param e
- * @return {void|void|*}
+ * @param e The Event to prevent
+ * @return {void}
  */
 const preventer = e => e.preventDefault();
 
@@ -317,7 +320,7 @@ function displayContact(contactRef) {
 
 	// Update info DOM
 	$("#info-pane [data-contact-key][data-contact-target]").each(function (i, element) {
-		const data = parser(element);
+		const data = contactDatasetParser(element);
 		if (data.key === "") {
 			element.style.display = "none";
 		} else {
@@ -329,7 +332,7 @@ function displayContact(contactRef) {
 
 	// Update edit DOM
 	$("#edit-form [data-contact-key][data-contact-target]").each(function (i, element) {
-		const data = parser(element);
+		const data = contactDatasetParser(element);
 
 		// Check if input or select
 		const input = element.querySelector("input");

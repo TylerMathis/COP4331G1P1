@@ -46,8 +46,7 @@ function populateUserCache() {
  *
  * @return {boolean} true on success, false otherwise.
  */
-function doLogin()
-{
+function doLogin() {
 	// Retrieve login and password
 	const form = document.getElementById("login-form");
 	const formData = new FormData(form);
@@ -101,8 +100,7 @@ function welcomeUser() {
 	document.getElementById("welcome").innerHTML = "Welcome " + fullName;
 }
 
-function doLogout()
-{
+function doLogout() {
 	clearCookie();
 	window.location.href = "index.html";
 }
