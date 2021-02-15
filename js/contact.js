@@ -80,15 +80,15 @@ function adaptProfileContainer(contact, profileContainer) {
 /**
  * The debounced contact search funcion.
  *
- * @type {function(...string): void}
+ * @type {function(string): void}
  */
 const debouncedSearch = debounce(searchAndPopulate, 300);
 
 /**
  * Simply prevents any defualt actions.
  *
- * @param e
- * @return {void|void|*}
+ * @param e The Event to prevent
+ * @return {void}
  */
 const preventer = e => e.preventDefault();
 

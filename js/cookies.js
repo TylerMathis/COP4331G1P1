@@ -16,7 +16,9 @@ function saveCookie(firstName, lastName, ID, remember) {
     Cookies.set("user", data);
 }
 
-// Clears a cookie
+/**
+ * Clears the current cookie.
+ */
 function clearCookie() {
     Cookies.remove("user");
 }
