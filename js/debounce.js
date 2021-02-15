@@ -1,8 +1,8 @@
 /**
  * Creates a debouncer for high frequency function calls.
  *
- * @param handler The method to debounce
- * @param delay The amount of time to wait before the method should execute again.
+ * @param {function(...[*])} handler The method to debounce
+ * @param {int} delay The amount of time to wait before the method should execute again.
  * @returns {function(...[*]): void}
  *
  * @author David Walsh, Trey Huffine
