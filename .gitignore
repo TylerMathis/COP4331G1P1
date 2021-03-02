@@ -3,6 +3,7 @@
 
 installer
 composer.phar
+vendor/
 
 LAMPAPI/secret.php
 contact-imgs/
