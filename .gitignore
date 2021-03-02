@@ -1,5 +1,8 @@
 *.swp
 .idea
 
+installer
+composer.phar
+
 LAMPAPI/secret.php
 contact-imgs/
